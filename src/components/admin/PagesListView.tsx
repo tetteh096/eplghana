@@ -1,3 +1,5 @@
+'use client'
+
 import { DefaultListView } from '@payloadcms/ui'
 import type { ListViewClientProps } from 'payload'
 

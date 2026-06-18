@@ -1440,6 +1440,65 @@ html[data-theme='dark'] .epl-dash {
       text-decoration: underline;
     }
   }
+
+  &.epl-auth-pending {
+    .login__form__inputWrap,
+    .field-type {
+      opacity: 0.65;
+      pointer-events: none;
+    }
+
+    .login__form__forgotPassword a {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .login__form__actions {
+      position: relative;
+      z-index: 3;
+    }
+
+    .login__form__actions .form-submit .btn,
+    .form-submit .btn,
+    button[type='submit'].btn,
+    button[type='submit'] {
+      color: transparent !important;
+      pointer-events: none;
+      position: relative;
+
+      &::before {
+        animation: epl-auth-spin 0.65s linear infinite;
+        border: 2px solid rgba(255, 255, 255, 0.35);
+        border-radius: 50%;
+        border-top-color: #fff;
+        content: '';
+        height: 18px;
+        left: 50%;
+        margin: -9px 0 0 -22px;
+        position: absolute;
+        top: 50%;
+        width: 18px;
+      }
+
+      &::after {
+        color: #fff;
+        content: attr(data-epl-pending-label);
+        font-size: 15px;
+        font-weight: 700;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-32%, -50%);
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+@keyframes epl-auth-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .epl-login-logo {
