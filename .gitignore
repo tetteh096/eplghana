@@ -1,0 +1,58 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# next.js
+/.next/
+/out/
+/build
+
+# production artifacts
+*.tsbuildinfo
+next-env.d.ts
+
+# doppler local upload file (copy from doppler.env.example)
+doppler.env
+
+# secrets — never commit
+.env
+.env.*
+!.env.example
+
+# local uploads (production uses Cloudflare R2)
+/media
+
+# database / migration backups
+/backups
+*.archive
+
+# test & dev tooling
+test.env
+playwright.config.ts
+vitest.config.mts
+vitest.setup.ts
+/tests
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/coverage
+
+# vercel
+.vercel
+
+# logs & debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# IDE / OS
+/.idea/*
+!/.idea/runConfigurations
+.DS_Store
+Thumbs.db
+*.pem

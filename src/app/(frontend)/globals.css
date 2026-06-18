@@ -1,0 +1,195 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-epl-primary: #0a3d6b;
+  --color-epl-secondary: #1e6bb8;
+  --color-epl-soft: #5b9bd5;
+  --color-epl-sky: #e8f3fb;
+  --color-epl-mist: #f6fafd;
+  --color-epl-dark: #0c2238;
+  --color-epl-muted: #5a6b7d;
+  --color-epl-border: #d4e4f2;
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-white text-epl-dark antialiased;
+    font-family: var(--font-sans);
+  }
+
+  a {
+    @apply transition-colors duration-200;
+  }
+}
+
+@layer components {
+  .epl-container {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .epl-section {
+    @apply py-16 md:py-24;
+  }
+
+  .epl-section-subtitle {
+    @apply mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-epl-secondary;
+  }
+
+  .epl-section-title {
+    @apply text-3xl font-bold leading-tight text-epl-dark md:text-4xl lg:text-[2.75rem];
+  }
+
+  .epl-lead {
+    @apply text-lg leading-relaxed text-epl-muted md:text-xl;
+  }
+
+  .epl-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-epl-primary px-7 py-3.5 text-sm font-semibold text-white shadow-md shadow-epl-primary/20 hover:bg-epl-secondary;
+  }
+
+  .epl-btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border-2 border-epl-primary px-7 py-3.5 text-sm font-semibold text-epl-primary hover:bg-epl-primary hover:text-white;
+  }
+
+  .epl-btn-white {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-epl-primary shadow-md hover:bg-epl-sky;
+  }
+
+  .epl-card {
+    @apply overflow-hidden rounded-2xl border border-epl-border bg-white shadow-sm transition-shadow hover:shadow-lg hover:shadow-epl-primary/5;
+  }
+
+  .epl-gradient-hero {
+    background: linear-gradient(135deg, #f6fafd 0%, #e8f3fb 45%, #ffffff 100%);
+  }
+
+  .epl-gradient-cta {
+    background: linear-gradient(135deg, #0a3d6b 0%, #1e6bb8 100%);
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Interaction craft layer
+   Refines the template's default motion (WOW.js + animate.css) and
+   adds the micro-interactions the cards were missing. Principles:
+   tighter timing, spring-like easing, real hover + press feedback,
+   and full prefers-reduced-motion support.
+   ────────────────────────────────────────────────────────────── */
+
+/* Reusable easing tokens */
+:root {
+  /* Gentle overshoot — a physical "settle" for entrances & lifts */
+  --epl-ease-spring: cubic-bezier(0.34, 1.4, 0.5, 1);
+  /* Fast-out, slow-in — for image zooms and large moves */
+  --epl-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 1. Tighten the WOW scroll-reveal: the template default (1s, linear-ish)
+      feels sluggish. Shorter duration + eased settle reads as intentional. */
+.wow {
+  --animate-duration: 0.7s;
+}
+.animate__fadeInUp,
+.animate__fadeInLeft,
+.animate__fadeInRight {
+  animation-timing-function: var(--epl-ease-out);
+}
+
+/* 2. Card micro-interactions — lift + image zoom on hover, press feedback.
+      Targets the three homepage card types from ChariticsHome. */
+.ul-donation,
+.ul-event,
+.ul-blog {
+  transition:
+    transform 0.45s var(--epl-ease-spring),
+    box-shadow 0.45s var(--epl-ease-out);
+  will-change: transform;
+}
+.ul-donation:hover,
+.ul-event:hover,
+.ul-blog:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 40px -12px rgba(10, 61, 107, 0.28);
+}
+/* Press: a small give so a click/tap feels physical */
+.ul-donation:active,
+.ul-event:active,
+.ul-blog:active {
+  transform: translateY(-3px) scale(0.995);
+  transition-duration: 0.12s;
+}
+
+/* Image zoom inside cards — clipped by the existing rounded image wrappers */
+.ul-donation-img,
+.ul-event-img,
+.ul-blog-img {
+  overflow: hidden;
+}
+.ul-donation-img img,
+.ul-event-img img,
+.ul-blog-img img {
+  transition: transform 0.6s var(--epl-ease-out);
+  will-change: transform;
+}
+.ul-donation:hover .ul-donation-img img,
+.ul-event:hover .ul-event-img img,
+.ul-blog:hover .ul-blog-img img {
+  transform: scale(1.06);
+}
+
+/* 3. Button feedback — hover nudge + crisp press on the template buttons */
+.ul-btn,
+.ul-donation-btn,
+.ul-blog-btn {
+  transition:
+    transform 0.3s var(--epl-ease-spring),
+    background-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.3s var(--epl-ease-out);
+}
+.ul-btn:hover {
+  transform: translateY(-2px);
+}
+.ul-btn:active {
+  transform: translateY(0) scale(0.97);
+  transition-duration: 0.1s;
+}
+/* Arrow links — slide the arrow on hover to signal direction */
+.ul-donation-btn:hover,
+.ul-blog-btn:hover {
+  transform: translateX(3px);
+}
+
+/* Slider nav arrows — gentle scale so they feel tappable */
+.ul-slider-nav button {
+  transition: transform 0.3s var(--epl-ease-spring);
+}
+.ul-slider-nav button:hover {
+  transform: scale(1.1);
+}
+.ul-slider-nav button:active {
+  transform: scale(0.92);
+}
+
+/* 4. Respect the user. If they've asked for less motion, give them the
+      content with no entrance animation, zoom, or lift. */
+@media (prefers-reduced-motion: reduce) {
+  .wow {
+    visibility: visible !important;
+    animation: none !important;
+  }
+  .ul-donation,
+  .ul-event,
+  .ul-blog,
+  .ul-donation-img img,
+  .ul-event-img img,
+  .ul-blog-img img,
+  .ul-btn,
+  .ul-donation-btn,
+  .ul-blog-btn,
+  .ul-slider-nav button {
+    transition: none !important;
+    transform: none !important;
+  }
+}

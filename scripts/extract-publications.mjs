@@ -1,0 +1,7 @@
+const html = await fetch('https://eplghana.org/publications-2/').then((r) => r.text())
+const imgs = [...html.matchAll(/data-src="(https:\/\/eplghana\.org\/wp-content\/uploads[^"]+)"/g)].map((m) => m[1])
+const pdfs = [...html.matchAll(/href="(https:\/\/eplghana\.org\/wp-content\/uploads[^"]+\.pdf)"/gi)].map((m) => m[1])
+const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').slice(0, 3000)
+console.log('PDFs:', pdfs)
+console.log('Images:', [...new Set(imgs)])
+console.log('Text sample:', text)

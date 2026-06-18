@@ -1,0 +1,75 @@
+{
+  "name": "epl-ghana-web",
+  "version": "1.0.0",
+  "description": "EPL Ghana — Next.js 16 + Payload CMS",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@10.12.1",
+  "scripts": {
+    "build": "pnpm generate:importmap && cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
+    "dev": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=4096\" next dev --webpack",
+    "dev:doppler": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/with-doppler.ps1 run --fallback .env -- cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=4096\" next dev --webpack",
+    "build:doppler": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/with-doppler.ps1 run --fallback .env -- pnpm run build",
+    "start:doppler": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/with-doppler.ps1 run --fallback .env -- cross-env NODE_OPTIONS=--no-deprecation next start",
+    "doppler:login": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/with-doppler.ps1 login",
+    "doppler:setup": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/with-doppler.ps1 setup",
+    "doppler:upload": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/doppler-upload.ps1",
+    "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+    "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+    "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
+    "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+    "migrate:media-r2": "cross-env NODE_OPTIONS=--no-deprecation payload run src/scripts/migrateMediaToR2.ts",
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start"
+  },
+  "dependencies": {
+    "@payloadcms/db-mongodb": "3.85.1",
+    "@payloadcms/email-nodemailer": "3.85.1",
+    "@payloadcms/email-resend": "3.85.1",
+    "@payloadcms/live-preview-react": "3.85.1",
+    "@payloadcms/next": "3.85.1",
+    "@payloadcms/richtext-lexical": "3.85.1",
+    "@payloadcms/storage-s3": "3.85.1",
+    "@payloadcms/ui": "3.85.1",
+    "cross-env": "10.1.0",
+    "dotenv": "16.4.7",
+    "framer-motion": "^12.40.0",
+    "graphql": "^16.8.1",
+    "next": "16.2.7",
+    "otpauth": "^9.5.1",
+    "payload": "3.85.1",
+    "payload-totp": "^3.0.1",
+    "qrcode": "^1.5.4",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "sharp": "0.34.2"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-s3": "^3.1071.0",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/node": "24.12.3",
+    "@types/qrcode": "^1.5.6",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "eslint": "^9.16.0",
+    "eslint-config-next": "16.2.7",
+    "postcss": "^8.4.38",
+    "prettier": "^3.4.2",
+    "tailwindcss": "^4.1.18",
+    "typescript": "6.0.3"
+  },
+  "engines": {
+    "node": ">=20.9.0",
+    "pnpm": "^9 || ^10"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp",
+      "esbuild",
+      "unrs-resolver"
+    ],
+    "overrides": {
+      "dompurify": ">=3.4.0",
+      "postcss": ">=8.5.10"
+    }
+  }
+}
