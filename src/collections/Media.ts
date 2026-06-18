@@ -60,8 +60,9 @@ export const Media: CollectionConfig = {
   ],
   hooks: {
     beforeChange: [
-      ({ data }) => {
-        if (data?.folder) {
+      ({ data, operation }) => {
+        // Only set R2 path prefix on new uploads — don't rewrite migrated flat files.
+        if (operation === 'create' && data?.folder) {
           data.prefix = data.folder
         }
         return data

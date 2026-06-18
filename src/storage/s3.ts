@@ -52,19 +52,38 @@ export function getS3Storage(): Plugin[] {
 
   const hasPublicUrl = Boolean(process.env.R2_PUBLIC_URL ?? process.env.S3_PUBLIC_URL)
 
+  const mediaCollection: NonNullable<Parameters<typeof s3Storage>[0]['collections']>['media'] =
+    hasPublicUrl
+      ? {
+          disablePayloadAccessControl: true,
+          generateFileURL: ({ filename, prefix }) => {
+            // Migrated files sit at bucket root; new uploads use folder prefix.
+            return (
+              publicMediaUrl(filename, prefix || undefined) ??
+              publicMediaUrl(filename) ??
+              ''
+            )
+          },
+        }
+      : {
+          // Serve through Payload /api/media/file/ — never expose the private R2 API host.
+          generateFileURL: ({ filename, prefix }) => {
+            const base = (process.env.NEXT_PUBLIC_SERVER_URL ?? 'http://localhost:3000').replace(
+              /\/$/,
+              '',
+            )
+            const path = prefix ? `${prefix}/${filename}` : filename
+            return `${base}/api/media/file/${path}`
+          },
+        }
+
   return [
     s3Storage({
-      // R2 does not support S3 ACL headers — omit acl (private) and serve via R2_PUBLIC_URL.
       alwaysInsertFields: true,
       bucket: r2.bucket,
       clientUploads: enableClientUploads,
       collections: {
-        media: {
-          ...(hasPublicUrl ? { disablePayloadAccessControl: true } : {}),
-          generateFileURL: ({ filename, prefix }) =>
-            publicMediaUrl(filename, prefix) ??
-            `${r2.endpoint.replace(/\/$/, '')}/${r2.bucket}/${prefix ? `${prefix}/` : ''}${filename}`,
-        },
+        media: mediaCollection,
       },
       config: {
         credentials: {
