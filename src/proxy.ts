@@ -25,7 +25,9 @@ export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   if (pathname.startsWith('/admin')) {
-    const response = NextResponse.next()
+    const requestHeaders = new Headers(request.headers)
+    requestHeaders.set('x-pathname', pathname)
+    const response = NextResponse.next({ request: { headers: requestHeaders } })
     response.headers.set('x-pathname', pathname)
     return response
   }

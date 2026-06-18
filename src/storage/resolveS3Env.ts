@@ -78,7 +78,9 @@ export function resolveR2Env(): ResolvedR2Env {
     bucket,
     endpoint,
     forcePathStyle:
-      read('R2_FORCE_PATH_STYLE') === 'true' || read('S3_FORCE_PATH_STYLE') === 'true',
+      read('R2_FORCE_PATH_STYLE') === 'true' ||
+      read('S3_FORCE_PATH_STYLE') === 'true' ||
+      /r2\.cloudflarestorage\.com/i.test(endpoint),
     publicUrl: readAny(['R2_PUBLIC_URL', 'S3_PUBLIC_URL']),
     region: readAny(['R2_REGION', 'S3_REGION']) || 'auto',
     secretAccessKey,

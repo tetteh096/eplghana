@@ -175,7 +175,10 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URL || '',
     connectOptions: {
-      serverSelectionTimeoutMS: 3000,
+      // Serverless cold starts (Vercel) need longer than local Docker.
+      serverSelectionTimeoutMS:
+        process.env.NODE_ENV === 'production' ? 30_000 : 3_000,
+      maxPoolSize: process.env.NODE_ENV === 'production' ? 1 : undefined,
     },
   }),
   sharp,

@@ -39,6 +39,10 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        source: '/favicon.ico',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=86400' }],
+      },
+      {
         // Apply security headers to every response.
         source: '/:path*',
         headers: [
@@ -73,6 +77,15 @@ const nextConfig: NextConfig = {
   },
   turbopack: {
     root: path.resolve(dirname),
+  },
+  async redirects() {
+    return [
+      {
+        destination: '/assets/cropped-EPL-Ghana-logo.png',
+        permanent: false,
+        source: '/favicon.ico',
+      },
+    ]
   },
 }
 

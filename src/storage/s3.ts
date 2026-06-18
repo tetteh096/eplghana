@@ -52,12 +52,15 @@ export function getS3Storage(): Plugin[] {
 
   return [
     s3Storage({
-      acl: 'public-read',
+      // R2 does not support S3 ACL headers — omit acl (private) and serve via R2_PUBLIC_URL.
       alwaysInsertFields: true,
       bucket: r2.bucket,
       clientUploads: enableClientUploads,
       collections: {
         media: {
+          disablePayloadAccessControl: Boolean(
+            process.env.R2_PUBLIC_URL ?? process.env.S3_PUBLIC_URL,
+          ),
           generateFileURL: ({ filename, prefix }) =>
             publicMediaUrl(filename, prefix) ??
             `${r2.endpoint.replace(/\/$/, '')}/${r2.bucket}/${prefix ? `${prefix}/` : ''}${filename}`,
