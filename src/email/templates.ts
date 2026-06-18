@@ -1,4 +1,4 @@
-import { CMS_PRODUCT_NAME, EPL_LOGO_WHITE_SRC } from '@/config/brand'
+import { CMS_PRODUCT_NAME, EPL_EMAIL_LOGO_SRC } from '@/config/brand'
 
 const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 
@@ -8,7 +8,7 @@ export function getEmailLogoUrl(): string {
     return process.env.EMAIL_LOGO_URL.trim()
   }
 
-  return `${serverURL}${EPL_LOGO_WHITE_SRC}`
+  return `${serverURL}${EPL_EMAIL_LOGO_SRC}`
 }
 
 export function getAdminLoginUrl(): string {
@@ -38,8 +38,10 @@ function brandedEmailLayout(content: string): string {
           style="background:#ffffff;border-radius:14px;overflow:hidden;border:1px solid #e3edf6;box-shadow:0 4px 24px rgba(10,61,107,0.08);">
           <tr>
             <td style="background:#0a3d6b;padding:26px 28px 22px;text-align:center;">
-              <img src="${logoUrl}" alt="EPL Ghana" width="198" height="28"
-                style="display:inline-block;border:0;max-width:198px;width:198px;height:auto;" />
+              <div style="display:inline-block;background:#ffffff;padding:10px 14px;border-radius:6px;line-height:0;">
+                <img src="${logoUrl}" alt="Emerging Public Leaders Ghana" width="140"
+                  style="display:block;border:0;max-width:140px;width:140px;height:auto;" />
+              </div>
               <p style="margin:12px 0 0;font-size:11px;color:#9ec5e8;letter-spacing:0.06em;text-transform:uppercase;">
                 ${CMS_PRODUCT_NAME}
               </p>
