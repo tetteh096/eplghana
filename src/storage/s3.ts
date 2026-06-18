@@ -50,6 +50,8 @@ export function getS3Storage(): Plugin[] {
     return []
   }
 
+  const hasPublicUrl = Boolean(process.env.R2_PUBLIC_URL ?? process.env.S3_PUBLIC_URL)
+
   return [
     s3Storage({
       // R2 does not support S3 ACL headers — omit acl (private) and serve via R2_PUBLIC_URL.
@@ -58,9 +60,7 @@ export function getS3Storage(): Plugin[] {
       clientUploads: enableClientUploads,
       collections: {
         media: {
-          disablePayloadAccessControl: Boolean(
-            process.env.R2_PUBLIC_URL ?? process.env.S3_PUBLIC_URL,
-          ),
+          ...(hasPublicUrl ? { disablePayloadAccessControl: true } : {}),
           generateFileURL: ({ filename, prefix }) =>
             publicMediaUrl(filename, prefix) ??
             `${r2.endpoint.replace(/\/$/, '')}/${r2.bucket}/${prefix ? `${prefix}/` : ''}${filename}`,
