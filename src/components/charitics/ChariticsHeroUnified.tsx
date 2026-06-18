@@ -43,21 +43,6 @@ type SwiperConstructor = new (
 
 function syncHeroSlide(root: HTMLElement, isHome1: boolean) {
   root.setAttribute('data-active-slide', isHome1 ? 'home1' : 'home2')
-
-  const nav = root.querySelector<HTMLElement>('.epl-hero-unified-nav')
-  if (!nav) return
-
-  if (isHome1) {
-    root.appendChild(nav)
-    return
-  }
-
-  const home2Section = root.querySelector<HTMLElement>(
-    '.epl-hero-swiper .swiper-slide-active .epl-hero-slide-home2',
-  )
-  if (home2Section) {
-    home2Section.appendChild(nav)
-  }
 }
 
 /**
@@ -134,10 +119,6 @@ export function ChariticsHeroUnified({
         slidesPerView: 1,
         loop: true,
         speed: 800,
-        // Collapse the wrapper to the ACTIVE slide's height (and animate it on
-        // transition). Without this, the tall Home-1 banner slide forces the
-        // wrapper tall, leaving a white gap below the shorter Home-2 cards.
-        autoHeight: true,
         autoplay: {
           delay: 8000,
           disableOnInteraction: false,
@@ -187,8 +168,6 @@ export function ChariticsHeroUnified({
       document.body.style.removeProperty('--epl-header-h')
       mainInstance?.destroy(true, true)
       thumbInstance?.destroy(true, true)
-      const nav = root.querySelector<HTMLElement>('.epl-hero-unified-nav')
-      if (nav) root.appendChild(nav)
 
       root.removeAttribute('data-active-slide')
       destroySwiperOn(root.querySelector<SwiperElement>('.epl-hero-swiper'))

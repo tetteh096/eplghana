@@ -36,8 +36,9 @@ Project → Settings → Environment Variables). Never deploy the `.env` file.
 - [x] HTTP security headers — `next.config.ts` (`X-Content-Type-Options`,
       `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy`, `Permissions-Policy`,
       `Strict-Transport-Security`).
-- [x] Content-Security-Policy with per-request nonce on frontend routes —
-      `src/proxy.ts`. Flip to report-only with `CSP_REPORT_ONLY=true` if a page
+- [x] Content-Security-Policy on frontend routes — `src/proxy.ts` (`script-src
+      'self' 'unsafe-inline'`; no per-request nonce, which breaks Next.js static
+      hydration). Flip to report-only with `CSP_REPORT_ONLY=true` if a page
       breaks; check the browser console for violations and adjust the policy.
 - [x] Media uploads restricted to an image/PDF mime allowlist —
       `src/collections/Media.ts`.

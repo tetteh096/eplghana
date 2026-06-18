@@ -164,7 +164,7 @@ body {
   position: static !important;
 }
 
-/* Unified hero — isolated; Home 1 fixed height, Home 2 shrinks to card */
+/* Unified hero — fixed viewport slot; slide/content changes never move the page */
 .epl-hero-unified {
   position: relative;
   isolation: isolate;
@@ -174,42 +174,52 @@ body {
      block below), so the hero fills the whole viewport — floor on short
      screens, cap on very tall ones. */
   --epl-hero-h: clamp(640px, 100svh, 1040px);
-}
-
-.epl-hero-unified[data-active-slide='home1'] {
+  height: var(--epl-hero-h);
   min-height: var(--epl-hero-h);
+  max-height: var(--epl-hero-h);
   overflow: hidden;
 }
 
+.epl-hero-unified[data-active-slide='home1'],
 .epl-hero-unified[data-active-slide='home2'] {
-  min-height: 0;
-  overflow: visible;
-}
-
-.epl-hero-unified[data-active-slide='home1'] .epl-hero-swiper,
-.epl-hero-unified[data-active-slide='home1'] .epl-hero-swiper .swiper-slide {
+  height: var(--epl-hero-h);
   min-height: var(--epl-hero-h);
+  max-height: var(--epl-hero-h);
 }
 
-/* Center the Home-1 banner content within the now full-height stage so the
-   taller hero reads as deliberate, not top-loaded with empty space below. */
+.epl-hero-swiper {
+  height: 100%;
+}
+
+.epl-hero-swiper .swiper-wrapper,
+.epl-hero-swiper .swiper-slide {
+  height: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
 .epl-hero-unified[data-active-slide='home1'] .epl-hero-slide-home1 {
   display: flex;
   align-items: center;
-  min-height: var(--epl-hero-h);
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
 }
 .epl-hero-unified[data-active-slide='home1'] .epl-hero-slide-home1 .ul-banner-container {
   width: 100%;
 }
 
-.epl-hero-unified[data-active-slide='home2'] .epl-hero-swiper,
-.epl-hero-unified[data-active-slide='home2'] .epl-hero-swiper .swiper-slide {
-  min-height: 0;
-  height: auto;
+.epl-hero-unified[data-active-slide='home2'] .epl-hero-slide-home2 {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+  padding-top: var(--epl-header-h, 92px);
+  padding-bottom: clamp(12px, 1.5vw, 24px);
 }
 
 .epl-hero-swiper .swiper-slide {
-  height: auto;
   box-sizing: border-box;
 }
 
@@ -221,15 +231,14 @@ body {
 /* Slides 2–4: Charitics Home 2 rounded card with clipped frame */
 .epl-hero-slide-home2 {
   max-width: clamp(0px, 96.95vw, 1845px);
+  width: 100%;
   margin: 0 auto;
   border-radius: clamp(20px, 2.1vw, 40px);
   overflow: hidden;
   background-color: transparent;
   position: relative;
-}
-
-.epl-hero-slide-home2 {
-  margin-top: clamp(12px, 1.5vw, 24px);
+  flex: 0 1 auto;
+  max-height: 100%;
 }
 
 @media screen and (max-width: 991px) {
@@ -306,10 +315,10 @@ body {
   filter: brightness(0) invert(1);
 }
 
-/* Home 2 nav — inside rounded card notch (Charitics index-2) */
-.epl-hero-slide-home2 .epl-hero-unified-nav {
+/* Home 2 nav — over the rounded card notch (Charitics index-2) */
+.epl-hero-unified[data-active-slide='home2'] > .epl-hero-unified-nav {
   position: absolute;
-  bottom: clamp(10px, 0.68vw, 13px);
+  bottom: clamp(28px, 3vw, 48px);
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
@@ -325,7 +334,7 @@ body {
   gap: clamp(4px, 0.4vw, 8px);
 }
 
-.epl-hero-slide-home2 .epl-hero-unified-nav button {
+.epl-hero-unified[data-active-slide='home2'] > .epl-hero-unified-nav button {
   background: transparent;
   border: none;
   width: auto;
@@ -336,7 +345,7 @@ body {
   flex-shrink: 0;
 }
 
-.epl-hero-slide-home2 .epl-hero-unified-nav button img {
+.epl-hero-unified[data-active-slide='home2'] > .epl-hero-unified-nav button img {
   filter: none;
   width: auto;
   height: auto;
@@ -372,6 +381,8 @@ body {
 .epl-hero-slide-home1 .ul-banner-txt {
   padding-top: clamp(48px, 5vw, 96px);
   padding-bottom: clamp(90px, 8vw, 130px);
+  max-height: 100%;
+  overflow: hidden;
 }
 
 /* Hero "Fellows trained" avatars — real fellow photos cropped to clean circles */
@@ -381,8 +392,8 @@ body {
 }
 
 .epl-hero-slide-home2 .ul-banner-2-slide {
-  padding-top: clamp(100px, 12.35vw, 235px);
-  padding-bottom: clamp(90px, 8vw, 130px);
+  padding-top: clamp(72px, 9vw, 180px);
+  padding-bottom: clamp(72px, 7vw, 110px);
 }
 
 /* About section — larger, readable text */
@@ -8577,9 +8588,10 @@ body[data-hero-mode='overlay'] #epl-site-header::before {
   z-index: -1;
 }
 
-/* ── Solid: Home-2 image cards clear the floating bar ───────────────────── */
+/* ── Solid: Home-2 image cards clear the floating bar (padding is inside the
+   fixed hero slot — see .epl-hero-slide-home2 above) ───────────────────── */
 body[data-hero-mode='solid'] .epl-hero-unified[data-active-slide='home2'] {
-  padding-top: var(--epl-header-h, 92px);
+  padding-top: 0;
 }
 
 /* ── Event detail page — refreshed hero, meta, and registration CTA ─────── */

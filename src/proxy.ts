@@ -2,18 +2,24 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
 /**
- * Next 16 renamed the "middleware" file convention to "proxy" — same behaviour,
- * the export is just named `proxy` now. This does two jobs:
+ * Next 16 renamed the "middleware" file convention to "proxy" — same behaviour.
+ * Two jobs:
  *
  *  1. /admin/*  — sets `x-pathname` so payload-totp can read the current path
- *     during server-side auth redirects (prevents redirect loops). The admin
- *     panel is intentionally left OUT of the strict CSP below: Payload's UI
- *     (monaco editor, inline styles/workers) needs allowances a nonce CSP
- *     would break.
+ *     during server-side auth redirects (prevents redirect loops). No CSP here;
+ *     the Payload admin UI (monaco, workers, inline styles) needs allowances a
+ *     strict CSP would break.
  *
- *  2. Everything else (the public frontend) — attaches a per-request nonce and
- *     a Content-Security-Policy. Set CSP_REPORT_ONLY=true to observe violations
- *     without blocking (check the browser console), then remove it to enforce.
+ *  2. Everything else (the public frontend) — a static Content-Security-Policy.
+ *     NOTE: we intentionally do NOT use a per-request nonce. The frontend is
+ *     statically pre-rendered, so Next bakes its inline scripts at build time
+ *     with no nonce; a nonce CSP would then block them and break hydration.
+ *     `script-src 'unsafe-inline'` is the standard trade-off for static Next
+ *     sites — the remaining directives (object-src none, base-uri/form-action
+ *     self, restricted img/style/font/connect/frame origins) still apply.
+ *     CSP is skipped entirely in development: Next dev (react-refresh, HMR)
+ *     needs `unsafe-eval`, which we don't want in production.
+ *     Set CSP_REPORT_ONLY=true to observe without enforcing.
  */
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -24,23 +30,20 @@ export function proxy(request: NextRequest) {
     return response
   }
 
-  const nonce = crypto.randomUUID().replace(/-/g, '')
   const isProd = process.env.NODE_ENV === 'production'
+  if (!isProd) {
+    return NextResponse.next()
+  }
+
   const reportOnly = process.env.CSP_REPORT_ONLY === 'true'
 
   const csp = [
     `default-src 'self'`,
-    // Framework + vendor scripts. Next attaches the nonce to its own inline
-    // bootstrap; the /assets/* vendor scripts are same-origin ('self').
-    `script-src 'self' 'nonce-${nonce}'`,
-    // 'unsafe-inline' is required for framer-motion's injected styles and inline
-    // style attributes; nonces don't cover those. Google Fonts stylesheet too.
+    `script-src 'self' 'unsafe-inline'`,
     `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
-    // R2/CDN media domains vary; allow any https image + data/blob previews.
     `img-src 'self' data: blob: https:`,
     `font-src 'self' https://fonts.gstatic.com data:`,
     `connect-src 'self'`,
-    // Google Maps embed on the contact page.
     `frame-src 'self' https://www.google.com`,
     `object-src 'none'`,
     `base-uri 'self'`,
@@ -50,12 +53,7 @@ export function proxy(request: NextRequest) {
     ...(isProd ? [`upgrade-insecure-requests`] : []),
   ].join('; ')
 
-  const requestHeaders = new Headers(request.headers)
-  requestHeaders.set('x-nonce', nonce)
-  // Next reads the CSP off the request to wire the nonce into its scripts.
-  requestHeaders.set('Content-Security-Policy', csp)
-
-  const response = NextResponse.next({ request: { headers: requestHeaders } })
+  const response = NextResponse.next()
   response.headers.set(
     reportOnly ? 'Content-Security-Policy-Report-Only' : 'Content-Security-Policy',
     csp,
