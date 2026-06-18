@@ -176,7 +176,25 @@ type FellowCardProps = {
   onOpen: (fellow: CurrentFellow) => void
 }
 
+function buildFellowSocials(fellow: CurrentFellow) {
+  const links: Array<{ href: string; icon: string; label: string } | null> = [
+    fellow.linkedin
+      ? { href: fellow.linkedin, icon: 'flaticon-linkedin-big-logo', label: 'LinkedIn' }
+      : null,
+    fellow.twitter
+      ? { href: fellow.twitter, icon: 'flaticon-twitter', label: 'X (Twitter)' }
+      : null,
+    fellow.email
+      ? { href: `mailto:${fellow.email}`, icon: 'flaticon-email', label: 'Email' }
+      : null,
+  ]
+
+  return links.filter((link): link is { href: string; icon: string; label: string } => link !== null)
+}
+
 function FellowCard({ fellow, isActive = false, onOpen }: FellowCardProps) {
+  const socials = buildFellowSocials(fellow)
+
   return (
     <article className={`epl-fellow-card${isActive ? ' is-active' : ''}`}>
       <button
@@ -198,6 +216,24 @@ function FellowCard({ fellow, isActive = false, onOpen }: FellowCardProps) {
           <h3 className="epl-fellow-card-name">{fellow.name}</h3>
           <p className="epl-fellow-card-institution">{fellow.institution}</p>
         </button>
+        {socials.length > 0 ? (
+          <div className="epl-fellow-card-socials">
+            {socials.map((social) => (
+              <a
+                aria-label={`${fellow.name} on ${social.label}`}
+                className="epl-fellow-card-social"
+                href={social.href}
+                key={social.label}
+                onClick={(event) => event.stopPropagation()}
+                rel="noreferrer"
+                target={social.href.startsWith('http') ? '_blank' : undefined}
+                title={social.label}
+              >
+                <i className={social.icon}></i>
+              </a>
+            ))}
+          </div>
+        ) : null}
       </div>
     </article>
   )
@@ -207,6 +243,7 @@ export function ChariticsCurrentFellowsPage({ content }: ChariticsCurrentFellows
   const { hero, highlights, cohort, cta, fellows } = content
   const [query, setQuery] = useState('')
   const [institutionFilter, setInstitutionFilter] = useState<string | null>(null)
+  const [filtersOpen, setFiltersOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
@@ -235,6 +272,12 @@ export function ChariticsCurrentFellowsPage({ content }: ChariticsCurrentFellows
     [filtered, selectedId],
   )
   const selected = selectedIndex >= 0 ? filtered[selectedIndex] : null
+  const activeFilterLabel = institutionFilter ?? 'All fellows'
+
+  const selectInstitution = useCallback((institution: string | null) => {
+    setInstitutionFilter(institution)
+    setFiltersOpen(false)
+  }, [])
 
   const openFellow = useCallback((fellow: CurrentFellow) => {
     setSelectedId(fellow.id)
@@ -375,37 +418,57 @@ export function ChariticsCurrentFellowsPage({ content }: ChariticsCurrentFellows
             </label>
           </div>
 
-          <div className="epl-fellows-filters" role="group" aria-label="Filter by institution">
+          <div className="epl-fellows-filters-wrap">
             <button
-              className={`epl-fellows-filter-chip${institutionFilter === null ? ' is-active' : ''}`}
-              onClick={() => setInstitutionFilter(null)}
+              aria-controls="epl-fellows-filters-panel"
+              aria-expanded={filtersOpen}
+              className="epl-fellows-filters-toggle d-lg-none"
+              onClick={() => setFiltersOpen((open) => !open)}
               type="button"
             >
-              All fellows
+              <span className="epl-fellows-filters-toggle-label">Filter by institution</span>
+              <span className="epl-fellows-filters-toggle-value">{activeFilterLabel}</span>
+              <i
+                aria-hidden
+                className={`flaticon-down epl-fellows-filters-toggle-icon${filtersOpen ? ' is-open' : ''}`}
+              ></i>
             </button>
-            {institutions.map((institution) => (
+
+            <div
+              className={`epl-fellows-filters${filtersOpen ? ' is-open' : ''}`}
+              id="epl-fellows-filters-panel"
+              role="group"
+              aria-label="Filter by institution"
+            >
               <button
-                className={`epl-fellows-filter-chip${
-                  institutionFilter === institution ? ' is-active' : ''
-                }`}
-                key={institution}
-                onClick={() =>
-                  setInstitutionFilter((current) =>
-                    current === institution ? null : institution,
-                  )
-                }
+                className={`epl-fellows-filter-chip${institutionFilter === null ? ' is-active' : ''}`}
+                onClick={() => selectInstitution(null)}
                 type="button"
               >
-                {institution}
+                All fellows
               </button>
-            ))}
+              {institutions.map((institution) => (
+                <button
+                  className={`epl-fellows-filter-chip${
+                    institutionFilter === institution ? ' is-active' : ''
+                  }`}
+                  key={institution}
+                  onClick={() =>
+                    selectInstitution(institutionFilter === institution ? null : institution)
+                  }
+                  type="button"
+                >
+                  {institution}
+                </button>
+              ))}
+            </div>
           </div>
 
           <p className="epl-fellows-results-meta">
             Showing <strong>{filtered.length}</strong> of {fellows.length} fellows
           </p>
 
-          <div className="row row-cols-xl-3 row-cols-lg-3 row-cols-md-2 row-cols-1 ul-bs-row epl-fellows-grid">
+          <div className="row row-cols-xl-3 row-cols-lg-3 row-cols-md-2 row-cols-2 ul-bs-row epl-fellows-grid">
             {filtered.map((fellow) => (
               <div className="col" key={fellow.id}>
                 <FellowCard

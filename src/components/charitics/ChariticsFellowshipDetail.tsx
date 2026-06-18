@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 import { ProjectDetailImage } from '@/components/charitics/ProjectDetailImage'
+import { EplStickyBottomTabs } from '@/components/charitics/EplStickyBottomTabs'
 import type {
   FellowshipProjectContent,
   FellowshipTabId,
@@ -61,6 +62,51 @@ export function ChariticsFellowshipDetail({
 
   const primaryHero = hero.images[0]
   const secondaryHero = hero.images[1] ?? primaryHero
+
+  const stickyTabs = tabs.map((tab) => ({
+    ...tab,
+    mobileLabel:
+      tab.id === 'about' ? 'About' : tab.id === 'process' ? 'Apply' : 'Eligible',
+  }))
+
+  const fellowshipPanel = (tabId: FellowshipTabId) => {
+    if (tabId === 'about') {
+      return (
+        <ProgrammeStructurePanel
+          intro={programmeStructure.intro}
+          sidebarEyebrow={programmeStructure.sidebarEyebrow}
+          sidebarImage={programmeStructure.sidebarImage}
+          steps={programmeStructure.steps}
+          title={programmeStructure.title}
+          visualClass={visualClass}
+        />
+      )
+    }
+    if (tabId === 'process') {
+      return (
+        <ApplicationProcessPanel
+          bannerImage={applicationProcess.bannerImage}
+          eyebrow={applicationProcess.eyebrow}
+          intro={applicationProcess.intro}
+          steps={applicationProcess.steps}
+          title={applicationProcess.title}
+          visualClass={visualClass}
+        />
+      )
+    }
+    return (
+      <EligibilityPanel
+        criteria={eligibility.criteria}
+        documents={eligibility.documents}
+        documentsTitle={eligibility.documentsTitle}
+        inclusionNote={eligibility.inclusionNote}
+        intro={eligibility.intro}
+        sidebarImage={eligibility.sidebarImage}
+        title={eligibility.title}
+        visualClass={visualClass}
+      />
+    )
+  }
 
   return (
     <>
@@ -159,72 +205,70 @@ export function ChariticsFellowshipDetail({
 
       <section className="epl-fellowship-detail ul-section-spacing">
         <div className="ul-container">
-          <div className="epl-fellowship-tabs-wrap">
-            <div aria-label="Fellowship information" className="epl-fellowship-tabs" role="tablist">
-              {tabs.map((tab) => (
-                <button
-                  aria-selected={activeTab === tab.id}
-                  className={`epl-fellowship-tab${activeTab === tab.id ? ' is-active' : ''}`}
-                  id={`fellowship-tab-${tab.id}`}
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  role="tab"
-                  type="button"
-                >
-                  <i aria-hidden className={`epl-fellowship-tab-icon ${tab.icon}`}></i>
-                  <span className="epl-fellowship-tab-label">{tab.label}</span>
-                </button>
-              ))}
+          <div className="epl-fellowship-detail-tabs d-none d-lg-block">
+            <div className="epl-fellowship-tabs-wrap">
+              <div aria-label="Fellowship information" className="epl-fellowship-tabs" role="tablist">
+                {tabs.map((tab) => (
+                  <button
+                    aria-selected={activeTab === tab.id}
+                    className={`epl-fellowship-tab${activeTab === tab.id ? ' is-active' : ''}`}
+                    id={`fellowship-tab-${tab.id}`}
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    role="tab"
+                    type="button"
+                  >
+                    <i aria-hidden className={`epl-fellowship-tab-icon ${tab.icon}`}></i>
+                    <span className="epl-fellowship-tab-label">{tab.label}</span>
+                  </button>
+                ))}
+              </div>
             </div>
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                animate="show"
+                aria-labelledby={`fellowship-tab-${activeTab}`}
+                className="epl-fellowship-panel"
+                exit="exit"
+                initial="hidden"
+                key={activeTab}
+                role="tabpanel"
+                variants={panelVariants}
+              >
+                {fellowshipPanel(activeTab)}
+              </motion.div>
+            </AnimatePresence>
           </div>
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              animate="show"
-              aria-labelledby={`fellowship-tab-${activeTab}`}
-              className="epl-fellowship-panel"
-              exit="exit"
-              initial="hidden"
-              key={activeTab}
-              role="tabpanel"
-              variants={panelVariants}
-            >
-              {activeTab === 'about' && (
-                <ProgrammeStructurePanel
-                  intro={programmeStructure.intro}
-                  sidebarEyebrow={programmeStructure.sidebarEyebrow}
-                  sidebarImage={programmeStructure.sidebarImage}
-                  steps={programmeStructure.steps}
-                  title={programmeStructure.title}
-                  visualClass={visualClass}
-                />
-              )}
-              {activeTab === 'process' && (
-                <ApplicationProcessPanel
-                  bannerImage={applicationProcess.bannerImage}
-                  eyebrow={applicationProcess.eyebrow}
-                  intro={applicationProcess.intro}
-                  steps={applicationProcess.steps}
-                  title={applicationProcess.title}
-                  visualClass={visualClass}
-                />
-              )}
-              {activeTab === 'eligibility' && (
-                <EligibilityPanel
-                  criteria={eligibility.criteria}
-                  documents={eligibility.documents}
-                  documentsTitle={eligibility.documentsTitle}
-                  inclusionNote={eligibility.inclusionNote}
-                  intro={eligibility.intro}
-                  sidebarImage={eligibility.sidebarImage}
-                  title={eligibility.title}
-                  visualClass={visualClass}
-                />
-              )}
-            </motion.div>
-          </AnimatePresence>
+          <div className="epl-fellowship-mobile d-lg-none">
+            <AnimatePresence mode="wait">
+              <motion.div
+                animate="show"
+                aria-labelledby={`fellowship-panel-tab-${activeTab}`}
+                className="epl-fellowship-panel"
+                exit="exit"
+                id={`fellowship-panel-${activeTab}`}
+                initial="hidden"
+                key={activeTab}
+                role="tabpanel"
+                variants={panelVariants}
+              >
+                {fellowshipPanel(activeTab)}
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       </section>
+
+      <EplStickyBottomTabs
+        activeId={activeTab}
+        ariaLabel="Fellowship information"
+        className="epl-bottom-tabs--fellowship"
+        onChange={(id) => setActiveTab(id as FellowshipTabId)}
+        panelIdPrefix="fellowship-panel-"
+        tabs={stickyTabs}
+      />
 
       <section className="epl-fellowship-apply-cta">
         <div className="ul-container">

@@ -25,15 +25,14 @@ export const getInvolvedPageFields: Field[] = [
           {
             name: 'fellowshipTitle',
             type: 'text',
-            defaultValue: 'Your chapter in public service starts here',
+            defaultValue: d.hero.fellowshipTitle,
           },
           {
             name: 'fellowshipDescription',
             type: 'textarea',
-            defaultValue:
-              'Join the 2026 Public Service Fellowship, a transformative year inside Ghana’s ministries, agencies, and commissions, with the training, mentorship, and network to lead with integrity.',
+            defaultValue: d.hero.fellowshipDescription,
           },
-          { name: 'fellowshipCtaLabel', type: 'text', defaultValue: 'Register Interest' },
+          { name: 'fellowshipCtaLabel', type: 'text', defaultValue: d.hero.fellowshipCtaLabel },
           { name: 'heroImage', type: 'upload', relationTo: 'media', label: 'Hero image (primary)' },
           {
             name: 'heroSecondaryImage',

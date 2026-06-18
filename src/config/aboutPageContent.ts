@@ -75,7 +75,7 @@ export const aboutPageImpact = [
   },
   {
     title: 'Policy Impact',
-    body: 'Alumni are influencing critical policies in education, health, and economic development ensuring decisions are data-driven and citizen-focused.',
+    body: 'Alumni are influencing critical policies in education, health, and economic development, ensuring decisions are data-driven and citizen-focused.',
   },
   {
     title: 'Cultural Impact',

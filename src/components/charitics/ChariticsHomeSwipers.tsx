@@ -31,8 +31,18 @@ function initWhenReady(init: () => void) {
     return () => undefined
   }
 
-  const timer = window.setTimeout(init, 120)
-  return () => window.clearTimeout(timer)
+  let attempts = 0
+  const timer = window.setInterval(() => {
+    attempts += 1
+    if (getSwiper()) {
+      window.clearInterval(timer)
+      init()
+    } else if (attempts >= 40) {
+      window.clearInterval(timer)
+    }
+  }, 100)
+
+  return () => window.clearInterval(timer)
 }
 
 /**
@@ -67,24 +77,31 @@ export function ChariticsHomeSwipers() {
 
         instances.push(
           new Swiper(donationsEl, {
-            slidesPerView: 6,
-            spaceBetween: 20,
+            slidesPerView: 1.08,
+            spaceBetween: 16,
             watchOverflow: true,
+            grabCursor: true,
+            simulateTouch: true,
+            touchStartPreventDefault: false,
             autoplay: enableMotion ? { delay: 4000, disableOnInteraction: false } : false,
             navigation: {
               prevEl: '.epl-donations-slider-nav .prev',
               nextEl: '.epl-donations-slider-nav .next',
             },
+            pagination: {
+              clickable: true,
+              el: '.epl-donations-slider-pagination',
+            },
             observer: true,
             observeParents: true,
             breakpoints: {
-              0: { slidesPerView: 1.2, centeredSlides: true },
-              480: { slidesPerView: 1.7, centeredSlides: true },
-              576: { slidesPerView: 2 },
-              768: { slidesPerView: 3 },
-              1200: { slidesPerView: 4, spaceBetween: 20 },
-              1680: { slidesPerView: 4, spaceBetween: 27 },
-              1700: { slidesPerView: 4, spaceBetween: 30 },
+              0: { slidesPerView: 1.08, spaceBetween: 16, centeredSlides: false },
+              480: { slidesPerView: 1.35, spaceBetween: 16, centeredSlides: false },
+              576: { slidesPerView: 2, spaceBetween: 18, centeredSlides: false },
+              768: { slidesPerView: 2.2, spaceBetween: 20, centeredSlides: false },
+              992: { slidesPerView: 3, spaceBetween: 20, centeredSlides: false },
+              1200: { slidesPerView: 3, spaceBetween: 24, centeredSlides: false },
+              1400: { slidesPerView: 3, spaceBetween: 27, centeredSlides: false },
             },
           }),
         )

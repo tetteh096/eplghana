@@ -17,8 +17,11 @@ export const contactPageContent = {
     description:
       'We welcome partners, fellows, and visitors by appointment. Reach out to schedule a conversation with our team at our East Legon office.',
   },
+  // Query-based embed (no API key needed): Google geocodes the address and
+  // drops a real pin on it. The old `pb=` URL used placeholder coordinates and
+  // a 0x0 place id, so it showed empty ocean with no marker.
   mapEmbedUrl:
-    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.789876543210!2d-0.1575!3d5.6350!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zEast%20Legon%2C%20Accra!5e0!3m2!1sen!2sgh!4v1700000000000!5m2!1sen!2sgh',
+    'https://www.google.com/maps?q=Emerging+Public+Leaders+of+Ghana%2C+No.1+Justice+Sarkodee+Addo+Avenue%2C+East+Legon%2C+Accra%2C+Ghana&hl=en&z=16&output=embed',
   formsSection: {
     eyebrow: 'Get in touch',
     title: 'Send us a message',

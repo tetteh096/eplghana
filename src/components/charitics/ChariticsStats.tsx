@@ -106,8 +106,8 @@ export function ChariticsStats({
           <div
             className={
               isAbout
-                ? 'row row-cols-md-4 row-cols-sm-3 row-cols-2 row-cols-xxs-1 ul-bs-row justify-content-center'
-                : 'row row-cols-md-4 row-cols-sm-2 row-cols-1 ul-bs-row justify-content-center epl-stats-row'
+                ? 'row row-cols-md-4 row-cols-2 ul-bs-row justify-content-center epl-stats-row'
+                : 'row row-cols-md-4 row-cols-2 ul-bs-row justify-content-center epl-stats-row'
             }
           >
             {stats.map((stat, index) => (

@@ -1,9 +1,11 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 
+import { ChariticsHeaderProvider } from '@/components/charitics/ChariticsHeaderProvider'
 import { ChariticsHomeHeaderSync } from '@/components/charitics/ChariticsHomeHeaderSync'
 import { ChariticsNav } from '@/components/charitics/ChariticsNav'
 import { ChariticsScripts } from '@/components/charitics/ChariticsScripts'
+import { ChariticsSidebar } from '@/components/charitics/ChariticsSidebar'
 import { headerCta, mainNavigation, type NavItem } from '@/config/navigation'
 import type { SiteSetting } from '@/payload-types'
 import { type FooterData, renderCopyright } from '@/utilities/getFooter'
@@ -41,50 +43,13 @@ export function ChariticsChrome({
   )
 
   return (
-    <>
+    <ChariticsHeaderProvider>
       <div aria-hidden className="preloader" data-hidden="true" id="preloader">
         <div className="loader"></div>
       </div>
       <ChariticsHomeHeaderSync />
 
-      <div className="ul-sidebar">
-        <div className="ul-sidebar-header">
-          <div className="ul-sidebar-header-logo">
-            <Link href="/">
-              <img alt="EPL Ghana" className="logo epl-brand-logo" src={logo} />
-            </Link>
-          </div>
-          <button className="ul-sidebar-closer" type="button">
-            <i className="flaticon-close"></i>
-          </button>
-        </div>
-        <div className="ul-sidebar-header-nav-wrapper d-block d-lg-none"></div>
-        <div className="ul-sidebar-footer">
-          <span className="ul-sidebar-footer-title">Follow us</span>
-          <div className="ul-sidebar-footer-social">
-            {settings.facebook && (
-              <a href={settings.facebook} rel="noreferrer" target="_blank">
-                <i className="flaticon-facebook"></i>
-              </a>
-            )}
-            {settings.twitter && (
-              <a href={settings.twitter} rel="noreferrer" target="_blank">
-                <i className="flaticon-twitter"></i>
-              </a>
-            )}
-            {settings.instagram && (
-              <a href={settings.instagram} rel="noreferrer" target="_blank">
-                <i className="flaticon-instagram"></i>
-              </a>
-            )}
-            {settings.youtube && (
-              <a href={settings.youtube} rel="noreferrer" target="_blank">
-                <i className="flaticon-youtube"></i>
-              </a>
-            )}
-          </div>
-        </div>
-      </div>
+      <ChariticsSidebar cta={cta} logo={logo} nav={nav} settings={settings} />
 
       <div className="ul-search-form-wrapper flex-grow-1 flex-shrink-0">
         <button className="ul-search-closer" type="button">
@@ -276,6 +241,6 @@ export function ChariticsChrome({
       </footer>
 
       <ChariticsScripts />
-    </>
+    </ChariticsHeaderProvider>
   )
 }

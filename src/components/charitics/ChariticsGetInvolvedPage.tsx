@@ -18,10 +18,12 @@ export function ChariticsGetInvolvedPage({ content }: ChariticsGetInvolvedPagePr
           <div className="epl-get-involved-hero-inner">
             <div className="epl-get-involved-hero-copy">
               <span className="ul-section-sub-title">{hero.eyebrow}</span>
-              <div className="epl-get-involved-hero-badge">
-                <span aria-hidden className="epl-get-involved-hero-badge-dot" />
-                {hero.badge}
-              </div>
+              {hero.badge ? (
+                <div className="epl-get-involved-hero-badge">
+                  <span aria-hidden className="epl-get-involved-hero-badge-dot" />
+                  {hero.badge}
+                </div>
+              ) : null}
               <h1 className="ul-section-title epl-get-involved-hero-title">{hero.fellowshipTitle}</h1>
               <p className="epl-get-involved-hero-lead">{hero.fellowshipDescription}</p>
 

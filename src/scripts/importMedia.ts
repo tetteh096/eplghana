@@ -136,7 +136,7 @@ const homeContent = {
   ],
   fellowshipTitle: 'Your chapter in public service starts here',
   fellowshipDescription:
-    'Join the 2026 Public Service Fellowship, a transformative year inside Ghana’s ministries, agencies, and commissions, with the training, mentorship, and network to lead with integrity.',
+    'Applications for the 2026 Public Service Fellowship are now closed. Register your interest below to hear about future cohorts, events, and opportunities.',
   fellowshipCtaLabel: 'Register Interest',
   fellowshipCtaUrl: '/contact',
   galleryHeading: 'Gallery',

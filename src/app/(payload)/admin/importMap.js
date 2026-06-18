@@ -33,7 +33,6 @@ import { HeaderToolbar as HeaderToolbar_39870f22f909dfabe1c59b1f909fff90 } from 
 import { AfterLogin as AfterLogin_7a1d009f58d610f2fb9940b86fe411ad } from '../../../components/admin/AfterLogin'
 import { BeforeLogin as BeforeLogin_527cb6ea03a8cd52ace999dddf7d43a7 } from '../../../components/admin/BeforeLogin'
 import { NavSidebarTop as NavSidebarTop_a7a918bc41169602976757d8489fb939 } from '../../../components/admin/NavSidebarTop'
-import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 import { TOTPProvider as TOTPProvider_4eaf6cb33cfb75be01716613e3c9a512 } from 'payload-totp/rsc'
 import { EplTotpSetup as EplTotpSetup_d23af35a71b8d0dbccf370850a5590d1 } from '../../../components/admin/totp/EplTotpSetup'
 import { TOTPSetup as TOTPSetup_4eaf6cb33cfb75be01716613e3c9a512 } from 'payload-totp/rsc'
@@ -79,7 +78,6 @@ export const importMap = {
   "/components/admin/AfterLogin#AfterLogin": AfterLogin_7a1d009f58d610f2fb9940b86fe411ad,
   "/components/admin/BeforeLogin#BeforeLogin": BeforeLogin_527cb6ea03a8cd52ace999dddf7d43a7,
   "/components/admin/NavSidebarTop#NavSidebarTop": NavSidebarTop_a7a918bc41169602976757d8489fb939,
-  "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
   "payload-totp/rsc#TOTPProvider": TOTPProvider_4eaf6cb33cfb75be01716613e3c9a512,
   "/components/admin/totp/EplTotpSetup#EplTotpSetup": EplTotpSetup_d23af35a71b8d0dbccf370850a5590d1,
   "payload-totp/rsc#TOTPSetup": TOTPSetup_4eaf6cb33cfb75be01716613e3c9a512,

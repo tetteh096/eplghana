@@ -1,8 +1,23 @@
+import type { Metadata } from 'next'
+
 import { ChariticsHome } from '@/components/charitics/ChariticsHome'
+import { SITE_DESCRIPTION, SITE_NAME, SITE_SHORT_NAME } from '@/config/site'
 import { getHomeBlogPosts } from '@/utilities/getBlogPosts'
 import { getHomeContent } from '@/utilities/getHomeContent'
 import { getFeaturedTestimonials } from '@/utilities/getTestimonials'
 import { getSiteSettings, tryGetPayload } from '@/utilities/payloadSafe'
+
+export const metadata: Metadata = {
+  // Home owns the brand title (the layout template would otherwise suffix it).
+  title: `${SITE_SHORT_NAME} | ${SITE_NAME}`,
+  description: SITE_DESCRIPTION,
+  alternates: { canonical: '/' },
+  openGraph: {
+    title: `${SITE_SHORT_NAME} | ${SITE_NAME}`,
+    description: SITE_DESCRIPTION,
+    url: '/',
+  },
+}
 
 export default async function HomePage() {
   const payload = await tryGetPayload()

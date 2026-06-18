@@ -10,8 +10,8 @@ function dismissChariticsPreloader() {
 function chariticsInit() {
     dismissChariticsPreloader();
 
-    // HEADER NAV IN MOBILE
-    if (document.querySelector(".ul-header-nav")) {
+    // HEADER NAV IN MOBILE (skipped when React manages nav — see ChariticsHeaderProvider)
+    if (!document.body.dataset.eplReactNav && document.querySelector(".ul-header-nav")) {
         const ulSidebar = document.querySelector(".ul-sidebar");
         const ulSidebarOpener = document.querySelector(".ul-header-sidebar-opener");
         const ulSidebarCloser = document.querySelector(".ul-sidebar-closer");
@@ -638,8 +638,12 @@ function chariticsInit() {
         }
     });
 
-    // dontations slider
-    new Swiper(".ul-donations-slider", {
+    // dontations slider (homepage uses React-managed .epl-donations-slider)
+    const donationsSliderEl = document.querySelector(
+        ".ul-donations-slider:not(.epl-donations-slider)",
+    );
+    if (donationsSliderEl) {
+    new Swiper(donationsSliderEl, {
         slidesPerView: 6,
         spaceBetween: 20,
         // loop: true,
@@ -680,6 +684,7 @@ function chariticsInit() {
             }
         }
     });
+    }
 
     // menus title slider
     if (document.querySelector(".ul-menus-title-slider")) {
@@ -843,8 +848,10 @@ function chariticsInit() {
         });
     }
 
-    // blogs slider 
-    new Swiper(".ul-blogs-slider", {
+    // blogs slider (homepage uses React-managed .epl-blogs-slider)
+    const blogsSliderEl = document.querySelector(".ul-blogs-slider:not(.epl-blogs-slider)");
+    if (blogsSliderEl) {
+    new Swiper(blogsSliderEl, {
         slidesPerView: 2.11,
         slidesPerView: 2.6,
         loop: true,
@@ -876,7 +883,7 @@ function chariticsInit() {
             }
         }
     });
-
+    }
 
 
 

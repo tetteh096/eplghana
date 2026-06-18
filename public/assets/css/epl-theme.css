@@ -97,9 +97,30 @@
 }
 .epl-page-breadcrumb--image .ul-breadcrumb-title {
   text-shadow: 0 2px 16px rgba(5, 22, 38, 0.45);
+  max-width: min(980px, 100%);
+  margin-inline: auto;
+  font-size: clamp(22px, 3vw, 46px);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
 }
+
 .epl-page-breadcrumb--image .ul-breadcrumb-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4px 10px;
+  max-width: min(920px, 100%);
+  margin-inline: auto;
+  border-radius: 0;
+  background-color: transparent;
+  padding: 0;
   text-shadow: 0 1px 10px rgba(5, 22, 38, 0.4);
+  font-size: clamp(13px, 0.84vw, 15px);
+}
+
+.epl-page-breadcrumb--image .ul-breadcrumb-nav .separator {
+  opacity: 0.75;
 }
 
 .epl-page-breadcrumb .ul-breadcrumb-title,
@@ -111,6 +132,16 @@
 @media screen and (max-width: 991px) {
   .epl-page-breadcrumb.ul-breadcrumb {
     padding-top: clamp(56px, 10vw, 100px);
+  }
+
+  .epl-page-breadcrumb--image .ul-breadcrumb-title {
+    font-size: clamp(20px, 5.2vw, 32px);
+    line-height: 1.3;
+  }
+
+  .epl-page-breadcrumb--image .ul-breadcrumb-nav {
+    font-size: 12px;
+    gap: 3px 8px;
   }
 }
 
@@ -137,6 +168,83 @@
 
 .ul-header-submenu li a:hover {
   padding-left: 20px;
+}
+
+/* Overlay hero: top-level nav stays white, but dropdown links stay dark on white panel */
+body[data-hero-mode='overlay'] #epl-site-header .ul-header-submenu a,
+body[data-hero-mode='overlay'] #epl-site-header .ul-header-submenu li a {
+  color: var(--ul-black) !important;
+}
+
+body[data-hero-mode='overlay'] #epl-site-header .ul-header-submenu li a:hover {
+  color: var(--ul-primary) !important;
+}
+
+/* Mobile header controls — visible on dark hero and when scrolled */
+@media screen and (max-width: 991px) {
+  body[data-hero-mode='overlay'] #epl-site-header .ul-header-sidebar-opener {
+    background-color: var(--ul-primary);
+    border-color: transparent;
+    color: #fff !important;
+  }
+
+  body[data-hero-mode='overlay'] #epl-site-header .ul-header-sidebar-opener i {
+    color: #fff !important;
+  }
+
+  body[data-hero-mode='overlay'] #epl-site-header .ul-header-search-opener {
+    color: #fff !important;
+  }
+
+  body[data-hero-mode] #epl-site-header .ul-header-bottom.sticky .ul-header-sidebar-opener {
+    background-color: var(--ul-primary);
+    border-color: transparent;
+    color: #fff !important;
+  }
+
+  body[data-hero-mode] #epl-site-header .ul-header-bottom.sticky .ul-header-sidebar-opener i {
+    color: #fff !important;
+  }
+
+  body[data-hero-mode] #epl-site-header .ul-header-bottom.sticky .ul-header-search-opener,
+  body[data-hero-mode] #epl-site-header .ul-header-bottom.sticky .ul-header-search-opener i {
+    color: var(--ul-black) !important;
+  }
+
+  body[data-hero-mode] #epl-site-header .ul-header-bottom.sticky .epl-brand-logo {
+    filter: none;
+  }
+}
+
+/* React-managed mobile drawer backdrop */
+.epl-sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: rgba(8, 28, 48, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  cursor: pointer;
+}
+
+.epl-sidebar-backdrop.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ul-sidebar-header-nav-wrapper .ul-header-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 12px;
+}
+
+.ul-sidebar-header-nav-wrapper .has-sub-menu > a {
+  cursor: pointer;
 }
 
 /* Preloader failsafe — Charitics sets body { position: fixed } until JS runs */
@@ -598,6 +706,21 @@ body {
   color: #374151;
 }
 
+/* About page — justified body copy on wider screens */
+@media screen and (min-width: 768px) {
+  .epl-about-page .epl-about-lead,
+  .epl-about-page .epl-about-story-text,
+  .epl-about-page .ul-about-tab-descr,
+  .epl-about-page .epl-about-impact-card-text,
+  .epl-about-page .epl-why-partner-body,
+  .epl-about-page .epl-partner-card-descr {
+    text-align: justify;
+    text-align-last: left;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+}
+
 @media screen and (max-width: 767px) {
   .epl-about-page-intro .epl-about-page-title {
     max-width: none;
@@ -899,6 +1022,107 @@ body {
   box-shadow: 0 10px 24px rgba(10, 61, 107, 0.22);
 }
 
+/* Mobile: accordion — tap to expand description inline */
+.epl-core-values-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.epl-core-values-accordion {
+  display: grid;
+  grid-template-rows: auto 0fr;
+  transition: grid-template-rows 0.35s ease;
+  background: var(--white);
+  border: 1px solid rgba(10, 61, 107, 0.12);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.epl-core-values-accordion.is-open {
+  grid-template-rows: auto 1fr;
+  border-color: rgba(10, 61, 107, 0.22);
+  box-shadow: 0 10px 28px rgba(10, 61, 107, 0.1);
+}
+
+.epl-core-values-accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.epl-core-values-accordion-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--ul-c4);
+  border: 2px solid rgba(10, 61, 107, 0.15);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ul-primary);
+  font-size: 20px;
+  flex-shrink: 0;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.epl-core-values-accordion.is-open .epl-core-values-accordion-icon {
+  background: var(--ul-primary);
+  border-color: var(--ul-primary);
+  color: var(--white);
+}
+
+.epl-core-values-accordion-label {
+  flex: 1;
+  font-size: clamp(16px, 4vw, 18px);
+  font-weight: 700;
+  color: var(--ul-black);
+  font-family: var(--font-quicksand);
+  line-height: 1.35;
+}
+
+.epl-core-values-accordion.is-open .epl-core-values-accordion-label {
+  color: var(--ul-primary);
+}
+
+.epl-core-values-accordion-chevron {
+  font-size: 14px;
+  color: var(--ul-primary);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.epl-core-values-accordion-chevron.is-open {
+  transform: rotate(180deg);
+}
+
+.epl-core-values-accordion-panel {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.epl-core-values-accordion-descr {
+  margin: 0;
+  padding: 0 16px 16px 76px;
+  font-size: clamp(16px, 3.8vw, 18px);
+  line-height: 1.75;
+  color: #374151;
+}
+
+.epl-core-values-mobile-hint {
+  margin-top: 8px;
+  padding: 0 4px;
+}
+
 @media screen and (max-width: 991px) {
   .epl-core-values-row {
     flex-direction: column-reverse;
@@ -916,65 +1140,11 @@ body {
   .epl-core-values-main-title {
     font-size: clamp(28px, 7vw, 38px) !important;
   }
-
-  .epl-values-tree {
-    width: 100%;
-    min-height: 0;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(10px, 2.5vw, 14px);
-    padding: 0;
-  }
-
-  .epl-values-tree-item {
-    position: static;
-  }
-
-  .epl-values-tree-node {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    text-align: center;
-    padding: clamp(14px, 3vw, 18px) clamp(10px, 2vw, 14px);
-    padding-left: clamp(10px, 2vw, 14px);
-    background: var(--white);
-    border-radius: 14px;
-    border: 1px solid rgba(10, 61, 107, 0.1);
-    min-height: 120px;
-  }
-
-  .epl-values-tree-node.is-active {
-    border-color: var(--ul-primary);
-    box-shadow: 0 8px 24px rgba(10, 61, 107, 0.12);
-  }
-
-  .epl-values-tree-node .node-label {
-    max-width: none;
-    font-size: clamp(15px, 3.6vw, 17px);
-  }
-
-  .epl-values-tree-node .node-icon {
-    width: 52px;
-    height: 52px;
-    font-size: 22px;
-  }
-
-  .epl-core-values-txt {
-    min-height: 0;
-  }
 }
 
 @media screen and (max-width: 479px) {
-  .epl-values-tree {
-    grid-template-columns: 1fr;
-  }
-
-  .epl-values-tree-node {
-    flex-direction: row;
-    justify-content: flex-start;
-    text-align: left;
-    min-height: 0;
+  .epl-core-values-accordion-descr {
+    padding-left: 16px;
   }
 }
 
@@ -3301,6 +3471,106 @@ body {
   }
 }
 
+@media screen and (max-width: 991px) {
+  .epl-team-page.ul-section-spacing {
+    padding-bottom: calc(clamp(72px, 6vw, 100px) + 76px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .epl-fellowship-detail.ul-section-spacing {
+    padding-bottom: calc(clamp(48px, 4.5vw, 72px) + 84px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* Sticky bottom tab bar — mobile / tablet only */
+.epl-bottom-tabs {
+  display: none;
+}
+
+@media screen and (max-width: 991px) {
+  .epl-bottom-tabs {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 900;
+    display: grid;
+    gap: 8px;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+    background: rgba(255, 255, 255, 0.96);
+    border-top: 1px solid rgba(10, 61, 107, 0.12);
+    box-shadow: 0 -10px 36px rgba(10, 61, 107, 0.14);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
+
+  .epl-bottom-tabs--team {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .epl-bottom-tabs--fellowship {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .epl-bottom-tabs__btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-height: 58px;
+    padding: 8px 6px;
+    border: 2px solid transparent;
+    border-radius: 14px;
+    background: var(--ul-c4);
+    color: var(--ul-primary);
+    font-family: var(--font-quicksand);
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .epl-bottom-tabs__btn.is-active {
+    background: var(--ul-primary);
+    border-color: var(--ul-primary);
+    color: var(--white);
+    box-shadow: 0 8px 22px rgba(10, 61, 107, 0.24);
+  }
+
+  .epl-bottom-tabs__icon {
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .epl-bottom-tabs__label {
+    font-size: clamp(11px, 2.8vw, 13px);
+    font-weight: 800;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .epl-bottom-tabs__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: rgba(10, 61, 107, 0.12);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .epl-bottom-tabs__btn.is-active .epl-bottom-tabs__count {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--white);
+  }
+}
+
 @media screen and (max-width: 767px) {
   .epl-fellowship-tabs {
     grid-template-columns: 1fr;
@@ -3715,7 +3985,7 @@ body {
 
 @media screen and (max-width: 991px) {
   .epl-partners-featured-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .epl-partners-grid {
@@ -3735,27 +4005,97 @@ body {
   }
 
   .epl-partners-intro-stats {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .epl-partners-intro-stats li:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    width: min(100%, 280px);
+    margin-inline: auto;
   }
 }
 
 @media screen and (max-width: 767px) {
+  .epl-partners-featured-grid,
   .epl-partners-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
   }
 
   .epl-partners-featured-card {
     grid-template-columns: 1fr;
     text-align: center;
+    padding: 14px 12px;
+    gap: 10px;
   }
 
   .epl-partners-featured-logo {
     margin-inline: auto;
-    width: min(100%, 180px);
+    width: 100%;
+    min-height: 72px;
+    padding: 10px;
+  }
+
+  .epl-partners-featured-logo-img,
+  .epl-partners-featured-logo-fallback {
+    max-height: 52px;
+  }
+
+  .epl-partners-featured-name {
+    font-size: clamp(13px, 3.6vw, 15px);
+    margin-bottom: 6px;
+  }
+
+  .epl-partners-featured-descr {
+    font-size: 11px;
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .epl-partners-programmes {
     justify-content: center;
+    margin-bottom: 6px;
+  }
+
+  .epl-partners-programmes li {
+    font-size: 9px;
+    padding: 3px 7px;
+  }
+
+  .epl-partners-card {
+    padding: 14px 10px;
+  }
+
+  .epl-partners-card-logo {
+    min-height: 56px;
+    margin-bottom: 8px;
+  }
+
+  .epl-partners-card-logo-img,
+  .epl-partners-card-logo-fallback {
+    max-height: 44px;
+  }
+
+  .epl-partners-card-logo-initials {
+    font-size: 18px;
+  }
+
+  .epl-partners-card-name {
+    font-size: clamp(12px, 3.2vw, 14px);
+    line-height: 1.25;
+    margin-bottom: 4px;
+  }
+
+  .epl-partners-card-descr {
+    font-size: 10px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .epl-partners-intro-img--primary,
@@ -4888,11 +5228,65 @@ body {
   color: #4b5563;
 }
 
+.epl-fellows-filters-wrap {
+  margin-bottom: clamp(16px, 1.6vw, 22px);
+}
+
+.epl-fellows-filters-toggle {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.65rem;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(10, 61, 107, 0.14);
+  border-radius: 14px;
+  background: var(--white);
+  color: var(--ul-primary);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(10, 61, 107, 0.06);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.epl-fellows-filters-toggle:hover,
+.epl-fellows-filters-toggle[aria-expanded='true'] {
+  border-color: rgba(10, 61, 107, 0.28);
+  box-shadow: 0 10px 26px rgba(10, 61, 107, 0.1);
+}
+
+.epl-fellows-filters-toggle-label {
+  flex: 1 1 100%;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.epl-fellows-filters-toggle-value {
+  flex: 1 1 auto;
+  color: #111827;
+}
+
+.epl-fellows-filters-toggle-icon {
+  flex: 0 0 auto;
+  font-size: 12px;
+  transition: transform 0.25s ease;
+}
+
+.epl-fellows-filters-toggle-icon.is-open {
+  transform: rotate(180deg);
+}
+
 .epl-fellows-filters {
   display: flex;
   flex-wrap: wrap;
   gap: 0.55rem;
-  margin-bottom: clamp(16px, 1.6vw, 22px);
+  margin-bottom: 0;
 }
 
 .epl-fellows-filter-chip {
@@ -4931,60 +5325,83 @@ body {
 }
 
 .epl-fellows-grid {
-  --bs-gutter-x: clamp(20px, 2vw, 32px);
-  --bs-gutter-y: clamp(28px, 2.5vw, 40px);
+  --bs-gutter-x: clamp(14px, 1.4vw, 24px);
+  --bs-gutter-y: clamp(18px, 1.8vw, 28px);
 }
 
 .epl-fellow-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
   background: var(--white);
-  border-radius: clamp(16px, 1.2vw, 22px);
-  border: 1px solid rgba(10, 61, 107, 0.07);
-  box-shadow: 0 14px 40px rgba(10, 61, 107, 0.08);
-  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  border-radius: 0;
+  border: 1px solid rgba(10, 61, 107, 0.14);
+  box-shadow: 0 6px 18px rgba(10, 61, 107, 0.08);
+  overflow: hidden;
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+.epl-fellow-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  width: 3px;
+  height: 0;
+  background: var(--ul-secondary);
+  transition: height 0.28s ease;
 }
 
 .epl-fellow-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 26px 56px rgba(10, 61, 107, 0.15);
-  border-color: rgba(10, 61, 107, 0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(10, 61, 107, 0.14);
+  border-color: rgba(10, 61, 107, 0.22);
+}
+
+.epl-fellow-card:hover::before {
+  height: 100%;
 }
 
 .epl-fellow-card.is-active {
   border-color: var(--ul-secondary);
-  box-shadow: 0 26px 56px rgba(30, 107, 184, 0.22);
+  box-shadow: 0 12px 28px rgba(30, 107, 184, 0.2);
+}
+
+.epl-fellow-card.is-active::before {
+  height: 100%;
 }
 
 .epl-fellow-card-photo {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: clamp(280px, 24vw, 360px);
-  padding: clamp(16px, 1.4vw, 24px);
+  display: block;
+  min-height: 0;
+  aspect-ratio: 4 / 5;
+  padding: 0;
   border: 0;
   width: 100%;
   cursor: pointer;
-  border-radius: clamp(16px, 1.2vw, 22px) clamp(16px, 1.2vw, 22px) 0 0;
+  border-radius: 0;
   overflow: hidden;
-  background: linear-gradient(165deg, #eef4fa 0%, #f8fafc 55%, #e8eef5 100%);
+  background: linear-gradient(165deg, #0a3d6b 0%, #1e6bb8 100%);
 }
 
 .epl-fellow-card-view {
   position: absolute;
   inset: auto 0 0 0;
   z-index: 2;
-  padding: 10px;
+  padding: 8px 10px;
   font-family: var(--font-quicksand);
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
   color: var(--white);
-  background: linear-gradient(to top, rgba(10, 61, 107, 0.85), transparent);
+  background: rgba(10, 61, 107, 0.88);
   opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateY(100%);
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
 .epl-fellow-card:hover .epl-fellow-card-view {
@@ -4999,63 +5416,105 @@ body {
   border: 0;
   background: transparent;
   cursor: pointer;
-  text-align: center;
+  text-align: left;
+}
+
+.epl-fellow-card-img,
+.epl-fellow-card-fallback {
+  position: absolute;
+  inset: 0;
 }
 
 .epl-fellow-card-img {
-  position: relative;
+  position: absolute;
   z-index: 1;
-  width: auto;
-  max-width: 92%;
-  height: auto;
-  max-height: clamp(260px, 22vw, 340px);
-  object-fit: contain;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  object-fit: cover;
   object-position: center top;
   display: block;
-  filter: drop-shadow(0 10px 22px rgba(10, 61, 107, 0.14));
+  filter: none;
   transition: transform 0.4s ease;
 }
 
 .epl-fellow-card:hover .epl-fellow-card-img {
-  transform: scale(1.04);
+  transform: scale(1.05);
 }
 
 .epl-fellow-card-fallback {
-  position: relative;
   z-index: 1;
-  width: 72%;
-  height: clamp(220px, 18vw, 280px);
-  border-radius: clamp(12px, 1vw, 16px);
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
   background: linear-gradient(145deg, #0a3d6b, #1e6bb8);
 }
 
 .epl-fellow-card-body {
   flex: 1;
-  padding: clamp(16px, 1.3vw, 22px) clamp(16px, 1.3vw, 22px) clamp(20px, 1.6vw, 26px);
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 10px 12px;
+  text-align: left;
+  border-top: 1px solid rgba(10, 61, 107, 0.08);
 }
 
 .epl-fellow-card-name {
-  margin: 0 0 10px;
+  margin: 0;
   font-family: var(--font-quicksand);
-  font-size: clamp(17px, 1.05vw, 21px);
+  font-size: clamp(14px, 0.95vw, 17px);
   font-weight: 700;
-  line-height: 1.35;
+  line-height: 1.25;
   color: #111827;
 }
 
 .epl-fellow-card-institution {
-  display: inline-flex;
+  display: block;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ul-primary);
+  font-size: clamp(11px, 0.72vw, 13px);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+}
+
+.epl-fellow-card-socials {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.epl-fellow-card-social {
+  display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0;
-  padding: 0.38rem 0.9rem;
-  border-radius: 999px;
-  background: rgba(10, 61, 107, 0.08);
+  width: 28px;
+  height: 28px;
+  border-radius: 0;
   color: var(--ul-primary);
-  font-size: clamp(12px, 0.78vw, 14px);
-  font-weight: 600;
-  line-height: 1.45;
+  background: rgba(10, 61, 107, 0.06);
+  border: 1px solid rgba(10, 61, 107, 0.14);
+  box-shadow: none;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.epl-fellow-card-social i {
+  font-size: 13px;
+}
+
+.epl-fellow-card-social:hover {
+  background: var(--ul-primary);
+  color: var(--white);
+  transform: none;
 }
 
 .epl-fellows-empty {
@@ -5109,6 +5568,82 @@ body {
   .epl-fellows-hero-img--primary,
   .epl-fellows-hero-fallback:not(.epl-fellows-hero-fallback--secondary) {
     width: 100%;
+  }
+
+  .epl-fellows-filters-wrap .epl-fellows-filters {
+    display: none;
+    margin-top: 0.75rem;
+    padding: 0.85rem;
+    border: 1px solid rgba(10, 61, 107, 0.1);
+    border-radius: 14px;
+    background: #f8fafc;
+  }
+
+  .epl-fellows-filters-wrap .epl-fellows-filters.is-open {
+    display: flex;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .epl-fellows-grid {
+    --bs-gutter-x: 10px;
+    --bs-gutter-y: 12px;
+  }
+
+  .epl-fellow-card {
+    border-radius: 0;
+    box-shadow: 0 3px 10px rgba(10, 61, 107, 0.1);
+  }
+
+  .epl-fellow-card:hover {
+    transform: none;
+  }
+
+  .epl-fellow-card-photo {
+    aspect-ratio: 1 / 1;
+    padding: 0;
+    border-radius: 0;
+  }
+
+  .epl-fellow-card-view {
+    font-size: 10px;
+    padding: 6px 8px;
+    opacity: 1;
+    transform: none;
+  }
+
+  .epl-fellow-card-body {
+    padding: 8px 8px 10px;
+    gap: 4px;
+  }
+
+  .epl-fellow-card-name {
+    font-size: clamp(12px, 3.4vw, 14px);
+    line-height: 1.2;
+  }
+
+  .epl-fellow-card-institution {
+    font-size: 10px;
+    line-height: 1.3;
+  }
+
+  .epl-fellow-card-socials {
+    gap: 4px;
+    padding-top: 2px;
+  }
+
+  .epl-fellow-card-social {
+    width: 24px;
+    height: 24px;
+  }
+
+  .epl-fellow-card-social i {
+    font-size: 11px;
+  }
+
+  .epl-fellows-filter-chip {
+    font-size: 12px;
+    padding: 0.38rem 0.75rem;
   }
 }
 
@@ -8237,6 +8772,84 @@ a.epl-contact-method-card:hover .epl-contact-method-value {
   transform: translateY(-2px);
 }
 
+@media screen and (max-width: 767px) {
+  .epl-team-grid {
+    --bs-gutter-x: 12px;
+    --bs-gutter-y: 16px;
+    --epl-team-gap: 16px;
+  }
+
+  .epl-team-tabs {
+    gap: 6px;
+    padding: 5px;
+  }
+
+  .epl-team-tab {
+    min-height: 58px;
+    padding: 10px 8px;
+  }
+
+  .epl-team-tab-label {
+    font-size: clamp(13px, 3.4vw, 15px);
+    line-height: 1.2;
+  }
+
+  .epl-team-tab-count {
+    font-size: 12px;
+  }
+
+  .epl-team-card {
+    padding: 8px;
+    border-radius: 14px;
+    background: linear-gradient(165deg, #ffffff 0%, #f3f9fd 100%);
+    box-shadow:
+      0 2px 8px rgba(10, 61, 107, 0.08),
+      0 12px 28px rgba(10, 61, 107, 0.1);
+  }
+
+  .epl-team-card-photo {
+    border-radius: 10px;
+  }
+
+  .epl-team-card-view {
+    font-size: 11px;
+    padding: 8px 6px;
+    opacity: 1;
+    transform: none;
+  }
+
+  .epl-team-card-foot {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 10px 4px 4px;
+  }
+
+  .epl-team-card-name {
+    font-size: clamp(14px, 3.8vw, 16px);
+    line-height: 1.2;
+  }
+
+  .epl-team-card-role {
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  .epl-team-card-share {
+    align-self: flex-end;
+  }
+
+  .epl-team-card-share-toggle {
+    width: 34px;
+    height: 34px;
+  }
+
+  .epl-team-card-share-toggle svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
 /* Blog — Lexical rich text + sidebar active states */
 .epl-blog-rich-text {
   line-height: 1.8;
@@ -8430,6 +9043,95 @@ a.epl-contact-method-card:hover .epl-contact-method-value {
 .epl-page-home .epl-donations-slider .ul-donation-btn {
   margin-top: auto;
 }
+
+/* Projects slider — mobile arrows + swipe dots */
+@media screen and (max-width: 991px) {
+  .ul-donations-heading {
+    align-items: center !important;
+    text-align: center;
+  }
+
+  .ul-donations-heading .left {
+    text-align: center;
+    max-width: none;
+  }
+
+  .epl-donations-slider-nav {
+    display: flex !important;
+    visibility: visible !important;
+    position: static;
+    width: auto;
+    transform: none;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .epl-donations-slider-nav button {
+    visibility: visible !important;
+    background-color: var(--ul-primary);
+    color: var(--white);
+    box-shadow: 0 8px 20px rgba(10, 61, 107, 0.2);
+  }
+}
+
+.epl-donations-slider-pagination {
+  display: none;
+  position: static;
+  margin-top: 18px;
+}
+
+@media screen and (max-width: 767px) {
+  .epl-donations-slider-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .epl-donations-slider-pagination .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+    background: rgba(10, 61, 107, 0.25);
+    opacity: 1;
+  }
+
+  .epl-donations-slider-pagination .swiper-pagination-bullet-active {
+    width: 22px;
+    border-radius: 999px;
+    background: var(--ul-primary);
+  }
+}
+
+/* Stats — 2-column grid on mobile (home + about) */
+@media screen and (max-width: 767px) {
+  .epl-stats-row {
+    --bs-gutter-x: 12px;
+    --bs-gutter-y: 16px;
+  }
+
+  .ul-stats .ul-stats-item {
+    max-width: none;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    padding: 14px 10px;
+  }
+
+  .ul-stats .ul-stats-item i {
+    font-size: clamp(32px, 9vw, 42px) !important;
+  }
+
+  .ul-stats .ul-stats-item .number {
+    font-size: clamp(26px, 7vw, 34px) !important;
+    padding: 10px 0 !important;
+  }
+
+  .ul-stats .ul-stats-item .txt {
+    font-size: clamp(12px, 3.2vw, 14px);
+    max-width: none;
+    line-height: 1.3;
+  }
+}
+
 .epl-page-home .ul-donation:hover,
 .epl-page-home .ul-event:hover,
 .epl-page-home .epl-home-blog-card:hover {
@@ -8562,9 +9264,9 @@ body[data-hero-mode='overlay'] #epl-site-header .ul-header-actions button i {
 body[data-hero-mode='overlay'] #epl-site-header.ul-header-2 .ul-header-nav a:hover {
   color: var(--ul-c3);
 }
-/* Logo → white silhouette over the dark hero */
+/* Logo already has white type on blue — do not invert (creates a white blob) */
 body[data-hero-mode='overlay'] #epl-site-header .epl-brand-logo {
-  filter: brightness(0) invert(1);
+  filter: none;
 }
 /* CTA → solid white pill so it pops on the dark hero */
 body[data-hero-mode='overlay'] #epl-site-header .ul-header-actions .ul-btn {

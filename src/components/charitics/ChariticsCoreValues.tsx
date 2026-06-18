@@ -57,7 +57,7 @@ export function ChariticsCoreValues({ settings }: ChariticsCoreValuesProps) {
           <h2 className="ul-section-title epl-core-values-main-title">Our Core Values</h2>
         </motion.div>
 
-        <div className="row row-cols-lg-2 row-cols-1 gy-5 align-items-center epl-core-values-row">
+        <div className="row row-cols-lg-2 row-cols-1 gy-5 align-items-center epl-core-values-row d-none d-lg-flex">
           <div className="col-lg-5">
             <div aria-label="Core values" className="epl-values-tree" role="list">
               {values.map((value, index) => {
@@ -116,6 +116,40 @@ export function ChariticsCoreValues({ settings }: ChariticsCoreValuesProps) {
               <p className="epl-core-values-hint">The principles that guide how we develop leaders and strengthen Ghana’s public service.</p>
             </div>
           </div>
+        </div>
+
+        <div className="epl-core-values-mobile d-lg-none">
+          {values.map((value, index) => {
+            const isOpen = index === activeIndex
+            return (
+              <div
+                className={`epl-core-values-accordion${isOpen ? ' is-open' : ''}`}
+                key={value.title}
+              >
+                <button
+                  aria-expanded={isOpen}
+                  className="epl-core-values-accordion-trigger"
+                  onClick={() => setActiveIndex(isOpen ? -1 : index)}
+                  type="button"
+                >
+                  <span className="epl-core-values-accordion-icon">
+                    <i className={value.icon}></i>
+                  </span>
+                  <span className="epl-core-values-accordion-label">{value.title}</span>
+                  <i
+                    aria-hidden
+                    className={`flaticon-down epl-core-values-accordion-chevron${isOpen ? ' is-open' : ''}`}
+                  ></i>
+                </button>
+                <div className="epl-core-values-accordion-panel">
+                  <p className="epl-core-values-accordion-descr">{value.description}</p>
+                </div>
+              </div>
+            )
+          })}
+          <p className="epl-core-values-hint epl-core-values-mobile-hint">
+            The principles that guide how we develop leaders and strengthen Ghana’s public service.
+          </p>
         </div>
       </div>
     </section>

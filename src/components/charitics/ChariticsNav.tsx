@@ -1,7 +1,12 @@
+'use client'
+
 import Link from 'next/link'
 
-import { headerCta, isNavDropdown, mainNavigation, type NavItem } from '@/config/navigation'
+import { headerCta, mainNavigation, type NavItem } from '@/config/navigation'
 import type { HeaderCta } from '@/utilities/getHeader'
+
+import { useChariticsHeader } from './ChariticsHeaderProvider'
+import { ChariticsNavList } from './ChariticsNavList'
 
 type ChariticsNavProps = {
   cta?: HeaderCta
@@ -9,41 +14,13 @@ type ChariticsNavProps = {
 }
 
 export function ChariticsNav({ cta, nav = mainNavigation }: ChariticsNavProps) {
+  const { openSidebar, sidebarOpen } = useChariticsHeader()
   const action: HeaderCta = cta ?? { ...headerCta, enabled: true }
 
   return (
     <>
-      <div className="ul-header-nav-wrapper">
-        <div className="to-go-to-sidebar-in-mobile">
-          <nav className="ul-header-nav">
-            {nav
-              .filter((item) => isNavDropdown(item) || item.href !== action.href)
-              .map((item) => {
-              if (isNavDropdown(item)) {
-                return (
-                  <div className="has-sub-menu" key={item.label}>
-                    <a role="button">{item.label}</a>
-                    <div className="ul-header-submenu">
-                      <ul>
-                        {item.items.map((sub) => (
-                          <li key={sub.href}>
-                            <Link href={sub.href}>{sub.label}</Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                )
-              }
-
-              return (
-                <Link href={item.href} key={item.href}>
-                  {item.label}
-                </Link>
-              )
-            })}
-          </nav>
-        </div>
+      <div className="ul-header-nav-wrapper d-none d-lg-block">
+        <ChariticsNavList action={action} nav={nav} variant="desktop" />
       </div>
 
       <div className="ul-header-actions">
@@ -55,7 +32,13 @@ export function ChariticsNav({ cta, nav = mainNavigation }: ChariticsNavProps) {
             <i className="flaticon-fast-forward-double-right-arrows-symbol"></i> {action.label}
           </Link>
         )}
-        <button className="ul-header-sidebar-opener d-lg-none d-inline-flex" type="button">
+        <button
+          aria-expanded={sidebarOpen}
+          aria-label="Open menu"
+          className="ul-header-sidebar-opener d-lg-none d-inline-flex"
+          onClick={openSidebar}
+          type="button"
+        >
           <i className="flaticon-menu"></i>
         </button>
       </div>

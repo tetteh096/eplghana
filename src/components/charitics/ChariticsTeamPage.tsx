@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 import { ChariticsTeamCard } from '@/components/charitics/ChariticsTeamCard'
+import { EplStickyBottomTabs } from '@/components/charitics/EplStickyBottomTabs'
 import type { TeamMember } from '@/config/teamPageContent'
 import type { TeamPageContent } from '@/utilities/getTeamContent'
 
@@ -185,9 +186,24 @@ export function ChariticsTeamPage({ content }: ChariticsTeamPageProps) {
   const tabs = useMemo(
     () =>
       [
-        { id: 'board' as const, label: 'Board of Directors', count: board.length },
-        { id: 'team' as const, label: 'Team Members', count: team.length },
-      ] satisfies { id: TeamTab; label: string; count: number }[],
+        {
+          id: 'board' as const,
+          label: 'Board of Directors',
+          mobileLabel: 'Board',
+          count: board.length,
+        },
+        {
+          id: 'team' as const,
+          label: 'Team Members',
+          mobileLabel: 'Team',
+          count: team.length,
+        },
+      ] satisfies {
+        id: TeamTab
+        label: string
+        mobileLabel: string
+        count: number
+      }[],
     [board.length, team.length],
   )
 
@@ -267,55 +283,97 @@ export function ChariticsTeamPage({ content }: ChariticsTeamPageProps) {
             </div>
           </div>
 
-          <div className="epl-team-tabs-wrap">
-            <div aria-label="Team groups" className="epl-team-tabs" role="tablist">
-              {tabs.map((tab) => (
-                <button
-                  aria-controls={`epl-team-panel-${tab.id}`}
-                  aria-selected={activeTab === tab.id}
-                  className={`epl-team-tab${activeTab === tab.id ? ' is-active' : ''}`}
-                  id={`epl-team-tab-${tab.id}`}
-                  key={tab.id}
-                  onClick={() => {
-                    setActiveTab(tab.id)
-                    closePanel()
-                  }}
-                  role="tab"
-                  type="button"
-                >
-                  <span className="epl-team-tab-label">{tab.label}</span>
-                  <span className="epl-team-tab-count">{tab.count}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              animate={{ opacity: 1, y: 0 }}
-              aria-labelledby={`epl-team-tab-${activeTab}`}
-              exit={{ opacity: 0, y: 8 }}
-              id={`epl-team-panel-${activeTab}`}
-              initial={{ opacity: 0, y: 12 }}
-              key={activeTab}
-              role="tabpanel"
-              transition={{ duration: 0.24, ease: 'easeOut' }}
-            >
-              <div className="row row-cols-lg-3 row-cols-md-2 row-cols-1 ul-team-row justify-content-center epl-team-grid">
-                {members.map((member) => (
-                  <div className="col" key={member.id}>
-                    <ChariticsTeamCard
-                      isActive={member.id === selectedId}
-                      member={member}
-                      onOpen={openMember}
-                    />
-                  </div>
+          <div className="epl-team-detail-tabs d-none d-lg-block">
+            <div className="epl-team-tabs-wrap">
+              <div aria-label="Team groups" className="epl-team-tabs" role="tablist">
+                {tabs.map((tab) => (
+                  <button
+                    aria-controls={`epl-team-panel-${tab.id}`}
+                    aria-selected={activeTab === tab.id}
+                    className={`epl-team-tab${activeTab === tab.id ? ' is-active' : ''}`}
+                    id={`epl-team-tab-${tab.id}`}
+                    key={tab.id}
+                    onClick={() => {
+                      setActiveTab(tab.id)
+                      closePanel()
+                    }}
+                    role="tab"
+                    type="button"
+                  >
+                    <span className="epl-team-tab-label">{tab.label}</span>
+                    <span className="epl-team-tab-count">{tab.count}</span>
+                  </button>
                 ))}
               </div>
-            </motion.div>
-          </AnimatePresence>
+            </div>
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                animate={{ opacity: 1, y: 0 }}
+                aria-labelledby={`epl-team-tab-${activeTab}`}
+                exit={{ opacity: 0, y: 8 }}
+                id={`epl-team-panel-${activeTab}`}
+                initial={{ opacity: 0, y: 12 }}
+                key={activeTab}
+                role="tabpanel"
+                transition={{ duration: 0.24, ease: 'easeOut' }}
+              >
+                <div className="row row-cols-lg-3 row-cols-md-2 row-cols-2 ul-team-row justify-content-center epl-team-grid">
+                  {members.map((member) => (
+                    <div className="col" key={member.id}>
+                      <ChariticsTeamCard
+                        isActive={member.id === selectedId}
+                        member={member}
+                        onOpen={(item) => openMember(item)}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          <div className="epl-team-mobile d-lg-none">
+            <AnimatePresence mode="wait">
+              <motion.div
+                animate={{ opacity: 1, y: 0 }}
+                aria-labelledby={`epl-team-tab-${activeTab}`}
+                exit={{ opacity: 0, y: 8 }}
+                id={`epl-team-panel-${activeTab}`}
+                initial={{ opacity: 0, y: 12 }}
+                key={activeTab}
+                role="tabpanel"
+                transition={{ duration: 0.24, ease: 'easeOut' }}
+              >
+                <div className="row row-cols-2 ul-team-row justify-content-center epl-team-grid">
+                  {members.map((member) => (
+                    <div className="col" key={member.id}>
+                      <ChariticsTeamCard
+                        isActive={member.id === selectedId}
+                        member={member}
+                        onOpen={(item) => openMember(item)}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       </section>
+
+      <EplStickyBottomTabs
+        activeId={activeTab}
+        ariaLabel="Team groups"
+        className="epl-bottom-tabs--team"
+        hidden={isDrawerOpen}
+        onChange={(id) => {
+          setActiveTab(id as TeamTab)
+          closePanel()
+        }}
+        panelIdPrefix="epl-team-panel-"
+        tabs={tabs}
+      />
 
       {mounted && typeof document !== 'undefined'
         ? createPortal(

@@ -55,10 +55,9 @@ async function importImage(url: string | undefined, alt: string): Promise<string
 const getInvolvedPage = {
   heroEyebrow: d.hero.eyebrow,
   heroBadge: d.hero.badge,
-  fellowshipTitle: 'Your chapter in public service starts here',
-  fellowshipDescription:
-    'Join the 2026 Public Service Fellowship, a transformative year inside Ghana’s ministries, agencies, and commissions, with the training, mentorship, and network to lead with integrity.',
-  fellowshipCtaLabel: 'Register Interest',
+  fellowshipTitle: d.hero.fellowshipTitle,
+  fellowshipDescription: d.hero.fellowshipDescription,
+  fellowshipCtaLabel: d.hero.fellowshipCtaLabel,
   heroImage: await importImage(d.hero.image, 'Public Service Fellowship'),
   heroSecondaryImage: await importImage(d.hero.secondaryImage, 'EPL Ghana fellows'),
   imageBadgeValue: d.hero.imageBadge.value,
@@ -81,7 +80,7 @@ const getInvolvedPage = {
   registerDescription: d.registerInterest.description,
   registerSubmitLabel: d.registerInterest.submitLabel,
   registerPoints: [
-    { text: 'Be first to know when applications open' },
+    { text: 'Get notified when the next fellowship cohort opens' },
     { text: 'Receive fellowship events and briefing updates' },
     { text: 'Connect with EPL Ghana’s recruitment team' },
   ],

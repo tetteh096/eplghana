@@ -19,7 +19,7 @@ export function ChariticsAboutPage({
   testimonials,
 }: ChariticsAboutPageProps) {
   return (
-    <>
+    <div className="epl-about-page">
       <ChariticsAboutIntro
         approach={content.approach}
         intro={content.intro}
@@ -45,6 +45,6 @@ export function ChariticsAboutPage({
         subtitle="Fellow Voices"
         title="Testimonials"
       />
-    </>
+    </div>
   )
 }

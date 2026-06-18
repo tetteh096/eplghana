@@ -19,6 +19,14 @@ export function ChariticsBreadcrumb({
   crumbs = [],
   backgroundImage,
 }: ChariticsBreadcrumbProps) {
+  // Drop the trailing crumb when it repeats the page title — the h2 already shows it.
+  const trailCrumbs =
+    crumbs.length > 0 &&
+    crumbs[crumbs.length - 1].label === title &&
+    !crumbs[crumbs.length - 1].href
+      ? crumbs.slice(0, -1)
+      : crumbs
+
   // Compose the brand blue overlay above the photo in one background-image so
   // the heading stays readable. A CSS rule with !important consumes this var
   // (the base styles set the gradient with !important, which inline can't beat).
@@ -39,8 +47,8 @@ export function ChariticsBreadcrumb({
           <li>
             <Link href="/">Home</Link>
           </li>
-          {crumbs.map((crumb, index) => {
-            const isLast = index === crumbs.length - 1
+          {trailCrumbs.map((crumb, index) => {
+            const isLast = index === trailCrumbs.length - 1
 
             return (
               <Fragment key={`${crumb.label}-${index}`}>

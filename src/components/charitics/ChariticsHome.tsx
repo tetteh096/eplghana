@@ -289,12 +289,12 @@ export function ChariticsHome({
               </span>
               <h2 className="ul-section-title">{sections.projects.title}</h2>
             </div>
-            {projectCards.length > 3 ? (
+            {projectCards.length > 1 ? (
               <div className="ul-slider-nav epl-donations-slider-nav ul-donations-slider-nav">
-                <button className="prev" type="button">
+                <button aria-label="Previous project" className="prev" type="button">
                   <i className="flaticon-back"></i>
                 </button>
-                <button className="next" type="button">
+                <button aria-label="Next project" className="next" type="button">
                   <i className="flaticon-next"></i>
                 </button>
               </div>
@@ -327,6 +327,12 @@ export function ChariticsHome({
                 </div>
               ))}
             </div>
+            {projectCards.length > 1 ? (
+              <div
+                aria-hidden
+                className="epl-donations-slider-pagination swiper-pagination"
+              />
+            ) : null}
           </div>
         </div>
       </section>

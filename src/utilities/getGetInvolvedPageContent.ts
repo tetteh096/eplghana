@@ -39,6 +39,12 @@ export type GetInvolvedPageContent = {
 const txt = (v: unknown, d: string) => (typeof v === 'string' && v.trim() ? v : d)
 const img = (v: unknown, d: string) => getMediaUrl(v as never) || d
 
+function mapHeroBadge(raw: unknown, fallback: string): string {
+  const badge = txt(raw, fallback)
+  if (/applications open/i.test(badge)) return ''
+  return badge
+}
+
 function mapPathways(raw: unknown, fallback: GetInvolvedPathway[]): GetInvolvedPathway[] {
   if (!Array.isArray(raw) || raw.length === 0) return fallback
 
@@ -91,19 +97,18 @@ export async function getGetInvolvedPageContent(): Promise<GetInvolvedPageConten
   return {
     hero: {
       eyebrow: txt(cms.heroEyebrow, d.hero.eyebrow),
-      badge: txt(cms.heroBadge, d.hero.badge),
+      badge: mapHeroBadge(cms.heroBadge, d.hero.badge),
       fellowshipTitle: txt(
         cms.fellowshipTitle,
-        settings.fellowshipTitle ?? 'Your chapter in public service starts here',
+        settings.fellowshipTitle ?? d.hero.fellowshipTitle,
       ),
       fellowshipDescription: txt(
         cms.fellowshipDescription,
-        settings.fellowshipDescription ??
-          'Join the 2026 Public Service Fellowship, a transformative year inside Ghana’s ministries, agencies, and commissions, with the training, mentorship, and network to lead with integrity.',
+        settings.fellowshipDescription ?? d.hero.fellowshipDescription,
       ),
       fellowshipCtaLabel: txt(
         cms.fellowshipCtaLabel,
-        settings.fellowshipCtaLabel ?? 'Register Interest',
+        settings.fellowshipCtaLabel ?? d.hero.fellowshipCtaLabel,
       ),
       image: img(cms.heroImage, d.hero.image),
       secondaryImage: img(cms.heroSecondaryImage, d.hero.secondaryImage),
@@ -138,7 +143,7 @@ export async function getGetInvolvedPageContent(): Promise<GetInvolvedPageConten
       description: txt(cms.registerDescription, d.registerInterest.description),
       submitLabel: txt(cms.registerSubmitLabel, d.registerInterest.submitLabel),
       points: mapPoints(cms.registerPoints, [
-        'Be first to know when applications open',
+        'Get notified when the next fellowship cohort opens',
         'Receive fellowship events and briefing updates',
         'Connect with EPL Ghana’s recruitment team',
       ]),

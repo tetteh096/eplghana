@@ -3,16 +3,19 @@ import { EPL_MEDIA } from '@/config/eplMedia'
 export const getInvolvedPageContent = {
   hero: {
     eyebrow: 'Get Involved',
-    badge: '2026 Fellowship · Applications Open',
+    badge: '',
     image: `${EPL_MEDIA}/2025/10/CSOT-78-scaled.jpg`,
     secondaryImage: `${EPL_MEDIA}/2026/02/PSF-CViii-819x1024.jpg`,
     imageBadge: {
       value: '2026',
       label: 'Fellowship cohort',
     },
+    fellowshipTitle: 'Your chapter in public service starts here',
+    fellowshipDescription:
+      'Applications for the 2026 Public Service Fellowship are now closed. Register your interest below to hear about future cohorts, events, and opportunities.',
+    fellowshipCtaLabel: 'Register Interest',
     highlights: [
       { value: '12 months', label: 'Embedded in ministries & agencies' },
-      { value: 'Training', label: 'Leadership & professional development' },
       { value: 'Network', label: 'Alumni community across Africa' },
     ],
     secondaryCta: {
@@ -65,7 +68,7 @@ export const getInvolvedPageContent = {
     eyebrow: 'Register Interest',
     title: 'Public Service Fellowship',
     description:
-      'Complete the form below to be notified about upcoming fellowship applications, events, and opportunities.',
+      'Applications for the 2026 Public Service Fellowship are now closed. Register below to hear about future cohorts, events, and opportunities.',
     submitLabel: 'Submit Interest',
   },
 }

@@ -23,7 +23,7 @@ export const defaultSiteSettings: SiteSetting = {
     'EPL Ghana doesn’t just train leaders; we transform Ghana’s public service from the inside out.',
   fellowshipTitle: 'Your chapter in public service starts here',
   fellowshipDescription:
-    'Join the 2026 Public Service Fellowship, a transformative year inside Ghana’s ministries, agencies, and commissions, with the training, mentorship, and network to lead with integrity.',
+    'Applications for the 2026 Public Service Fellowship are now closed. Register your interest below to hear about future cohorts, events, and opportunities.',
   fellowshipCtaLabel: 'Register Interest',
   fellowshipCtaUrl: '/get-involved#register-interest',
   stats: eplImpactStats.map((stat) => ({ value: stat.value, label: stat.label })),
