@@ -504,6 +504,168 @@ body {
   padding-bottom: clamp(72px, 7vw, 110px);
 }
 
+/* Hero — tablet & mobile: grow with content instead of clipping in a fixed slot */
+@media screen and (max-width: 991px) {
+  .epl-hero-unified,
+  .epl-hero-unified[data-active-slide='home1'],
+  .epl-hero-unified[data-active-slide='home2'] {
+    --epl-hero-h: auto;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
+    margin-bottom: clamp(32px, 6vw, 48px);
+  }
+
+  .epl-hero-swiper,
+  .epl-hero-swiper .swiper-wrapper,
+  .epl-hero-swiper .swiper-slide {
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  .epl-hero-unified[data-active-slide='home1'] .epl-hero-slide-home1 {
+    display: block;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+    padding-top: var(--epl-header-h, 108px);
+    padding-bottom: 0;
+  }
+
+  .epl-hero-slide-home1 .ul-banner-container {
+    max-width: calc(100% - 24px);
+  }
+
+  .epl-hero-slide-home1 .ul-banner-txt {
+    padding-top: clamp(16px, 4vw, 28px);
+    padding-bottom: clamp(16px, 3vw, 24px);
+    max-height: none;
+    overflow: visible;
+  }
+
+  .epl-hero-slide-home1 .ul-banner-txt-vector {
+    display: none;
+  }
+
+  .epl-hero-slide-home1 .ul-banner-sub-title {
+    letter-spacing: 0.12em;
+    font-size: clamp(11px, 2.8vw, 14px);
+  }
+
+  .epl-hero-slide-home1 .ul-banner-title {
+    font-size: clamp(26px, 6.8vw, 42px);
+    line-height: 1.12;
+    margin-left: 0;
+  }
+
+  .epl-hero-slide-home1 .ul-banner-descr {
+    font-size: clamp(14px, 3.6vw, 16px);
+    line-height: 1.55;
+    margin-bottom: clamp(16px, 3vw, 24px);
+  }
+
+  .epl-hero-slide-home1 .ul-banner-btns {
+    gap: clamp(14px, 3vw, 20px);
+  }
+
+  .epl-hero-slide-home1 .ul-banner-img {
+    width: 100%;
+    max-width: min(100%, 380px);
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .epl-hero-slide-home1 .ul-banner-img .img-wrapper {
+    margin: 0 auto;
+    clip-path: none;
+    border-radius: 20px;
+    overflow: hidden;
+    padding-left: 0;
+  }
+
+  .epl-hero-slide-home1 .ul-banner-img .img-wrapper img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    max-height: clamp(220px, 52vw, 340px);
+    aspect-ratio: auto;
+    object-fit: cover;
+    object-position: center top;
+    clip-path: none;
+    border-radius: 20px;
+  }
+
+  .epl-hero-slide-home1 .ul-banner-img-vectors {
+    display: none;
+  }
+
+  .epl-hero-unified[data-active-slide='home2'] .epl-hero-slide-home2 {
+    display: block;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    padding-top: var(--epl-header-h, 108px);
+    padding-bottom: 0;
+  }
+
+  .epl-hero-slide-home2 .ul-banner-2-slide {
+    padding-top: clamp(48px, 10vw, 88px);
+    padding-bottom: clamp(56px, 12vw, 96px);
+  }
+
+  .epl-hero-slide-home2 .ul-banner-2-slide .ul-banner-title {
+    font-size: clamp(24px, 6.2vw, 38px);
+    line-height: 1.15;
+  }
+
+  .epl-hero-unified > .epl-hero-unified-nav {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin: clamp(12px, 3vw, 20px) auto 0;
+    max-width: calc(100% - 32px);
+  }
+
+  .epl-hero-unified[data-active-slide='home2'] > .epl-hero-unified-nav {
+    position: absolute;
+    bottom: clamp(12px, 2.5vw, 20px);
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+  }
+
+  .epl-hero-unified > .epl-hero-unified-nav button {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+  }
+
+  .epl-hero-unified-nav .epl-hero-thumb-swiper {
+    width: clamp(96px, 28vw, 120px);
+  }
+
+  .epl-hero-unified-nav .epl-hero-thumb-swiper img {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .epl-hero-slide-home1 .ul-banner-title {
+    font-size: clamp(24px, 7.2vw, 32px);
+  }
+
+  .epl-hero-slide-home1 .ul-banner-img .img-wrapper img {
+    max-height: clamp(200px, 58vw, 280px);
+  }
+
+  .epl-hero-slide-home1 .ul-banner-stat {
+    flex-wrap: wrap;
+  }
+}
+
 /* About section — larger, readable text */
 .epl-about-section .ul-section-sub-title {
   font-size: clamp(17px, 1.15vw, 22px);
