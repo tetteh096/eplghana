@@ -30,9 +30,25 @@ import { PageBanners } from './globals/PageBanners'
 import { SiteSettings } from './globals/SiteSettings'
 import { getS3Storage } from './storage/s3'
 import { maybeRunDevAutoSeed } from './seeds/devAutoSeed'
+import { revalidatePublicSite, revalidatePublicSiteGlobal } from './hooks/revalidateFrontend'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+/** Public pages re-fetch CMS data on every request; bust cache on save as a safety net. */
+const COLLECTIONS_WITH_REVALIDATE = new Set([
+  'pages',
+  'projects',
+  'news',
+  'events',
+  'publications',
+  'testimonials',
+  'team',
+  'fellows',
+  'alumni',
+  'partners',
+  'media',
+])
 
 export default buildConfig({
   admin: {
@@ -88,11 +104,23 @@ export default buildConfig({
     (collection) => ({
       ...collection,
       fields: enhanceUploadFields(collection.fields),
+      ...(COLLECTIONS_WITH_REVALIDATE.has(collection.slug)
+        ? {
+            hooks: {
+              ...collection.hooks,
+              afterChange: [...(collection.hooks?.afterChange ?? []), revalidatePublicSite],
+            },
+          }
+        : {}),
     }),
   ),
   globals: [SiteSettings, Header, Footer, PageBanners].map((global) => ({
     ...global,
     fields: enhanceUploadFields(global.fields),
+    hooks: {
+      ...global.hooks,
+      afterChange: [...(global.hooks?.afterChange ?? []), revalidatePublicSiteGlobal],
+    },
   })),
   editor: lexicalEditor(),
   onInit: async (payload) => {

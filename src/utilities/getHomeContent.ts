@@ -1,8 +1,9 @@
 import { eplHomeImages } from '@/config/eplMedia'
 import { type HeroImageSlide, heroImageSlides } from '@/config/heroSlides'
 import type { SiteSetting } from '@/payload-types'
-import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { resolveMediaUrl } from '@/utilities/getMediaUrl'
 import { getPage } from '@/utilities/getPage'
+import { tryGetPayload } from '@/utilities/payloadSafe'
 
 export type HomeSections = {
   projects: { eyebrow: string; title: string }
@@ -45,13 +46,6 @@ function isMeaningful(value: unknown): boolean {
   return true
 }
 
-/**
- * Home page content: the editable static fields from Pages → Home layered over
- * Site Settings (so any field left blank falls back to Site Settings, and if
- * the Home page isn't migrated/DB is down it's just Site Settings). Returns a
- * Site-Settings-shaped object so the existing home sub-components are unchanged,
- * plus the editable section headings.
- */
 /** Default "Fellows trained" avatar photos (real fellows) when none set in CMS. */
 const defaultHeroAvatars: string[] = [
   eplHomeImages.fellows.miriam,
@@ -67,6 +61,7 @@ export async function getHomeContent(settings: SiteSetting): Promise<{
   gallery: GalleryItem[]
   aboutMission: HomeAboutMission
 }> {
+  const payload = await tryGetPayload()
   const page = await getPage('/')
   const home = (page?.home ?? {}) as Record<string, any>
 
@@ -87,37 +82,53 @@ export async function getHomeContent(settings: SiteSetting): Promise<{
 
   const merged = { ...settings, ...overrides } as SiteSetting
 
-  // Extra hero slides: CMS slides if present, else the config defaults. Each
-  // slide's image/thumb falls back to the matching default photo when not set.
+  const heroImageUrl =
+    (await resolveMediaUrl(home.heroImage ?? merged.heroImage, payload)) ||
+    eplHomeImages.heroDefault
+
+  // Keep a url-bearing object on settings so client-side getMediaUrl() works too.
+  merged.heroImage = { url: heroImageUrl } as SiteSetting['heroImage']
+
   const rawSlides: any[] = Array.isArray(home.heroSlides) ? home.heroSlides : []
   const heroSlides: HeroImageSlide[] = rawSlides.length
-    ? rawSlides.map((s, i) => {
-        const fallback = heroImageSlides[i]
-        return {
-          subtitle: s?.subtitle || fallback?.subtitle || '',
-          title: s?.title || fallback?.title || '',
-          description: s?.description || fallback?.description || '',
-          ctaLabel: s?.ctaLabel || fallback?.ctaLabel || 'Learn More',
-          ctaHref: s?.ctaHref || fallback?.ctaHref || '/about',
-          image: getMediaUrl(s?.image) || fallback?.image || eplHomeImages.heroDefault,
-          thumb: getMediaUrl(s?.thumb) || fallback?.thumb || eplHomeImages.heroDefault,
-        }
-      })
+    ? await Promise.all(
+        rawSlides.map(async (s, i) => {
+          const fallback = heroImageSlides[i]
+          const image =
+            (await resolveMediaUrl(s?.image, payload)) ||
+            fallback?.image ||
+            eplHomeImages.heroDefault
+          const thumb =
+            (await resolveMediaUrl(s?.thumb, payload)) || fallback?.thumb || image
+          return {
+            subtitle: s?.subtitle || fallback?.subtitle || '',
+            title: s?.title || fallback?.title || '',
+            description: s?.description || fallback?.description || '',
+            ctaLabel: s?.ctaLabel || fallback?.ctaLabel || 'Learn More',
+            ctaHref: s?.ctaHref || fallback?.ctaHref || '/about',
+            image,
+            thumb,
+          }
+        }),
+      )
     : heroImageSlides
 
-  // Hero stat avatars: CMS photos if present, else the default fellow photos.
   const rawAvatars: any[] = Array.isArray(home.heroAvatars) ? home.heroAvatars : []
-  const resolvedAvatars = rawAvatars
-    .map((a) => getMediaUrl(a?.image) || '')
-    .filter((src) => src)
+  const resolvedAvatars = (
+    await Promise.all(rawAvatars.map((a) => resolveMediaUrl(a?.image, payload)))
+  ).filter((src): src is string => Boolean(src))
   const heroAvatars: string[] = resolvedAvatars.length ? resolvedAvatars : defaultHeroAvatars
 
-  // Gallery: CMS photos if present, else the config defaults.
   const rawGallery: any[] = Array.isArray(home.gallery) ? home.gallery : []
   const gallery: GalleryItem[] = rawGallery.length
-    ? rawGallery
-        .map((g) => ({ src: getMediaUrl(g?.image) || '', alt: g?.alt || '' }))
-        .filter((g) => g.src)
+    ? (
+        await Promise.all(
+          rawGallery.map(async (g) => ({
+            src: (await resolveMediaUrl(g?.image, payload)) || '',
+            alt: g?.alt || '',
+          })),
+        )
+      ).filter((g) => g.src)
     : eplHomeImages.gallery.map((g) => ({ src: g.src, alt: g.alt }))
 
   const s = (home.sections ?? {}) as Record<string, any>
@@ -150,7 +161,8 @@ export async function getHomeContent(settings: SiteSetting): Promise<{
         ? home.aboutMissionTitle.trim()
         : defaultAboutMission.title,
     bullets: missionBullets.length > 0 ? missionBullets : defaultAboutMission.bullets,
-    image: getMediaUrl(home.aboutMissionImage) || defaultAboutMission.image,
+    image:
+      (await resolveMediaUrl(home.aboutMissionImage, payload)) || defaultAboutMission.image,
   }
 
   return { settings: merged, sections, heroSlides, heroAvatars, gallery, aboutMission }

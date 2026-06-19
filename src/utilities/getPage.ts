@@ -16,7 +16,7 @@ export const getPage = cache(async (slug: string): Promise<Record<string, unknow
     const res = await payload.find({
       collection: 'pages',
       where: { slug: { equals: slug } },
-      depth: 2,
+      depth: 3,
       limit: 1,
     })
     return (toPlain(res.docs[0]) as unknown as Record<string, unknown>) ?? null

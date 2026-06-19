@@ -18,6 +18,9 @@ import { getFooter } from '@/utilities/getFooter'
 import { getHeader } from '@/utilities/getHeader'
 import { getSiteSettings } from '@/utilities/payloadSafe'
 
+/** CMS edits (text, images, nav) must appear on the next refresh — no static/ISR page cache. */
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
