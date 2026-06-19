@@ -7,6 +7,7 @@ import { handleServerFunctions, RootLayout } from '@payloadcms/next/layouts'
 import React from 'react'
 
 import { AuthFormPending } from '@/components/admin/AuthFormPending'
+import { EplLoginPasswordToggle } from '@/components/admin/EplLoginPasswordToggle'
 import { importMap } from './admin/importMap.js'
 import './custom.scss'
 
@@ -26,6 +27,7 @@ const serverFunction: ServerFunctionClient = async function (args) {
 const Layout = ({ children }: Args) => (
   <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
     <AuthFormPending />
+    <EplLoginPasswordToggle />
     {children}
   </RootLayout>
 )

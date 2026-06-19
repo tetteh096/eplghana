@@ -1407,6 +1407,43 @@ html[data-theme='dark'] .epl-dash {
     margin-bottom: 8px;
   }
 
+  .epl-password-field .epl-password-input-row {
+    position: relative;
+    width: 100%;
+  }
+
+  .epl-password-field .epl-password-input-row input {
+    padding-right: 48px;
+  }
+
+  .epl-password-toggle {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    color: var(--epl-muted, #5b7084);
+    cursor: pointer;
+    display: inline-flex;
+    height: 36px;
+    justify-content: center;
+    padding: 0;
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+
+    &:hover {
+      background: rgba(30, 107, 184, 0.08);
+      color: var(--epl-secondary);
+    }
+
+    &:focus-visible {
+      outline: 2px solid rgba(30, 107, 184, 0.35);
+      outline-offset: 2px;
+    }
+  }
+
   .login__form__actions {
     gap: 12px;
     margin-top: 4px;
@@ -3129,6 +3166,11 @@ html[data-theme='dark'] .collection-list .list-header__title {
   overflow: hidden;
 }
 
+/* Pencil opens the full Media editor and leaves the page you were editing. */
+.epl-upload-field .upload-relationship-details__edit {
+  display: none;
+}
+
 .epl-upload-field__browse {
   display: flex;
   flex-direction: column;
@@ -3348,6 +3390,13 @@ html[data-theme='dark'] ::selection {
     margin: 24px 0;
   }
 
+  &__picker-hint {
+    color: var(--theme-elevation-600);
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 0 12px;
+  }
+
   &__grid {
     display: grid;
     gap: 22px;
@@ -3372,6 +3421,20 @@ html[data-theme='dark'] ::selection {
       border-color: var(--theme-elevation-300);
       box-shadow: 0 12px 28px -18px rgba(10, 61, 107, 0.55);
       transform: translateY(-2px);
+    }
+
+    &--picker {
+      appearance: none;
+      cursor: pointer;
+      font: inherit;
+      padding: 0;
+      text-align: left;
+      width: 100%;
+
+      &:focus-visible {
+        outline: 2px solid var(--epl-secondary, #1e6bb8);
+        outline-offset: 2px;
+      }
     }
   }
 

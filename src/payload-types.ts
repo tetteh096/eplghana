@@ -182,7 +182,7 @@ export interface User {
   collection: 'users';
 }
 /**
- * Photos, logos, and documents. Pick a folder so uploads land in the right place in R2 (blog, fellows, alumni, etc.).
+ * Photos, logos, and documents. Upload here once, then pick them on any page via “Browse Media Library” on image fields. Folder only affects where new uploads are stored in R2.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
