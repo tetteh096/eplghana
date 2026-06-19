@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   const payload = await tryGetPayload()
   const baseSettings = await getSiteSettings(1)
-  const { settings, sections, heroSlides, heroAvatars, gallery } =
+  const { settings, sections, heroSlides, heroAvatars, gallery, aboutMission } =
     await getHomeContent(baseSettings)
 
   const empty = { docs: [] as never[] }
@@ -83,6 +83,7 @@ export default async function HomePage() {
 
   return (
     <ChariticsHome
+      aboutMission={aboutMission}
       events={events}
       eventsArePast={eventsArePast}
       gallery={gallery}

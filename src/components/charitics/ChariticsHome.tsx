@@ -14,7 +14,7 @@ import type { Event, News, Project, SiteSetting, Testimonial } from '@/payload-t
 import { formatDate } from '@/utilities/formatDate'
 import { formatEventDateBadge } from '@/utilities/formatEventDate'
 import type { HeroImageSlide } from '@/config/heroSlides'
-import type { GalleryItem, HomeSections } from '@/utilities/getHomeContent'
+import type { GalleryItem, HomeAboutMission, HomeSections } from '@/utilities/getHomeContent'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { resolveFellowTestimonials } from '@/utilities/resolveFellowTestimonials'
 
@@ -35,6 +35,7 @@ type ChariticsHomeProps = {
   heroSlides?: HeroImageSlide[]
   heroAvatars?: string[]
   gallery?: GalleryItem[]
+  aboutMission?: HomeAboutMission
   news: News[]
   projects: Project[]
   events: Event[]
@@ -166,6 +167,7 @@ export function ChariticsHome({
   heroSlides,
   heroAvatars,
   gallery,
+  aboutMission,
   news,
   projects,
   events,
@@ -195,6 +197,14 @@ export function ChariticsHome({
   const fellowTestimonials = resolveFellowTestimonials(testimonials)
 
   const blogSlides = (news.length > 0 ? news : fallbackNews).slice(0, 5)
+
+  const missionTitle = aboutMission?.title ?? 'Our Mission'
+  const missionBullets =
+    aboutMission?.bullets ?? [
+      'Strengthen public institutions from within',
+      'Develop value-based sector leaders',
+    ]
+  const missionImage = aboutMission?.image ?? eplHomeImages.aboutBlock
 
   return (
     <main className="epl-page-home overflow-hidden">
@@ -247,15 +257,16 @@ export function ChariticsHome({
                       <div className="icon">
                         <i className="flaticon-love"></i>
                       </div>
-                      <h3 className="block-title">Our Mission</h3>
+                      <h3 className="block-title">{missionTitle}</h3>
                     </div>
                     <ul className="block-list">
-                      <li>Strengthen public institutions from within</li>
-                      <li>Develop value-based sector leaders</li>
+                      {missionBullets.map((bullet) => (
+                        <li key={bullet}>{bullet}</li>
+                      ))}
                     </ul>
                   </div>
                   <div className="block-right">
-                    <img alt="" src={eplHomeImages.aboutBlock} />
+                    <img alt="" src={missionImage} />
                   </div>
                 </div>
                 <div className="ul-about-bottom">

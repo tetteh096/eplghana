@@ -12,6 +12,21 @@ export type HomeSections = {
 
 export type GalleryItem = { src: string; alt: string }
 
+export type HomeAboutMission = {
+  title: string
+  bullets: string[]
+  image: string
+}
+
+const defaultAboutMission: HomeAboutMission = {
+  title: 'Our Mission',
+  bullets: [
+    'Strengthen public institutions from within',
+    'Develop value-based sector leaders',
+  ],
+  image: eplHomeImages.aboutBlock,
+}
+
 const defaultSections: HomeSections = {
   projects: { eyebrow: 'Our Work', title: 'Explore Our Projects' },
   events: { eyebrow: 'Upcoming Events', title: 'EPL Ghana Event Schedule' },
@@ -50,13 +65,22 @@ export async function getHomeContent(settings: SiteSetting): Promise<{
   heroSlides: HeroImageSlide[]
   heroAvatars: string[]
   gallery: GalleryItem[]
+  aboutMission: HomeAboutMission
 }> {
   const page = await getPage('/')
   const home = (page?.home ?? {}) as Record<string, any>
 
   const overrides: Record<string, unknown> = {}
   for (const [key, value] of Object.entries(home)) {
-    if (key === 'sections' || key === 'heroSlides' || key === 'heroAvatars' || key === 'gallery')
+    if (
+      key === 'sections' ||
+      key === 'heroSlides' ||
+      key === 'heroAvatars' ||
+      key === 'gallery' ||
+      key === 'aboutMissionTitle' ||
+      key === 'aboutMissionBullets' ||
+      key === 'aboutMissionImage'
+    )
       continue
     if (isMeaningful(value)) overrides[key] = value
   }
@@ -113,5 +137,21 @@ export async function getHomeContent(settings: SiteSetting): Promise<{
     },
   }
 
-  return { settings: merged, sections, heroSlides, heroAvatars, gallery }
+  const rawMissionBullets: Array<{ text?: string }> = Array.isArray(home.aboutMissionBullets)
+    ? home.aboutMissionBullets
+    : []
+  const missionBullets = rawMissionBullets
+    .map((item) => (typeof item?.text === 'string' ? item.text.trim() : ''))
+    .filter(Boolean)
+
+  const aboutMission: HomeAboutMission = {
+    title:
+      typeof home.aboutMissionTitle === 'string' && home.aboutMissionTitle.trim()
+        ? home.aboutMissionTitle.trim()
+        : defaultAboutMission.title,
+    bullets: missionBullets.length > 0 ? missionBullets : defaultAboutMission.bullets,
+    image: getMediaUrl(home.aboutMissionImage) || defaultAboutMission.image,
+  }
+
+  return { settings: merged, sections, heroSlides, heroAvatars, gallery, aboutMission }
 }

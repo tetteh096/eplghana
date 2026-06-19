@@ -30,6 +30,11 @@ const defaultHeroSlides = heroImageSlides.map((s) => ({
   ctaHref: s.ctaHref,
 }))
 
+const defaultAboutMissionBullets = [
+  { text: 'Strengthen public institutions from within' },
+  { text: 'Develop value-based sector leaders' },
+]
+
 /**
  * Pages, the "Pages" door in the admin.
  *
@@ -281,6 +286,32 @@ export const Pages: CollectionConfig = {
             { name: 'aboutImage', type: 'upload', relationTo: 'media' },
             { name: 'aboutCtaLabel', type: 'text', defaultValue: 'About EPL Ghana' },
             { name: 'aboutCtaUrl', type: 'text', defaultValue: '/about' },
+            {
+              name: 'aboutMissionTitle',
+              type: 'text',
+              label: 'Mission box title',
+              defaultValue: 'Our Mission',
+            },
+            {
+              name: 'aboutMissionBullets',
+              type: 'array',
+              label: 'Mission box bullets',
+              labels: { singular: 'Bullet', plural: 'Bullets' },
+              defaultValue: defaultAboutMissionBullets,
+              admin: {
+                description: 'Checklist beside the mission title in the about section.',
+              },
+              fields: [{ name: 'text', type: 'text', required: true }],
+            },
+            {
+              name: 'aboutMissionImage',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Mission box photo',
+              admin: {
+                description: 'Small photo beside the mission bullets on the homepage.',
+              },
+            },
           ],
         },
         {

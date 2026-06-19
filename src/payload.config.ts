@@ -6,6 +6,7 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
+import { enhanceUploadFields } from './collections/fields/enhanceUploadFields'
 import { Alumni } from './collections/Alumni'
 import { Events } from './collections/Events'
 import { Fellows } from './collections/Fellows'
@@ -83,8 +84,16 @@ export default buildConfig({
       beforeNav: ['/components/admin/NavSidebarTop#NavSidebarTop'],
     },
   },
-  collections: [Users, Media, News, Projects, Events, Publications, Testimonials, Team, Fellows, Alumni, Partners, FormSubmissions, Pages],
-  globals: [SiteSettings, Header, Footer, PageBanners],
+  collections: [Users, Media, News, Projects, Events, Publications, Testimonials, Team, Fellows, Alumni, Partners, FormSubmissions, Pages].map(
+    (collection) => ({
+      ...collection,
+      fields: enhanceUploadFields(collection.fields),
+    }),
+  ),
+  globals: [SiteSettings, Header, Footer, PageBanners].map((global) => ({
+    ...global,
+    fields: enhanceUploadFields(global.fields),
+  })),
   editor: lexicalEditor(),
   onInit: async (payload) => {
     const g = globalThis as Record<string, unknown>

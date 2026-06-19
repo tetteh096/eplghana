@@ -1033,6 +1033,20 @@ export interface Page {
     aboutImage?: (string | null) | Media;
     aboutCtaLabel?: string | null;
     aboutCtaUrl?: string | null;
+    aboutMissionTitle?: string | null;
+    /**
+     * Checklist beside the mission title in the about section.
+     */
+    aboutMissionBullets?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Small photo beside the mission bullets on the homepage.
+     */
+    aboutMissionImage?: (string | null) | Media;
     missionBannerQuote?: string | null;
     /**
      * Photos that crossfade behind the mission quote. Falls back to hero slides if empty.
@@ -2275,6 +2289,14 @@ export interface PagesSelect<T extends boolean = true> {
         aboutImage?: T;
         aboutCtaLabel?: T;
         aboutCtaUrl?: T;
+        aboutMissionTitle?: T;
+        aboutMissionBullets?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        aboutMissionImage?: T;
         missionBannerQuote?: T;
         missionBannerImages?:
           | T

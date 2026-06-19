@@ -80,6 +80,7 @@ async function updatePage(slug: string, data: Record<string, unknown>) {
 // ── Home ────────────────────────────────────────────────────────────────────
 const heroImageId = await importImage(eplHomeImages.heroDefault, 'EPL Ghana hero')
 const aboutImageId = await importImage(eplHomeImages.aboutMain, 'About EPL Ghana')
+const aboutMissionImageId = await importImage(eplHomeImages.aboutBlock, 'EPL Ghana mission box')
 
 const heroSlideRows = []
 for (const s of heroImageSlides) {
@@ -124,6 +125,12 @@ const homeContent = {
   aboutImage: aboutImageId,
   aboutCtaLabel: 'About EPL Ghana',
   aboutCtaUrl: '/about',
+  aboutMissionTitle: 'Our Mission',
+  aboutMissionBullets: [
+    { text: 'Strengthen public institutions from within' },
+    { text: 'Develop value-based sector leaders' },
+  ],
+  aboutMissionImage: aboutMissionImageId,
   missionBannerQuote:
     'EPL Ghana doesn’t just train leaders; we transform Ghana’s public service from the inside out. We rigorously select and embed Africa’s brightest young professionals within key government institutions, ensuring that leadership and innovation are championed from within the civil service to drive sustainable national development.',
   missionBannerImages: missionRows,
