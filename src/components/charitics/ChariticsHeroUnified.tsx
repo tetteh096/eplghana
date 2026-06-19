@@ -45,10 +45,6 @@ function syncHeroSlide(root: HTMLElement, isHome1: boolean) {
   root.setAttribute('data-active-slide', isHome1 ? 'home1' : 'home2')
 }
 
-function isCompactHeroViewport() {
-  return window.matchMedia('(max-width: 991px)').matches
-}
-
 /**
  * One autoplay slider, self-contained; slide changes never touch body/header layout.
  * Slide 1 = Home 1 ul-banner. Slides 2 to 4 = Home 2 image banners.
@@ -70,7 +66,6 @@ export function ChariticsHeroUnified({
     let mainInstance: SwiperInstance | null = null
     let attempts = 0
     let timer: number | undefined
-    let compactHero = isCompactHeroViewport()
 
     syncHeroSlide(root, true)
 
@@ -90,6 +85,11 @@ export function ChariticsHeroUnified({
       const overlay = isHome1 && window.scrollY <= 80
       document.body.setAttribute('data-hero-mode', overlay ? 'overlay' : 'solid')
     }
+
+    syncHeaderHeight()
+    syncHeroMode()
+    window.addEventListener('scroll', syncHeroMode, { passive: true })
+    window.addEventListener('resize', syncHeaderHeight)
 
     const init = () => {
       const Swiper = (window as Window & { Swiper?: SwiperConstructor }).Swiper
@@ -119,7 +119,6 @@ export function ChariticsHeroUnified({
         slidesPerView: 1,
         loop: true,
         speed: 800,
-        autoHeight: compactHero,
         autoplay: {
           delay: 8000,
           disableOnInteraction: false,
@@ -139,9 +138,6 @@ export function ChariticsHeroUnified({
         isHome1 = swiper.realIndex === 0
         syncHeroSlide(root, isHome1)
         syncHeroMode()
-        if (compactHero) {
-          requestAnimationFrame(() => activeMainInstance.update())
-        }
       }
 
       onSlideChange(activeMainInstance)
@@ -152,27 +148,9 @@ export function ChariticsHeroUnified({
       requestAnimationFrame(() => {
         mainInstance?.update()
         thumbInstance?.update()
-        window.dispatchEvent(new Event('resize'))
       })
       return true
     }
-
-    const onResize = () => {
-      syncHeaderHeight()
-      const nextCompact = isCompactHeroViewport()
-      if (nextCompact !== compactHero) {
-        compactHero = nextCompact
-        init()
-        return
-      }
-      mainInstance?.update()
-      thumbInstance?.update()
-    }
-
-    syncHeaderHeight()
-    syncHeroMode()
-    window.addEventListener('scroll', syncHeroMode, { passive: true })
-    window.addEventListener('resize', onResize)
 
     timer = window.setInterval(() => {
       attempts += 1
@@ -184,7 +162,7 @@ export function ChariticsHeroUnified({
     return () => {
       if (timer) window.clearInterval(timer)
       window.removeEventListener('scroll', syncHeroMode)
-      window.removeEventListener('resize', onResize)
+      window.removeEventListener('resize', syncHeaderHeight)
       document.body.removeAttribute('data-hero-mode')
       document.body.style.removeProperty('--epl-header-h')
       mainInstance?.destroy(true, true)
