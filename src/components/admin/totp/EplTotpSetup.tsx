@@ -7,8 +7,7 @@ import { CMS_PRODUCT_NAME } from '@/config/brand'
 import { TOTP_CONFIG } from '@/config/totp'
 import { Logo } from '@/components/admin/Logo'
 
-import { EplAuthenticatorSetupCard } from './EplAuthenticatorSetupCard'
-import { EplEmailOtpPanel } from './EplEmailOtpPanel'
+import { EplMfaTabs } from './EplMfaTabs'
 import { EplQrCode } from './EplQrCode'
 import { EplTotpExitLink } from './EplTotpExitLink'
 import { EplTotpManualSecret } from './EplTotpManualSecret'
@@ -128,27 +127,15 @@ export function EplTotpSetup({ initPageResult, searchParams }: AdminViewServerPr
         </div>
 
         <div className="epl-totp__column epl-totp__column--finish">
-          <div className="epl-totp__methods epl-totp__methods--setup">
-            <EplAuthenticatorSetupCard
-              apiRoute={apiRoute}
-              length={TOTP_CONFIG.digits}
-              redirectTo={redirectTo}
-              secret={secret.base32}
-              serverURL={serverURL}
-            />
-
-            <div aria-hidden className="epl-totp__methods-or">
-              <span>or</span>
-            </div>
-
-            <EplEmailOtpPanel
-              apiRoute={apiRoute}
-              email={user.email}
-              redirectTo={redirectTo}
-              serverURL={serverURL}
-              setup
-            />
-          </div>
+          <EplMfaTabs
+            apiRoute={apiRoute}
+            email={user.email}
+            mode="setup"
+            redirectTo={redirectTo}
+            secret={secret.base32}
+            serverURL={serverURL}
+            totpLength={TOTP_CONFIG.digits}
+          />
 
           <EplTotpExitLink
             adminRoute={adminRoute}

@@ -9,6 +9,7 @@ import { useEplEmailOtpVerify } from './useEplEmailOtpVerify'
 type Props = {
   apiRoute: string
   autoSend?: boolean
+  compact?: boolean
   email?: string
   redirectTo: string
   serverURL: string
@@ -35,12 +36,12 @@ function MailIcon() {
 }
 
 /**
- * Always-visible email MFA card. Sits beside the authenticator option so users
- * can pick either method without one hiding the other.
+ * Email MFA panel — used standalone (email-only users) or inside a tab.
  */
 export function EplEmailOtpPanel({
   apiRoute,
   autoSend = false,
+  compact = false,
   email,
   redirectTo,
   serverURL,
@@ -98,22 +99,33 @@ export function EplEmailOtpPanel({
   const inputLocked = !codeReady || status === 'pending' || status === 'success'
 
   return (
-    <section aria-labelledby="epl-mfa-email-title" className="epl-totp__method-card epl-totp__method-card--email">
-      <div className="epl-totp__method-head">
-        <span className="epl-totp__method-icon epl-totp__method-icon--email" aria-hidden>
-          <MailIcon />
-        </span>
-        <div className="epl-totp__method-copy">
-          <h2 className="epl-totp__method-title" id="epl-mfa-email-title">
-            Email code
-          </h2>
-          <p className="epl-totp__method-desc">
-            {setup
-              ? 'No phone handy? Finish setup with a code we send to your inbox.'
-              : 'Prefer email? We can send a one-time code to your inbox instead.'}
-          </p>
+    <section
+      aria-labelledby={compact ? undefined : 'epl-mfa-email-title'}
+      className={`epl-totp__method-card epl-totp__method-card--email${compact ? ' epl-totp__method-card--compact' : ''}`}
+    >
+      {compact ? (
+        <p className="epl-totp__tabpanel-hint">
+          {setup
+            ? 'We’ll email you a code to finish setup — no phone needed.'
+            : 'We’ll send a one-time code to your inbox.'}
+        </p>
+      ) : (
+        <div className="epl-totp__method-head">
+          <span className="epl-totp__method-icon epl-totp__method-icon--email" aria-hidden>
+            <MailIcon />
+          </span>
+          <div className="epl-totp__method-copy">
+            <h2 className="epl-totp__method-title" id="epl-mfa-email-title">
+              Email code
+            </h2>
+            <p className="epl-totp__method-desc">
+              {setup
+                ? 'No phone handy? Finish setup with a code we send to your inbox.'
+                : 'Prefer email? We can send a one-time code to your inbox instead.'}
+            </p>
+          </div>
         </div>
-      </div>
+      )}
 
       {email ? (
         <p className="epl-totp__method-meta">
@@ -143,8 +155,10 @@ export function EplEmailOtpPanel({
           disabled={inputLocked}
           hint={
             codeReady
-              ? 'Enter the 6-digit code from your email. Codes expire after 10 minutes.'
-              : 'Tap the button above first — your code entry box will unlock when the email is sent.'
+              ? 'Codes expire after 10 minutes.'
+              : compact
+                ? 'Send the code first, then enter it here.'
+                : 'Tap the button above first — your code entry box will unlock when the email is sent.'
           }
           hintMode="email"
           label="Email code"

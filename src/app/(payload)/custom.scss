@@ -2352,6 +2352,96 @@ html[data-theme='dark'] {
     margin-top: 4px;
   }
 
+  &__tabs {
+    margin-top: 4px;
+  }
+
+  &__tablist {
+    background: var(--epl-mist);
+    border: 1px solid var(--epl-border);
+    border-radius: 14px;
+    display: grid;
+    gap: 4px;
+    grid-template-columns: 1fr 1fr;
+    padding: 4px;
+  }
+
+  &__tab {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    border-radius: 10px;
+    color: var(--epl-muted);
+    cursor: pointer;
+    display: inline-flex;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    gap: 8px;
+    justify-content: center;
+    min-height: 42px;
+    padding: 8px 12px;
+    transition:
+      background 140ms ease,
+      box-shadow 140ms ease,
+      color 140ms ease;
+
+    svg {
+      flex-shrink: 0;
+      opacity: 0.75;
+    }
+
+    &--active {
+      background: var(--epl-admin-surface);
+      box-shadow: 0 4px 14px -8px rgba(10, 61, 107, 0.35);
+      color: var(--epl-dark);
+
+      svg {
+        color: var(--epl-secondary);
+        opacity: 1;
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--epl-secondary);
+      outline-offset: 2px;
+    }
+  }
+
+  &__tabpanel {
+    padding-top: 16px;
+
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  &__tabpanel-hint {
+    color: var(--epl-muted);
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0 0 14px;
+  }
+
+  &__method-card--compact {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+
+    &.epl-totp__method-card--email {
+      background: transparent;
+    }
+
+    .epl-totp__method-meta {
+      margin-bottom: 12px;
+    }
+
+    .epl-totp__email-cta {
+      margin-bottom: 14px;
+    }
+  }
+
   &__methods-or {
     align-items: center;
     display: flex;
@@ -2691,7 +2781,7 @@ html[data-theme='dark'] {
         0 24px 60px -28px rgba(10, 61, 107, 0.42),
         0 0 0 1px rgba(255, 255, 255, 0.45) inset !important;
       margin: auto !important;
-      max-width: 520px !important;
+      max-width: 440px !important;
       min-height: auto !important;
       padding: 40px 36px 32px !important;
       width: 100% !important;
@@ -2770,6 +2860,25 @@ html[data-theme='dark'] .epl-totp {
     background: #0c2238;
     border-color: rgba(91, 155, 213, 0.2);
     color: rgba(232, 243, 251, 0.55);
+  }
+
+  &__tablist {
+    background: #071525;
+    border-color: rgba(91, 155, 213, 0.2);
+  }
+
+  &__tab {
+    color: rgba(232, 243, 251, 0.55);
+
+    &--active {
+      background: #0c2238;
+      box-shadow: 0 4px 14px -8px rgba(0, 0, 0, 0.45);
+      color: #e8f3fb;
+    }
+  }
+
+  &__tabpanel-hint {
+    color: rgba(232, 243, 251, 0.65);
   }
 
   &__step-num,

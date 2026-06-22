@@ -7,6 +7,7 @@ import { useEplTotpSubmit } from './useEplTotpSubmit'
 
 type Props = {
   apiRoute: string
+  compact?: boolean
   length?: number
   redirectTo: string
   secret: string
@@ -33,6 +34,7 @@ function AppIcon() {
 
 export function EplAuthenticatorSetupCard({
   apiRoute,
+  compact = false,
   length = 6,
   redirectTo,
   secret,
@@ -54,22 +56,28 @@ export function EplAuthenticatorSetupCard({
 
   return (
     <section
-      aria-labelledby="epl-mfa-app-setup-title"
-      className="epl-totp__method-card epl-totp__method-card--app"
+      aria-labelledby={compact ? undefined : 'epl-mfa-app-setup-title'}
+      className={`epl-totp__method-card epl-totp__method-card--app${compact ? ' epl-totp__method-card--compact' : ''}`}
     >
-      <div className="epl-totp__method-head">
-        <span className="epl-totp__method-icon epl-totp__method-icon--app" aria-hidden>
-          <AppIcon />
-        </span>
-        <div className="epl-totp__method-copy">
-          <h2 className="epl-totp__method-title" id="epl-mfa-app-setup-title">
-            Authenticator app
-          </h2>
-          <p className="epl-totp__method-desc">
-            Scan the QR code, then enter the 6-digit code from your app here.
-          </p>
+      {compact ? (
+        <p className="epl-totp__tabpanel-hint">
+          Scan the QR code, then enter the 6-digit code from your app.
+        </p>
+      ) : (
+        <div className="epl-totp__method-head">
+          <span className="epl-totp__method-icon epl-totp__method-icon--app" aria-hidden>
+            <AppIcon />
+          </span>
+          <div className="epl-totp__method-copy">
+            <h2 className="epl-totp__method-title" id="epl-mfa-app-setup-title">
+              Authenticator app
+            </h2>
+            <p className="epl-totp__method-desc">
+              Scan the QR code, then enter the 6-digit code from your app here.
+            </p>
+          </div>
         </div>
-      </div>
+      )}
 
       <form className="epl-totp__form" onSubmit={submit} ref={formRef}>
         <input name="secret" type="hidden" value={secret} />

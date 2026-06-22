@@ -6,8 +6,8 @@ import { CMS_PRODUCT_NAME } from '@/config/brand'
 import { isEmailMfaUser } from '@/auth/emailMfaShared'
 import { Logo } from '@/components/admin/Logo'
 
-import { EplAuthenticatorVerifyCard } from './EplAuthenticatorVerifyCard'
 import { EplEmailOtpPanel } from './EplEmailOtpPanel'
+import { EplMfaTabs } from './EplMfaTabs'
 import { EplTotpExitLink } from './EplTotpExitLink'
 
 type UserWithTotp = {
@@ -98,11 +98,7 @@ export function EplTotpVerify({
                 <strong>{CMS_PRODUCT_NAME}</strong>.
               </>
             ) : (
-              <>
-                Choose either method below — use your <strong>authenticator app</strong> or a{' '}
-                <strong>code sent to your email</strong>. Both boxes stay visible so you can switch
-                anytime.
-              </>
+              <>Pick <strong>Authenticator</strong> or <strong>Email</strong> — only one shows at a time.</>
             )}
           </p>
         </div>
@@ -116,24 +112,13 @@ export function EplTotpVerify({
             serverURL={serverURL}
           />
         ) : (
-          <div className="epl-totp__methods">
-            <EplAuthenticatorVerifyCard
-              apiRoute={apiRoute}
-              redirectTo={redirectTo}
-              serverURL={serverURL}
-            />
-
-            <div aria-hidden className="epl-totp__methods-or">
-              <span>or</span>
-            </div>
-
-            <EplEmailOtpPanel
-              apiRoute={apiRoute}
-              email={user.email}
-              redirectTo={redirectTo}
-              serverURL={serverURL}
-            />
-          </div>
+          <EplMfaTabs
+            apiRoute={apiRoute}
+            email={user.email}
+            mode="verify"
+            redirectTo={redirectTo}
+            serverURL={serverURL}
+          />
         )}
 
         <EplTotpExitLink
