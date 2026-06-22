@@ -24,6 +24,7 @@ import { headerCta, isNavDropdown, mainNavigation } from './config/navigation'
 import { CMS_PRODUCT_NAME, EPL_LOGO_SRC } from './config/brand'
 import { TOTP_CONFIG } from './config/totp'
 import { getEmailAdapter } from './email/transport'
+import { sendEmailOtpHandler, verifyEmailOtpHandler } from './auth/emailMfa'
 import { Footer } from './globals/Footer'
 import { Header } from './globals/Header'
 import { PageBanners } from './globals/PageBanners'
@@ -209,6 +210,18 @@ export default buildConfig({
   graphQL: {
     disable: true,
   },
+  endpoints: [
+    {
+      handler: sendEmailOtpHandler,
+      method: 'post',
+      path: '/send-email-otp',
+    },
+    {
+      handler: verifyEmailOtpHandler,
+      method: 'post',
+      path: '/verify-email-otp',
+    },
+  ],
   db: mongooseAdapter({
     url: process.env.DATABASE_URL || '',
     connectOptions: {

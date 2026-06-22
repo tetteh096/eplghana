@@ -7,6 +7,8 @@ export type EplOtpStatus = 'idle' | 'pending' | 'success' | 'error'
 
 type Props = {
   disabled?: boolean
+  hint?: string
+  hintMode?: 'app' | 'email'
   length?: number
   name: string
   onComplete?: () => void
@@ -22,6 +24,8 @@ function focusInput(element: HTMLInputElement | null) {
 
 export function EplOtpInput({
   disabled = false,
+  hint,
+  hintMode = 'app',
   length = 6,
   name,
   onComplete,
@@ -190,10 +194,17 @@ export function EplOtpInput({
         </p>
       ) : status === 'error' ? (
         <p className="epl-totp__otp-status epl-totp__otp-status--error">
-          That code did not work. Enter the latest code from your app.
+          {hintMode === 'email'
+            ? 'That code did not work. Check your email and try again.'
+            : 'That code did not work. Enter the latest code from your app.'}
         </p>
       ) : (
-        <p className="epl-totp__otp-hint">Codes refresh every 30 seconds in your app.</p>
+        <p className="epl-totp__otp-hint">
+          {hint ??
+            (hintMode === 'email'
+              ? 'Enter the 6-digit code from your email.'
+              : 'Codes refresh every 30 seconds in your app.')}
+        </p>
       )}
     </div>
   )

@@ -153,6 +153,23 @@ export function formSubmissionStaffEmailHTML(data: FormSubmissionEmailData): str
     </p>`)
 }
 
+export function mfaOtpEmailHTML(code: string, name?: string): string {
+  const greeting = name ? `Hi ${escapeHtml(name)},` : 'Hi,'
+
+  return brandedEmailLayout(`
+    <p style="margin:0 0 14px;font-size:16px;">${greeting}</p>
+    <p style="margin:0 0 20px;font-size:15px;line-height:1.6;">
+      Use this one-time code to finish signing in to <strong>${CMS_PRODUCT_NAME}</strong>.
+      It expires in 10 minutes.
+    </p>
+    <p style="margin:0 0 24px;font-size:32px;font-weight:700;letter-spacing:0.22em;color:#0a3d6b;font-family:ui-monospace,Consolas,monospace;">
+      ${escapeHtml(code)}
+    </p>
+    <p style="margin:0;font-size:13px;color:#5a6b78;line-height:1.6;">
+      If you did not try to sign in, you can ignore this email. Someone may have entered your password by mistake.
+    </p>`)
+}
+
 export function formSubmissionAutoReplyHTML(fullName: string, formTypeLabel: string): string {
   const firstName = fullName.split(' ')[0] || fullName
 

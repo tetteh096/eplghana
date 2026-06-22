@@ -2340,6 +2340,63 @@ html[data-theme='dark'] {
     margin: 0;
   }
 
+  &__email-option,
+  &__email-panel {
+    border-top: 1px solid var(--epl-border);
+    margin-top: 20px;
+    padding-top: 20px;
+  }
+
+  &__email-lead {
+    color: var(--epl-dark);
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 8px;
+  }
+
+  &__email-sent {
+    color: var(--epl-muted);
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0 0 12px;
+  }
+
+  &__email-toggle,
+  &__email-send,
+  &__email-resend,
+  &__email-back {
+    background: transparent;
+    border: 0;
+    color: var(--epl-secondary);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 0;
+    text-align: left;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+
+    &:disabled {
+      cursor: wait;
+      opacity: 0.65;
+    }
+  }
+
+  &__email-send {
+    margin-bottom: 12px;
+  }
+
+  &__email-resend,
+  &__email-back {
+    display: block;
+    margin-top: 12px;
+  }
+
+  &__email-back {
+    color: var(--epl-muted);
+    font-weight: 500;
+  }
+
   @keyframes epl-totp-shake {
     0%,
     100% {

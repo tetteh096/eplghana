@@ -156,6 +156,11 @@ export interface UserAuthOperations {
 export interface User {
   id: string;
   name: string;
+  mfaMethod?: ('authenticator' | 'email') | null;
+  emailOtpHash?: string | null;
+  emailOtpExpiresAt?: string | null;
+  emailOtpSentAt?: string | null;
+  emailOtpAttempts?: number | null;
   /**
    * Admins manage users; editors edit content; viewers are read-only.
    */
@@ -1676,6 +1681,11 @@ export interface PayloadMigration {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  mfaMethod?: T;
+  emailOtpHash?: T;
+  emailOtpExpiresAt?: T;
+  emailOtpSentAt?: T;
+  emailOtpAttempts?: T;
   roles?: T;
   totpSecret?: T;
   hasTotp?: T;

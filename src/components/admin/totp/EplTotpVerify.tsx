@@ -3,15 +3,20 @@ import { formatAdminURL } from 'payload/shared'
 import { redirect } from 'next/navigation'
 
 import { CMS_PRODUCT_NAME } from '@/config/brand'
+import { isEmailMfaUser } from '@/auth/emailMfaShared'
 import { TOTP_CONFIG } from '@/config/totp'
 import { Logo } from '@/components/admin/Logo'
 
+import { EplEmailOtpPanel } from './EplEmailOtpPanel'
 import { EplTotpExitLink } from './EplTotpExitLink'
 import { EplTotpVerifyForm } from './EplTotpVerifyForm'
 
 type UserWithTotp = {
+  email?: string
   hasTotp?: boolean
+  mfaMethod?: string
   strategy?: string
+  totpSecret?: string
 }
 
 /**
@@ -64,6 +69,8 @@ export function EplTotpVerify({
     )
   }
 
+  const emailMfaOnly = isEmailMfaUser(user)
+
   return (
     <section className="epl-totp epl-totp--verify login template-minimal template-minimal--width-normal">
       <div className="template-minimal__wrap">
@@ -82,20 +89,52 @@ export function EplTotpVerify({
 
         <div className="epl-totp__hero epl-totp__hero--compact">
           <p className="epl-totp__eyebrow">Two-factor check</p>
-          <h1 className="epl-totp__title">Enter your authenticator code</h1>
+          <h1 className="epl-totp__title">
+            {emailMfaOnly ? 'Enter your email code' : 'Enter your authenticator code'}
+          </h1>
           <p className="epl-totp__lead">
-            Open your authenticator app and enter the current 6-digit code for{' '}
-            <strong>{CMS_PRODUCT_NAME}</strong>. You&apos;ll continue automatically
-            when it&apos;s correct.
+            {emailMfaOnly ? (
+              <>
+                We&apos;ll send a one-time code to your email so you can finish signing in to{' '}
+                <strong>{CMS_PRODUCT_NAME}</strong>.
+              </>
+            ) : (
+              <>
+                Open your authenticator app and enter the current 6-digit code for{' '}
+                <strong>{CMS_PRODUCT_NAME}</strong>. You&apos;ll continue automatically when
+                it&apos;s correct.
+              </>
+            )}
           </p>
         </div>
 
-        <EplTotpVerifyForm
-          apiRoute={apiRoute}
-          length={TOTP_CONFIG.digits}
-          redirectTo={redirectTo}
-          serverURL={serverURL}
-        />
+        {emailMfaOnly ? (
+          <EplEmailOtpPanel
+            apiRoute={apiRoute}
+            autoSend
+            defaultActive
+            email={user.email}
+            redirectTo={redirectTo}
+            serverURL={serverURL}
+            showToggle={false}
+          />
+        ) : (
+          <>
+            <EplTotpVerifyForm
+              apiRoute={apiRoute}
+              length={TOTP_CONFIG.digits}
+              redirectTo={redirectTo}
+              serverURL={serverURL}
+            />
+
+            <EplEmailOtpPanel
+              apiRoute={apiRoute}
+              email={user.email}
+              redirectTo={redirectTo}
+              serverURL={serverURL}
+            />
+          </>
+        )}
 
         <EplTotpExitLink
           adminRoute={adminRoute}

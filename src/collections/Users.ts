@@ -73,6 +73,51 @@ export const Users: CollectionConfig = {
   fields: [
     { name: 'name', type: 'text', required: true },
     {
+      name: 'mfaMethod',
+      type: 'select',
+      options: [
+        { label: 'Authenticator app', value: 'authenticator' },
+        { label: 'Email', value: 'email' },
+      ],
+      defaultValue: 'authenticator',
+      saveToJWT: true,
+      admin: {
+        hidden: true,
+        disableListColumn: true,
+        disableListFilter: true,
+      },
+      access: {
+        create: () => false,
+        read: ({ req: { user }, doc }) => Boolean(user && doc?.id === user.id),
+        update: () => false,
+      },
+    },
+    {
+      name: 'emailOtpHash',
+      type: 'text',
+      admin: { hidden: true, disableListColumn: true, disableListFilter: true },
+      access: { create: () => false, read: () => false, update: () => false },
+    },
+    {
+      name: 'emailOtpExpiresAt',
+      type: 'date',
+      admin: { hidden: true, disableListColumn: true, disableListFilter: true },
+      access: { create: () => false, read: () => false, update: () => false },
+    },
+    {
+      name: 'emailOtpSentAt',
+      type: 'date',
+      admin: { hidden: true, disableListColumn: true, disableListFilter: true },
+      access: { create: () => false, read: () => false, update: () => false },
+    },
+    {
+      name: 'emailOtpAttempts',
+      type: 'number',
+      defaultValue: 0,
+      admin: { hidden: true, disableListColumn: true, disableListFilter: true },
+      access: { create: () => false, read: () => false, update: () => false },
+    },
+    {
       name: 'roles',
       type: 'select',
       hasMany: true,

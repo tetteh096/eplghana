@@ -7,6 +7,7 @@ import { CMS_PRODUCT_NAME } from '@/config/brand'
 import { TOTP_CONFIG } from '@/config/totp'
 import { Logo } from '@/components/admin/Logo'
 
+import { EplEmailOtpPanel } from './EplEmailOtpPanel'
 import { EplQrCode } from './EplQrCode'
 import { EplTotpExitLink } from './EplTotpExitLink'
 import { EplTotpManualSecret } from './EplTotpManualSecret'
@@ -134,6 +135,15 @@ export function EplTotpSetup({ initPageResult, searchParams }: AdminViewServerPr
             secret={secret.base32}
             serverURL={serverURL}
           />
+
+          <EplEmailOtpPanel
+            apiRoute={apiRoute}
+            email={user.email}
+            redirectTo={redirectTo}
+            serverURL={serverURL}
+            setup
+          />
+
           <EplTotpExitLink
             adminRoute={adminRoute}
             apiRoute={apiRoute}
