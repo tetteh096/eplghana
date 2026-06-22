@@ -9,6 +9,7 @@ type Props = {
   disabled?: boolean
   hint?: string
   hintMode?: 'app' | 'email'
+  label?: string
   length?: number
   name: string
   onComplete?: () => void
@@ -26,6 +27,7 @@ export function EplOtpInput({
   disabled = false,
   hint,
   hintMode = 'app',
+  label = '6-digit code',
   length = 6,
   name,
   onComplete,
@@ -145,7 +147,7 @@ export function EplOtpInput({
       key={resetKey}
     >
       <label className="epl-totp__otp-label" htmlFor={id}>
-        6-digit code
+        {label}
       </label>
 
       <input
@@ -162,8 +164,8 @@ export function EplOtpInput({
       />
 
       <div
-        aria-label="6-digit authenticator code"
-        className="epl-totp__otp-cells"
+        aria-label={label}
+        className={`epl-totp__otp-cells${disabled ? ' epl-totp__otp-cells--disabled' : ''}`}
         role="group"
       >
         {Array.from({ length }, (_, index) => (

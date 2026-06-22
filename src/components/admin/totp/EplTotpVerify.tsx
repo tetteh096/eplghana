@@ -4,12 +4,11 @@ import { redirect } from 'next/navigation'
 
 import { CMS_PRODUCT_NAME } from '@/config/brand'
 import { isEmailMfaUser } from '@/auth/emailMfaShared'
-import { TOTP_CONFIG } from '@/config/totp'
 import { Logo } from '@/components/admin/Logo'
 
+import { EplAuthenticatorVerifyCard } from './EplAuthenticatorVerifyCard'
 import { EplEmailOtpPanel } from './EplEmailOtpPanel'
 import { EplTotpExitLink } from './EplTotpExitLink'
-import { EplTotpVerifyForm } from './EplTotpVerifyForm'
 
 type UserWithTotp = {
   email?: string
@@ -90,7 +89,7 @@ export function EplTotpVerify({
         <div className="epl-totp__hero epl-totp__hero--compact">
           <p className="epl-totp__eyebrow">Two-factor check</p>
           <h1 className="epl-totp__title">
-            {emailMfaOnly ? 'Enter your email code' : 'Enter your authenticator code'}
+            {emailMfaOnly ? 'Enter your email code' : 'Verify it’s you'}
           </h1>
           <p className="epl-totp__lead">
             {emailMfaOnly ? (
@@ -100,9 +99,9 @@ export function EplTotpVerify({
               </>
             ) : (
               <>
-                Open your authenticator app and enter the current 6-digit code for{' '}
-                <strong>{CMS_PRODUCT_NAME}</strong>. You&apos;ll continue automatically when
-                it&apos;s correct.
+                Choose either method below — use your <strong>authenticator app</strong> or a{' '}
+                <strong>code sent to your email</strong>. Both boxes stay visible so you can switch
+                anytime.
               </>
             )}
           </p>
@@ -112,20 +111,21 @@ export function EplTotpVerify({
           <EplEmailOtpPanel
             apiRoute={apiRoute}
             autoSend
-            defaultActive
             email={user.email}
             redirectTo={redirectTo}
             serverURL={serverURL}
-            showToggle={false}
           />
         ) : (
-          <>
-            <EplTotpVerifyForm
+          <div className="epl-totp__methods">
+            <EplAuthenticatorVerifyCard
               apiRoute={apiRoute}
-              length={TOTP_CONFIG.digits}
               redirectTo={redirectTo}
               serverURL={serverURL}
             />
+
+            <div aria-hidden className="epl-totp__methods-or">
+              <span>or</span>
+            </div>
 
             <EplEmailOtpPanel
               apiRoute={apiRoute}
@@ -133,7 +133,7 @@ export function EplTotpVerify({
               redirectTo={redirectTo}
               serverURL={serverURL}
             />
-          </>
+          </div>
         )}
 
         <EplTotpExitLink

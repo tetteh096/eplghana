@@ -9,27 +9,45 @@ import { useEplEmailOtpVerify } from './useEplEmailOtpVerify'
 type Props = {
   apiRoute: string
   autoSend?: boolean
-  defaultActive?: boolean
   email?: string
   redirectTo: string
   serverURL: string
   setup?: boolean
-  showToggle?: boolean
 }
 
+function MailIcon() {
+  return (
+    <svg aria-hidden fill="none" height="22" viewBox="0 0 24 24" width="22">
+      <path
+        d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5v-11Z"
+        stroke="currentColor"
+        strokeWidth="1.6"
+      />
+      <path
+        d="m5 7.5 7 5.5 7-5.5"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.6"
+      />
+    </svg>
+  )
+}
+
+/**
+ * Always-visible email MFA card. Sits beside the authenticator option so users
+ * can pick either method without one hiding the other.
+ */
 export function EplEmailOtpPanel({
   apiRoute,
   autoSend = false,
-  defaultActive = false,
   email,
   redirectTo,
   serverURL,
   setup = false,
-  showToggle = true,
 }: Props) {
   const formRef = useRef<HTMLFormElement>(null)
   const autoSentRef = useRef(false)
-  const [active, setActive] = useState(defaultActive)
   const [sending, setSending] = useState(false)
   const [sentTo, setSentTo] = useState<string | null>(null)
   const { resetKey, status, submit } = useEplEmailOtpVerify({
@@ -56,7 +74,6 @@ export function EplEmailOtpPanel({
         return
       }
 
-      setActive(true)
       setSentTo(data.maskedEmail || email || 'your email')
       toast.success(`Code sent to ${data.maskedEmail || email || 'your email'}`)
     } catch {
@@ -77,84 +94,67 @@ export function EplEmailOtpPanel({
     formRef.current.requestSubmit()
   }, [status])
 
-  if (!active && showToggle) {
-    return (
-      <div className="epl-totp__email-option">
-        <p className="epl-totp__email-lead">
-          {setup
-            ? "Don't have your phone handy?"
-            : "Can't open your authenticator app?"}
-        </p>
-        <button
-          className="epl-totp__email-toggle"
-          disabled={sending}
-          onClick={() => void sendCode()}
-          type="button"
-        >
-          {sending ? 'Sending code…' : 'Send a code to my email instead'}
-        </button>
-      </div>
-    )
-  }
+  const codeReady = Boolean(sentTo)
+  const inputLocked = !codeReady || status === 'pending' || status === 'success'
 
   return (
-    <div className="epl-totp__email-panel">
-      <div className="epl-totp__email-panel-head">
-        <p className="epl-totp__email-lead">
-          {setup ? 'Finish setup with email' : 'Sign in with email code'}
-        </p>
-        {sentTo ? (
-          <p className="epl-totp__email-sent">Code sent to {sentTo}</p>
-        ) : email ? (
-          <p className="epl-totp__email-sent">We&apos;ll send a code to {email}</p>
-        ) : null}
+    <section aria-labelledby="epl-mfa-email-title" className="epl-totp__method-card epl-totp__method-card--email">
+      <div className="epl-totp__method-head">
+        <span className="epl-totp__method-icon epl-totp__method-icon--email" aria-hidden>
+          <MailIcon />
+        </span>
+        <div className="epl-totp__method-copy">
+          <h2 className="epl-totp__method-title" id="epl-mfa-email-title">
+            Email code
+          </h2>
+          <p className="epl-totp__method-desc">
+            {setup
+              ? 'No phone handy? Finish setup with a code we send to your inbox.'
+              : 'Prefer email? We can send a one-time code to your inbox instead.'}
+          </p>
+        </div>
       </div>
 
-      {!sentTo ? (
-        <button
-          className="epl-totp__email-send"
-          disabled={sending}
-          onClick={() => void sendCode()}
-          type="button"
-        >
-          {sending ? 'Sending…' : 'Send code'}
-        </button>
-      ) : (
-        <form className="epl-totp__form" onSubmit={submit} ref={formRef}>
-          <EplOtpInput
-            disabled={status === 'pending' || status === 'success'}
-            hint="Enter the 6-digit code from your email. Codes expire after 10 minutes."
-            hintMode="email"
-            length={6}
-            name="token"
-            onComplete={submitWhenComplete}
-            resetKey={resetKey}
-            status={status}
-          />
-        </form>
-      )}
+      {email ? (
+        <p className="epl-totp__method-meta">
+          {sentTo ? (
+            <>
+              <span className="epl-totp__method-meta-label">Sent to</span> {sentTo}
+            </>
+          ) : (
+            <>
+              <span className="epl-totp__method-meta-label">Will send to</span> {email}
+            </>
+          )}
+        </p>
+      ) : null}
 
       <button
-        className="epl-totp__email-resend"
+        className="epl-totp__email-cta"
         disabled={sending}
         onClick={() => void sendCode()}
         type="button"
       >
-        {sending ? 'Sending…' : 'Resend code'}
+        {sending ? 'Sending code…' : sentTo ? 'Resend email code' : 'Send code to my email'}
       </button>
 
-      {showToggle ? (
-        <button
-          className="epl-totp__email-back"
-          onClick={() => {
-            setActive(false)
-            setSentTo(null)
-          }}
-          type="button"
-        >
-          {setup ? 'Back to authenticator setup' : 'Back to authenticator code'}
-        </button>
-      ) : null}
-    </div>
+      <form className="epl-totp__form" onSubmit={submit} ref={formRef}>
+        <EplOtpInput
+          disabled={inputLocked}
+          hint={
+            codeReady
+              ? 'Enter the 6-digit code from your email. Codes expire after 10 minutes.'
+              : 'Tap the button above first — your code entry box will unlock when the email is sent.'
+          }
+          hintMode="email"
+          label="Email code"
+          length={6}
+          name="token"
+          onComplete={submitWhenComplete}
+          resetKey={resetKey}
+          status={status}
+        />
+      </form>
+    </section>
   )
 }
