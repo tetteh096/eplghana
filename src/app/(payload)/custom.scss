@@ -2213,6 +2213,7 @@ html[data-theme='dark'] {
   &__otp-field {
     display: grid;
     gap: 10px;
+    margin-bottom: 4px;
   }
 
   &__otp-hidden {
@@ -2331,6 +2332,28 @@ html[data-theme='dark'] {
       color: rgba(90, 107, 125, 0.35);
       font-weight: 500;
       letter-spacing: 0.2em;
+    }
+  }
+
+  &__form {
+    margin: 0;
+  }
+
+  &__exit {
+    color: var(--epl-muted);
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  &__exit-link {
+    color: var(--epl-secondary);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+
+    &:hover {
+      color: var(--epl-primary);
     }
   }
 
@@ -2677,6 +2700,80 @@ html[data-theme='dark'] {
   }
 }
 
+/* Verify — roomy centered card; avoid login split-layout clipping on desktop */
+.epl-totp.epl-totp--verify.login.template-minimal {
+  align-items: flex-start !important;
+  display: flex !important;
+  grid-template-columns: unset !important;
+  justify-content: center !important;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 40px 20px 96px !important;
+
+  .template-minimal__wrap {
+    align-items: stretch !important;
+    border: 1px solid var(--epl-border) !important;
+    border-radius: 22px !important;
+    box-shadow:
+      0 24px 60px -28px rgba(10, 61, 107, 0.42),
+      0 0 0 1px rgba(255, 255, 255, 0.45) inset !important;
+    flex-shrink: 0;
+    grid-column: auto !important;
+    justify-content: flex-start !important;
+    margin: auto !important;
+    max-width: 560px !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    padding: 44px 48px 40px !important;
+    width: min(560px, calc(100% - 24px)) !important;
+
+    > * {
+      box-sizing: border-box;
+      max-width: 100% !important;
+      min-width: 0;
+      width: 100%;
+    }
+  }
+
+  .epl-totp__brand {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+    text-align: center;
+    width: 100%;
+
+    .epl-login-logo {
+      align-items: center !important;
+      text-align: center !important;
+    }
+  }
+
+  .epl-totp__hero--compact {
+    margin-bottom: 22px;
+  }
+
+  .epl-totp__lead {
+    max-width: none;
+  }
+
+  .epl-totp__tabs {
+    margin-top: 0;
+  }
+
+  .epl-totp__exit {
+    margin-top: 28px;
+    padding-bottom: 4px;
+    text-align: center;
+  }
+
+  .epl-totp__exit-link {
+    display: inline-block;
+    padding: 4px 0;
+  }
+}
+
 @media (min-width: 960px) {
   .epl-totp--setup.login.template-minimal {
     display: block !important;
@@ -2769,36 +2866,13 @@ html[data-theme='dark'] {
 
   /* Verify only needs a code — no QR panel. Override login’s empty 50/50 split. */
   .epl-totp--verify.login.template-minimal {
-    align-items: center !important;
-    display: flex !important;
-    justify-content: center !important;
-    padding: 48px 24px !important;
+    padding: 56px 32px 104px !important;
 
     .template-minimal__wrap {
-      border: 1px solid var(--epl-border) !important;
-      border-radius: 22px !important;
-      box-shadow:
-        0 24px 60px -28px rgba(10, 61, 107, 0.42),
-        0 0 0 1px rgba(255, 255, 255, 0.45) inset !important;
-      margin: auto !important;
-      max-width: 440px !important;
-      min-height: auto !important;
-      padding: 40px 36px 32px !important;
-      width: 100% !important;
-
-      > * {
-        max-width: 100% !important;
-        width: 100%;
-      }
-    }
-
-    .epl-totp__brand {
-      display: flex;
-      justify-content: center;
-    }
-
-    .epl-totp__exit {
-      text-align: center;
+      border-right: 1px solid var(--epl-border) !important;
+      max-width: 580px !important;
+      padding: 48px 56px 44px !important;
+      width: min(580px, calc(100% - 48px)) !important;
     }
   }
 }

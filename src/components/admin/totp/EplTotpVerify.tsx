@@ -98,7 +98,7 @@ export function EplTotpVerify({
                 <strong>{CMS_PRODUCT_NAME}</strong>.
               </>
             ) : (
-              <>Pick <strong>Authenticator</strong> or <strong>Email</strong> — only one shows at a time.</>
+              <>Choose <strong>Authenticator</strong> or <strong>Email</strong> below.</>
             )}
           </p>
         </div>
