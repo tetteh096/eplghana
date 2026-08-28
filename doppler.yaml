@@ -1,0 +1,10 @@
+# Doppler project wiring for EPL Ghana Web.
+# Create a project named "epl_website" in Doppler with configs: dev, stg, prd
+# Then run: doppler login && doppler setup
+#
+# Import secrets (one-time, from a filled copy of doppler.env.example):
+#   doppler secrets upload doppler.env --config dev
+
+setup:
+  - project: epl_website
+    config: dev

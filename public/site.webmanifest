@@ -1,0 +1,17 @@
+{
+  "name": "Emerging Public Leaders of Ghana",
+  "short_name": "EPL Ghana",
+  "description": "Empowering the next generation of public sector leaders in Ghana.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0a3d6b",
+  "icons": [
+    {
+      "src": "/assets/cropped-EPL-Ghana-logo.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

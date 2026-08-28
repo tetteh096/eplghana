@@ -1,0 +1,275 @@
+import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { payloadTotp } from 'payload-totp'
+import path from 'path'
+import { buildConfig } from 'payload'
+import { fileURLToPath } from 'url'
+import sharp from 'sharp'
+
+import { enhanceUploadFields } from './collections/fields/enhanceUploadFields'
+import { Alumni } from './collections/Alumni'
+import { Cohorts } from './collections/Cohorts'
+import { Events } from './collections/Events'
+import { Fellows } from './collections/Fellows'
+import { FormSubmissions } from './collections/FormSubmissions'
+import { GalleryAlbums } from './collections/GalleryAlbums'
+import { ImpactInterventions } from './collections/ImpactInterventions'
+import { Media } from './collections/Media'
+import { News } from './collections/News'
+import { Pages } from './collections/Pages'
+import { Partners } from './collections/Partners'
+import { Projects } from './collections/Projects'
+import { Publications } from './collections/Publications'
+import { Team } from './collections/Team'
+import { Testimonials } from './collections/Testimonials'
+import { Users } from './collections/Users'
+import { isNavDropdown, mainNavigation } from './config/navigation'
+import { CMS_PRODUCT_NAME, EPL_LOGO_SRC } from './config/brand'
+import { TOTP_CONFIG } from './config/totp'
+import { getEmailAdapter } from './email/transport'
+import { sendEmailOtpHandler, verifyEmailOtpHandler } from './auth/emailMfa'
+import { Footer } from './globals/Footer'
+import { Header } from './globals/Header'
+import { PageBanners } from './globals/PageBanners'
+import { SiteSettings } from './globals/SiteSettings'
+import { getS3Storage } from './storage/s3'
+import { maybeRunDevAutoSeed } from './seeds/devAutoSeed'
+import { revalidatePublicSite, revalidatePublicSiteGlobal } from './hooks/revalidateFrontend'
+
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
+
+/** Public pages re-fetch CMS data on every request; bust cache on save as a safety net. */
+const COLLECTIONS_WITH_REVALIDATE = new Set([
+  'pages',
+  'projects',
+  'news',
+  'events',
+  'publications',
+  'testimonials',
+  'team',
+  'fellows',
+  'cohorts',
+  'impact-interventions',
+  'alumni',
+  'partners',
+  'gallery-albums',
+  'media',
+])
+
+export default buildConfig({
+  admin: {
+    user: Users.slug,
+    theme: 'all',
+    importMap: {
+      baseDir: path.resolve(dirname),
+    },
+    meta: {
+      titleSuffix: `| ${CMS_PRODUCT_NAME}`,
+      icons: [
+        {
+          rel: 'icon',
+          type: 'image/png',
+          url: EPL_LOGO_SRC,
+        },
+        {
+          rel: 'apple-touch-icon',
+          type: 'image/png',
+          url: EPL_LOGO_SRC,
+        },
+      ],
+    },
+    components: {
+      graphics: {
+        Icon: '/components/admin/Icon#Icon',
+        Logo: '/components/admin/Logo#Logo',
+      },
+      views: {
+        dashboard: {
+          Component: '/components/admin/EplDashboard#EplDashboard',
+          exact: true,
+          path: '/',
+        },
+        SetupTOTP: {
+          Component: '/components/admin/totp/EplTotpSetup#EplTotpSetup',
+          exact: true,
+          path: '/setup-totp',
+        },
+        VerifyTOTP: {
+          Component: '/components/admin/totp/EplTotpVerify#EplTotpVerify',
+          exact: true,
+          path: '/verify-totp',
+        },
+      },
+      actions: ['/components/admin/HeaderToolbar#HeaderToolbar'],
+      beforeLogin: ['/components/admin/BeforeLogin#BeforeLogin'],
+      afterLogin: ['/components/admin/AfterLogin#AfterLogin'],
+      beforeNav: ['/components/admin/NavSidebarTop#NavSidebarTop'],
+    },
+  },
+  collections: [Users, Media, News, Projects, Events, Publications, Testimonials, Team, Cohorts, Fellows, ImpactInterventions, Alumni, Partners, GalleryAlbums, FormSubmissions, Pages].map(
+    (collection) => ({
+      ...collection,
+      fields: enhanceUploadFields(collection.fields),
+      ...(COLLECTIONS_WITH_REVALIDATE.has(collection.slug)
+        ? {
+            hooks: {
+              ...collection.hooks,
+              afterChange: [...(collection.hooks?.afterChange ?? []), revalidatePublicSite],
+            },
+          }
+        : {}),
+    }),
+  ),
+  globals: [SiteSettings, Header, Footer, PageBanners].map((global) => ({
+    ...global,
+    fields: enhanceUploadFields(global.fields),
+    hooks: {
+      ...global.hooks,
+      afterChange: [...(global.hooks?.afterChange ?? []), revalidatePublicSiteGlobal],
+    },
+  })),
+  editor: lexicalEditor(),
+  onInit: async (payload) => {
+    const g = globalThis as Record<string, unknown>
+    const migrationsDone = g.__eplPayloadMigrationsDone === true
+
+    if (!migrationsDone) {
+      g.__eplPayloadMigrationsDone = true
+
+      // Seed the Header global from the default navigation on first run so the
+      // menu is immediately editable in the admin (instead of an empty global).
+      try {
+        const header = await payload.findGlobal({ slug: 'header' })
+        const labels = Array.isArray(header?.navItems)
+          ? header.navItems.map((item: { label?: string | null }) => item?.label ?? '')
+          : []
+        const hasItems = labels.length > 0
+        const isLegacy =
+          labels.includes('About Us') ||
+          labels.includes('Knowledge Products') ||
+          header?.cta?.label === 'Contact Us'
+        if (!hasItems || isLegacy) {
+          await payload.updateGlobal({
+            slug: 'header',
+            data: {
+              navItems: mainNavigation.map((item) =>
+                isNavDropdown(item)
+                  ? {
+                      label: item.label,
+                      children: item.items.map((sub) => ({
+                        label: sub.label,
+                        url: sub.href,
+                        ...(sub.description ? { description: sub.description } : {}),
+                      })),
+                    }
+                  : { label: item.label, url: item.href },
+              ),
+              topLinks: [
+                { label: 'About', url: '/about' },
+                { label: 'Projects', url: '/projects' },
+                { label: 'Community', url: '/community/current-fellows' },
+              ],
+              cta: { enabled: true, label: 'Donate', url: '/donate' },
+              partnerCta: { enabled: true, label: 'Partner with us', url: '/community/partners' },
+            },
+          })
+          payload.logger.info(
+            isLegacy
+              ? '[EPL] Upgraded Header global from legacy menu to redesign navigation'
+              : '[EPL] Seeded Header global from default navigation',
+          )
+        }
+      } catch (error) {
+        payload.logger.warn(`[EPL] Header seed skipped: ${error}`)
+      }
+
+      // Existing users created before roles were added become admins once.
+      try {
+        const withoutRoles = await payload.find({
+          collection: 'users',
+          depth: 0,
+          limit: 200,
+          where: {
+            or: [
+              { roles: { exists: false } },
+              { roles: { equals: [] } },
+            ],
+          },
+        })
+
+        for (const user of withoutRoles.docs) {
+          await payload.update({
+            collection: 'users',
+            id: user.id,
+            data: { roles: ['admin'] },
+            overrideAccess: true,
+          })
+        }
+
+        if (withoutRoles.totalDocs > 0) {
+          payload.logger.info(
+            `[EPL] Assigned admin role to ${withoutRoles.totalDocs} user(s) missing roles`,
+          )
+        }
+      } catch (error) {
+        payload.logger.warn(`[EPL] User role migration skipped: ${error}`)
+      }
+    }
+
+    // Never block page loads on dev seeding — runs in the background.
+    void maybeRunDevAutoSeed(payload)
+  },
+  secret: process.env.PAYLOAD_SECRET || '',
+  // Restrict cross-origin API access and CSRF-trusted origins to our own site.
+  // Defends the authenticated REST/GraphQL API against requests from other origins.
+  cors: [process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'],
+  csrf: [process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'],
+  // Email: Resend or SMTP via getEmailAdapter() — see src/email/transport.ts
+  email: getEmailAdapter(),
+  typescript: {
+    outputFile: path.resolve(dirname, 'payload-types.ts'),
+  },
+  // GraphQL is unused by this app (frontend + admin use the REST/Local API).
+  // Disabling it removes an exposed endpoint and stops the schema-build error
+  // caused by the "News & Events" select value. Re-enable by removing this and
+  // fixing that value (GraphQL enum members can't contain '&').
+  graphQL: {
+    disable: true,
+  },
+  endpoints: [
+    {
+      handler: sendEmailOtpHandler,
+      method: 'post',
+      path: '/send-email-otp',
+    },
+    {
+      handler: verifyEmailOtpHandler,
+      method: 'post',
+      path: '/verify-email-otp',
+    },
+  ],
+  db: mongooseAdapter({
+    url: process.env.DATABASE_URL || '',
+    connectOptions: {
+      // Serverless cold starts (Vercel) need longer than local Docker.
+      serverSelectionTimeoutMS:
+        process.env.NODE_ENV === 'production' ? 30_000 : 3_000,
+      maxPoolSize: process.env.NODE_ENV === 'production' ? 1 : undefined,
+    },
+  }),
+  sharp,
+  plugins: [
+    ...getS3Storage(),
+    payloadTotp({
+      collection: 'users',
+      forceSetup: true,
+      forceWhiteBackgroundOnQrCode: true,
+      totp: {
+        issuer: TOTP_CONFIG.issuer,
+        digits: TOTP_CONFIG.digits,
+        period: TOTP_CONFIG.period,
+      },
+    }),
+  ],
+})
