@@ -41,15 +41,15 @@ export function proxy(request: NextRequest) {
 
   const csp = [
     `default-src 'self'`,
-    `script-src 'self' 'unsafe-inline'`,
+    `script-src 'self' 'unsafe-inline' https://js.paystack.co`,
     `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
     `img-src 'self' data: blob: https:`,
     `font-src 'self' https://fonts.gstatic.com data:`,
-    `connect-src 'self'`,
-    `frame-src 'self' https://www.google.com`,
+    `connect-src 'self' https://api.paystack.co`,
+    `frame-src 'self' https://www.google.com https://checkout.paystack.com https://standard.paystack.co`,
     `object-src 'none'`,
     `base-uri 'self'`,
-    `form-action 'self'`,
+    `form-action 'self' https://checkout.paystack.com`,
     `frame-ancestors 'self'`,
     // Only upgrade in prod — on http://localhost this would break dev assets.
     ...(isProd ? [`upgrade-insecure-requests`] : []),
