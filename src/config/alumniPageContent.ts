@@ -37,12 +37,12 @@ export function alumniToTeamMember(alumni: AlumniSpotlight): TeamMember {
 
 export const alumniPageContent = {
   hero: {
-    eyebrow: 'EPLAN · Public Service Fellows Network',
+    eyebrow: 'Alumni Community',
     title: 'Emerging Public Leaders Alumni Network (EPLAN)',
     subtitle: 'A lifelong fraternity of public service professionals',
     lead:
       'A lifelong fraternity of public service professionals advancing institutional excellence, integrity, and ethical governance across Ghana.',
-    image: `${EPL_MEDIA}/2023/12/MG_0422-scaled.jpg`,
+    image: `${EPL_MEDIA}/2025/07/CSG-32-scaled.jpg`,
     secondaryImage: `${EPL_MEDIA}/2025/07/CSG-32-scaled.jpg`,
     badge: {
       value: '500+',
@@ -105,25 +105,30 @@ export const alumniPageContent = {
         title: 'Annual End-of-Year Fellows Gathering',
         description:
           'Flagship reunion bringing alumni together in strategic dialogue on public sector innovation, peer accountability, and policy milestones.',
+        image: `${EPL_MEDIA}/2025/10/CSG-1-scaled.jpg`,
       },
       {
         tag: 'Success Story',
         title: 'Pioneering Municipal Health Data Systems',
         description:
           'EPLAN alumni stationed at regional health directorates modernized digital record-keeping, reducing patient wait times across 8 local clinics.',
+        image: `${EPL_MEDIA}/2025/10/CSOE-45-scaled.jpg`,
       },
       {
         tag: 'Policy Impact',
         title: 'Cross-Ministerial Civil Service Working Group',
         description:
           'Alumni across the Ministry of Finance and Ministry of Local Government published recommendations for digitized municipal revenue oversight.',
+        image: `${EPL_MEDIA}/2025/07/CSG-32-scaled.jpg`,
       },
     ],
+    supportCta: { label: 'Support EPLAN', href: '/donate#ways-to-give' },
   },
   eplanAbout: {
     eyebrow: 'About EPLAN',
     title: 'A lifelong community of public service leaders',
     paragraphs: [
+      'Established following the inaugural cohort of the Emerging Public Leaders Fellowship, EPLAN sustains momentum beyond graduation by uniting young leaders committed to critical thinking, ethical action, and meaningful public service reform.',
       'The Public Service Fellows Network (PSFN), also known as the Emerging Public Leaders of Ghana Alumni Network (EPLAN), was founded by EPL Ghana following the inauguration of its first cohort from the Public Service Fellowship Programme.',
       'The network was created to sustain the fellowship’s impact through continuous learning, collaboration, and mentorship, providing a platform for members to exchange ideas, strengthen professional ties, and collectively advance effective and accountable governance across Ghana’s public service.',
       'To date, the network has grown into a vibrant community of over 100 dedicated members who continue to think critically, act ethically, and drive meaningful change across Ghana’s Public Service.',
@@ -131,7 +136,7 @@ export const alumniPageContent = {
     image: `${EPL_MEDIA}/2025/10/CSG-16-scaled.jpg`,
   },
   vision: {
-    eyebrow: 'Our Vision',
+    eyebrow: 'Our Driving Vision',
     title: 'Catalysts for systemic change',
     text:
       'To be a network of ethical public servants committed to excellence; who act as catalysts to drive systemic change in Africa’s public sector.',
@@ -430,7 +435,7 @@ export const alumniPageContent = {
     primaryLabel: 'Contact Us',
     primaryHref: '/contact',
     secondaryLabel: 'Register Interest',
-    secondaryHref: '/get-involved#register-interest',
+    secondaryHref: '/contact',
     image: `${EPL_MEDIA}/2025/10/WhatsApp-Image-2025-10-27-at-10.19.41-AM-e1761750334208.jpeg`,
   },
 }

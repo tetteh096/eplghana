@@ -9,6 +9,7 @@ export const MEDIA_FOLDER_OPTIONS = [
   { label: 'Pages & site', value: 'pages' },
   { label: 'Publications', value: 'publications' },
   { label: 'Partners', value: 'partners' },
+  { label: 'Photo Gallery', value: 'gallery' },
 ] as const
 
 export type MediaFolder = (typeof MEDIA_FOLDER_OPTIONS)[number]['value']

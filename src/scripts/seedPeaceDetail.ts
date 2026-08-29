@@ -91,6 +91,7 @@ const peaceDetail = {
   heroCtaUrl: d.hero.ctaHref,
   aboutEyebrow: d.aboutEyebrow,
   aboutTitle: d.aboutTitle,
+  aboutParagraphs: d.aboutParagraphs.map((text) => ({ text })),
   aboutImage: await importImage(d.aboutImage, 'P.E.A.C.E programme'),
   modelHighlightEyebrow: d.modelHighlight.eyebrow,
   modelHighlightTitle: d.modelHighlight.title,

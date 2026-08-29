@@ -16,7 +16,7 @@ const fellowshipMedia = {
   mentorship: `${EPL_MEDIA}/2025/10/IMG_7245-scaled.jpg`,
   community: `${EPL_MEDIA}/2025/10/CSG-16-scaled.jpg`,
   graduation: `${EPL_MEDIA}/2023/12/MG_0422-scaled.jpg`,
-  application: `${EPL_MEDIA}/2025/10/CSOT-78-1024x683.jpg`,
+  application: `${EPL_MEDIA}/2025/07/CSG-1024x683.jpg`,
   partner: `${EPL_MEDIA}/2025/10/WhatsApp-Image-2025-10-27-at-10.19.41-AM-e1761750334208.jpeg`,
 } as const
 
@@ -37,7 +37,7 @@ export const publicServiceFellowshipContent = {
       { value: '275+', label: 'Fellows by 2030' },
     ],
     ctaLabel: 'Apply for Fellowship',
-    ctaHref: '/get-involved#register-interest',
+    ctaHref: '/contact',
     secondaryCtaLabel: 'Get Involved',
     secondaryCtaHref: '/get-involved',
   },
@@ -216,7 +216,7 @@ export const publicServiceFellowshipContent = {
     description:
       'Applications for our next cohort of Emerging Public Leaders Fellows open annually. Register your interest to receive updates and application guides.',
     ctaLabel: 'Apply for Fellowship',
-    ctaHref: '/get-involved#register-interest',
+    ctaHref: '/contact',
     secondaryCtaLabel: 'Meet Current Fellows',
     secondaryCtaHref: '/community/current-fellows',
   },

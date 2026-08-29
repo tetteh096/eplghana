@@ -175,36 +175,25 @@ export function ChariticsCurrentFellowsPage({ content }: ChariticsCurrentFellows
 
   return (
     <div className="figma-community-page">
-      <section className="figma-about-hero">
-        <div className="figma-about-hero__bg" style={{ backgroundImage: `url(${hero.image})` }} />
-        <div className="figma-about-hero__overlay" />
-        <div className="figma-about-hero__content">
-          <div className="figma-kicker figma-kicker--gold">
-            <span className="figma-kicker__line" />
-            <span>{hero.eyebrow}</span>
-          </div>
-          <h1>{hero.title}</h1>
-          <p>{hero.lead}</p>
-
-          <div
-            style={{
-              display: 'flex',
-              gap: '32px',
-              marginTop: '36px',
-              justifyContent: 'center',
-              flexWrap: 'wrap',
-            }}
-          >
-            {hero.stats.map((stat) => (
-              <div key={stat.label}>
-                <strong style={{ fontSize: '32px', fontWeight: '850', color: '#FFC107', display: 'block' }}>
-                  {stat.value}
-                </strong>
-                <span style={{ fontSize: '13px', color: '#fff', textTransform: 'uppercase', fontWeight: 700 }}>
-                  {stat.label}
-                </span>
-              </div>
-            ))}
+      <section className="figma-community-hero">
+        <div className="figma-community-hero__bg" style={{ backgroundImage: `url(${hero.image})` }} />
+        <div className="figma-community-hero__overlay" />
+        <div className="figma-community-hero__content">
+          <div className="figma-community-hero__copy">
+            <div className="figma-impact-kicker">
+              <span className="figma-impact-kicker__line" />
+              <span>{hero.eyebrow.toUpperCase()}</span>
+            </div>
+            <h1>{hero.title}</h1>
+            <p>{hero.lead}</p>
+            <div className="figma-community-hero__stats">
+              {hero.stats.map((stat) => (
+                <div className="figma-community-hero__stat" key={stat.label}>
+                  <div className="figma-community-hero__stat-value">{stat.value}</div>
+                  <div className="figma-community-hero__stat-label">{stat.label}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -369,56 +358,34 @@ export function ChariticsCurrentFellowsPage({ content }: ChariticsCurrentFellows
         ) : null}
       </section>
 
-      <section className="figma-section" id="eplan" style={{ paddingBlock: '100px', background: '#F8F9FA' }}>
+      <section className="figma-community-eplan" id="eplan">
         <div className="epl-new-shell">
-          <div
-            className="figma-section-head"
-            style={{ textAlign: 'center', maxWidth: '780px', margin: '0 auto 40px' }}
-          >
-            <div className="figma-kicker figma-kicker--gold" style={{ justifyContent: 'center' }}>
-              <span className="figma-kicker__line" />
-              <span>{eplanPromo.eyebrow}</span>
-            </div>
-            <h2
-              style={{
-                fontSize: 'clamp(36px, 4vw, 54px)',
-                fontWeight: 800,
-                color: '#0D1B3E',
-                margin: '14px 0 16px',
-              }}
-            >
-              {eplanPromo.title}
-            </h2>
-            <p className="figma-subtitle" style={{ color: '#636772', fontSize: '18px', lineHeight: 1.65 }}>
-              {eplanPromo.intro}
-            </p>
-          </div>
-
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              gap: '40px',
-              margin: '0 auto 40px',
-              flexWrap: 'wrap',
-            }}
-          >
-            {eplanPromo.stats.map((stat) => (
-              <div key={stat.label} style={{ textAlign: 'center' }}>
-                <strong style={{ fontSize: '40px', fontWeight: '850', color: '#3F51B5', display: 'block' }}>
-                  {stat.value}
-                </strong>
-                <span style={{ fontSize: '13px', fontWeight: '750', color: '#0C1427', textTransform: 'uppercase' }}>
-                  {stat.label}
-                </span>
+          <div className="figma-community-eplan__card">
+            <div className="figma-community-eplan__copy">
+              <div className="figma-impact-kicker figma-impact-kicker--gold">
+                <span className="figma-impact-kicker__line" />
+                <span>{eplanPromo.eyebrow.toUpperCase()}</span>
               </div>
-            ))}
-          </div>
-
-          <div style={{ textAlign: 'center' }}>
-            <Link className="epl-new-btn epl-new-btn--blue" href={eplanPromo.ctaHref}>
-              {eplanPromo.ctaLabel}
-            </Link>
+              <h2>{eplanPromo.title}</h2>
+              <p>{eplanPromo.intro}</p>
+              <div className="figma-community-eplan__stats">
+                {eplanPromo.stats.map((stat, index) => (
+                  <div className="figma-community-eplan__stat" key={stat.label}>
+                    <div
+                      className={`figma-community-eplan__stat-value${index % 2 === 0 ? ' figma-community-eplan__stat-value--gold' : ''}`}
+                    >
+                      {stat.value}
+                    </div>
+                    <div className="figma-community-eplan__stat-label">{stat.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="figma-community-eplan__cta-wrap">
+              <Link className="figma-community-eplan__cta" href={eplanPromo.ctaHref}>
+                {eplanPromo.ctaLabel} <span aria-hidden>→</span>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

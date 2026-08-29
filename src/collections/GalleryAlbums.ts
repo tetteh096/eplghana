@@ -4,9 +4,7 @@ import { canEditContent } from '@/access/canEditContent'
 import { authenticatedOrPublishedOrVisible } from '@/access/authenticatedOrPublishedOrVisible'
 import { publicTotpReadBypass } from '@/config/security'
 
-/**
- * Photo gallery albums shown on /gallery. Each album has its own page at /gallery/[slug].
- */
+/** Photo gallery albums on /gallery. Link uploads via Media → Gallery album. */
 export const GalleryAlbums: CollectionConfig = {
   slug: 'gallery-albums',
   labels: { singular: 'Gallery Album', plural: 'Gallery Albums' },
@@ -14,7 +12,7 @@ export const GalleryAlbums: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'order', 'status'],
     description:
-      'Photo folders for the Photo Gallery. Visitors open an album to browse all photos, then click a photo to view it.',
+      'Create a named photo folder for the gallery. Upload images in Media → choose this album. Visitors open the album on /gallery.',
   },
   access: {
     create: canEditContent,
@@ -24,6 +22,15 @@ export const GalleryAlbums: CollectionConfig = {
   },
   custom: publicTotpReadBypass,
   fields: [
+    {
+      name: 'uploadHint',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '/components/admin/GalleryAlbumUploadHint#GalleryAlbumUploadHint',
+        },
+      },
+    },
     { name: 'title', type: 'text', required: true },
     {
       name: 'slug',
@@ -58,13 +65,17 @@ export const GalleryAlbums: CollectionConfig = {
       relationTo: 'media',
       label: 'Cover image',
       admin: {
-        description: 'Shown on the albums grid. If empty, the first photo is used.',
+        description: 'Shown on the albums grid. If empty, the first linked or manual photo is used.',
       },
     },
     {
       name: 'photos',
       type: 'array',
-      labels: { singular: 'Photo', plural: 'Photos' },
+      labels: { singular: 'Manual photo', plural: 'Manual photos (optional)' },
+      admin: {
+        description:
+          'Optional extras. Most albums are managed by uploading to Media and selecting this album in the Gallery album field.',
+      },
       fields: [
         { name: 'image', type: 'upload', relationTo: 'media', required: true },
         { name: 'title', type: 'text', required: true },

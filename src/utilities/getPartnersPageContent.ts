@@ -29,6 +29,7 @@ export type PartnersPageContent = {
     highlightValue: string
     highlightTitle: string
     highlightText: string
+    image: string
   }
   ecosystem: {
     eyebrow: string
@@ -121,6 +122,7 @@ export async function getPartnersPageContent(): Promise<PartnersPageContent> {
           highlights: Array.isArray(c?.highlights)
             ? c.highlights.map((h: any) => txt(h?.text, '')).filter(Boolean)
             : [],
+          image: img(c?.image, d.ecosystem.categories[i]?.image ?? d.ecosystem.categories[0]?.image ?? ''),
         }))
       : d.ecosystem.categories
 
@@ -168,6 +170,7 @@ export async function getPartnersPageContent(): Promise<PartnersPageContent> {
       highlightValue: txt(cms.collabHighlightValue, d.collaboration.highlightValue),
       highlightTitle: txt(cms.collabHighlightTitle, d.collaboration.highlightTitle),
       highlightText: txt(cms.collabHighlightText, d.collaboration.highlightText),
+      image: img(cms.collabImage, d.collaboration.image),
     },
     ecosystem: {
       eyebrow: txt(cms.ecosystemEyebrow, d.ecosystem.eyebrow),

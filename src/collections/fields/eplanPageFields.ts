@@ -114,6 +114,7 @@ export const eplanPageFields: Field[] = [
               { name: 'tag', type: 'text', required: true },
               { name: 'title', type: 'text', required: true },
               { name: 'description', type: 'textarea', required: true },
+              { name: 'image', type: 'upload', relationTo: 'media', label: 'Card image' },
             ],
           },
         ],

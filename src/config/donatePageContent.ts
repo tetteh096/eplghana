@@ -25,9 +25,9 @@ export const donatePageContent = {
     lead:
       "Your contribution helps EPL develop ethical, capable public leaders who strengthen Ghana's institutions and serve the public good.",
     image: eplHomeImages.aboutMain,
-    primaryCtaLabel: 'Ways to Give',
+    primaryCtaLabel: '',
     primaryCtaHref: '#ways-to-give',
-    secondaryCtaLabel: 'Make a Pledge',
+    secondaryCtaLabel: '',
     secondaryCtaHref: '#pledge',
   },
   why: {
@@ -65,7 +65,7 @@ export const donatePageContent = {
       description: 'Direct local bank transfer or domestic wire in Ghana Cedis.',
       accountName: 'Emerging Public Leaders Ghana',
       accountNumberGhs: '1441002345678',
-      accountNumberUsd: '0020134489129',
+      accountNumberUsd: '1441009876543',
       branch: 'Ecobank Silver Star Tower, Accra',
       swift: 'ECOCGHAC',
       note: 'Please use your name or pledge as the transfer reference.',
@@ -99,10 +99,10 @@ export const donatePageContent = {
       title: 'Debit & Credit Card',
       description:
         'Instant, 256-bit encrypted checkout supporting Visa, Mastercard, GHLink & International cards.',
-      statusLabel: 'Paystack Secure Checkout',
+      statusLabel: 'Secure Instant Checkout',
       acceptedCards: 'Visa, Mastercard, GHLink, Apple Pay',
-      currencies: 'GHS and USD via Paystack',
-      ctaLabel: 'Choose Amount',
+      currencies: 'GHS (Ghana Cedis), USD ($), GBP (£), EUR (€)',
+      ctaLabel: 'Pay by Card',
       ctaHref: '#tiers',
     },
   },
@@ -155,9 +155,9 @@ export const donatePageContent = {
     description:
       'Complete the form below and our team will follow up to facilitate receipt confirmation.',
     submitLabel: 'Submit Pledge',
-    successTitle: 'Pledge Received',
+    successTitle: 'Thank You for Your Support',
     successText:
-      'Thank you for supporting Emerging Public Leaders of Ghana. Our team will contact you shortly to confirm details.',
+      'Your pledge has been received. Our team will be in touch within 48 hours to confirm the details and next steps.',
     channels: [
       'Debit / Credit Card (Online)',
       'Bank Transfer (Ecobank GHS)',

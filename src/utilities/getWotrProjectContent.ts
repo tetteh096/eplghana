@@ -115,7 +115,7 @@ export async function getWotrProjectContent(
                     d.keySuccess.stories[idx]?.images[0] ??
                     heroPrimary,
                 ),
-              ],
+              ] as [string, string],
             }))
           : d.keySuccess.stories
 

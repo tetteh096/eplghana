@@ -32,7 +32,7 @@ const projectFallbacks: ProjectCardFallback[] = [
     badge: 'Core Programme',
     badgeType: 'gold',
     title: 'Emerging Public Leaders Fellowship',
-    image: `${EPL_MEDIA}/2025/10/CSOT-78-scaled.jpg`,
+    image: `${EPL_MEDIA}/2025/10/CSG-16-scaled.jpg`,
     description:
       'A flagship 12-month leadership development programme placing young professionals in public institutions across Ghana. Fellows receive structured mentorship, targeted training and peer learning that builds lasting leadership capacity.',
     metric: '500+ Fellows across 8 cohorts',

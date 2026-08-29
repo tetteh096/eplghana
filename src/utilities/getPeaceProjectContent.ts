@@ -18,6 +18,7 @@ export type PeaceProjectContent = {
   }
   aboutEyebrow: string
   aboutTitle: string
+  aboutParagraphs: string[]
   aboutImage: string
   modelHighlight: typeof peaceContent.modelHighlight
   impact: typeof peaceContent.impact
@@ -139,6 +140,10 @@ export async function getPeaceProjectContent(slug = 'peace'): Promise<PeaceProje
         },
         aboutEyebrow: txt(cms.aboutEyebrow, d.aboutEyebrow),
         aboutTitle: txt(cms.aboutTitle, d.aboutTitle),
+        aboutParagraphs:
+          Array.isArray(cms.aboutParagraphs) && cms.aboutParagraphs.length
+            ? cms.aboutParagraphs.map((p: any) => p?.text).filter(Boolean)
+            : d.aboutParagraphs,
         aboutImage: img(cms.aboutImage, d.aboutImage),
         modelHighlight: {
           eyebrow: txt(cms.modelHighlightEyebrow, d.modelHighlight.eyebrow),
@@ -194,6 +199,7 @@ export async function getPeaceProjectContent(slug = 'peace'): Promise<PeaceProje
     },
     aboutEyebrow: d.aboutEyebrow,
     aboutTitle: d.aboutTitle,
+    aboutParagraphs: d.aboutParagraphs,
     aboutImage: d.aboutImage,
     modelHighlight: d.modelHighlight,
     impact: d.impact,

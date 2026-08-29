@@ -5,6 +5,7 @@ import {
   aboutPageIntro,
   aboutPageMission,
   aboutPagePartnerReasons,
+  aboutPageRedesignImages,
   aboutPageStats,
   aboutPageStory,
   aboutPageVision,
@@ -82,7 +83,7 @@ const REDESIGN_VISION: TabContent = {
 }
 
 const REDESIGN_PARTNER = {
-  eyebrow: 'Leadership Ecosystem',
+  eyebrow: 'Ecosystem',
   title: 'Our Partners & Sponsors',
   lead:
     "We work with government agencies, development partners and the private sector to build Ghana's public leadership capacity.",
@@ -94,42 +95,42 @@ export const aboutCoreValuesFallback: AboutCoreValue[] = [
     title: 'Partnership',
     color: 'blue',
     meaning:
-      'We build deep, collaborative alliances with government agencies, development institutions, and public sector leaders to co-create sustainable change.',
+      'We believe in the core values of collaboration. By fostering strong partnerships across sectors and communities, we create meaningful connections that drive collective impact and sustainable change in public service.',
   },
   {
     num: '02',
     title: 'Integrity',
     color: 'navy',
     meaning:
-      'We operate with uncompromised honesty, accountability, and ethical stewardship in every public institution we serve.',
+      'Operating with transparency, honesty and ethical consistency in everything we do, modelling the very values we seek to develop in our Fellows.',
   },
   {
     num: '03',
     title: 'Value-Based Leadership',
     color: 'blue',
     meaning:
-      'We cultivate principled leaders who prioritize the public good, ethical decision-making, and long-term national welfare.',
+      'Developing leaders guided not only by competence, but by a deep commitment to public good, ethical service and institutional responsibility.',
   },
   {
     num: '04',
     title: 'Excellence',
     color: 'navy',
     meaning:
-      'We uphold high standards of performance, continuous learning, and analytical rigour in public service delivery.',
+      'Maintaining the highest standards in programme design, Fellow development and organisational practice — excellence is not a goal, it is our baseline.',
   },
   {
     num: '05',
     title: 'Transparency',
     color: 'blue',
     meaning:
-      'We champion open communication, institutional clarity, and ethical accountability across all levels of governance.',
+      'We embrace openness and clear communication in our operations and relationships. Transparency builds trust and reinforces our credibility as a public service organisation.',
   },
   {
     num: '06',
     title: 'Sustainability',
     color: 'navy',
     meaning:
-      'We embed lasting systems, resilient networks, and scalable leadership practices that transform institutions for generations.',
+      'Building systems, relationships and practices designed to endure long after any single programme, cohort or partnership.',
   },
 ]
 
@@ -198,27 +199,27 @@ export async function getAboutContent(): Promise<AboutContent> {
 
   return {
     intro: {
-      eyebrow: txt(a.introEyebrow, REDESIGN_INTRO.eyebrow),
-      title: txt(a.introTitle, REDESIGN_INTRO.title),
-      lead: txt(a.introLead, REDESIGN_INTRO.lead),
-      image: img(a.introImage, aboutPageIntro.image),
-      secondaryImage: img(a.introSecondaryImage, aboutPageIntro.secondaryImage),
+      eyebrow: REDESIGN_INTRO.eyebrow,
+      title: REDESIGN_INTRO.title,
+      lead: REDESIGN_INTRO.lead,
+      image: img(a.introImage, aboutPageRedesignImages.hero),
+      secondaryImage: img(a.introSecondaryImage, aboutPageRedesignImages.story),
     },
     approach: { title: txt(a.approachTitle, aboutPageApproach.title), bullets },
     story: {
       growth: {
-        title: txt(a.growthTitle, REDESIGN_STORY.title),
+        title: REDESIGN_STORY.title,
         highlight: txt(a.growthHighlight, aboutPageStory.growth.highlight),
         highlightLabel: txt(a.growthHighlightLabel, aboutPageStory.growth.highlightLabel),
-        body: txt(a.growthBody, REDESIGN_STORY.body),
+        body: REDESIGN_STORY.body,
       },
       investment: {
         title: txt(a.investmentTitle, aboutPageStory.investment.title),
         body: txt(a.investmentBody, aboutPageStory.investment.body),
       },
     },
-    mission: tab(a.mission, REDESIGN_MISSION),
-    vision: tab(a.vision, REDESIGN_VISION),
+    mission: REDESIGN_MISSION,
+    vision: REDESIGN_VISION,
     impact: {
       image: img(a.impact?.image, aboutPageImpactImage),
       heading: txt(a.impact?.heading, IMPACT_HEADING),
@@ -226,9 +227,9 @@ export async function getAboutContent(): Promise<AboutContent> {
       items: impactItems,
     },
     partner: {
-      eyebrow: txt(a.partner?.eyebrow, REDESIGN_PARTNER.eyebrow),
-      title: txt(a.partner?.title, REDESIGN_PARTNER.title),
-      lead: txt(a.partner?.lead, REDESIGN_PARTNER.lead),
+      eyebrow: REDESIGN_PARTNER.eyebrow,
+      title: REDESIGN_PARTNER.title,
+      lead: REDESIGN_PARTNER.lead,
       body: txt(a.partner?.body, aboutPagePartnerReasons.body),
       chooseLabel: txt(a.partner?.chooseLabel, aboutPagePartnerReasons.chooseLabel),
       items: partnerItems,

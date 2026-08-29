@@ -111,6 +111,10 @@ export const impactPageFields: Field[] = [
   {
     type: 'collapsible',
     label: 'Testimonials',
+    admin: {
+      description:
+        'Section headings here. Quote cards are edited in this list (photo optional). Falls back to config defaults only when empty.',
+    },
     fields: [
       { name: 'testimonialsEyebrow', type: 'text', defaultValue: d.testimonials.eyebrow },
       { name: 'testimonialsTitle', type: 'text', defaultValue: d.testimonials.title },
@@ -145,6 +149,7 @@ export const impactPageFields: Field[] = [
           { name: 'author', type: 'text', required: true },
           { name: 'role', type: 'text', required: true },
           { name: 'org', type: 'text', required: true },
+          { name: 'photo', type: 'upload', relationTo: 'media', label: 'Portrait photo' },
         ],
       },
     ],
@@ -152,6 +157,10 @@ export const impactPageFields: Field[] = [
   {
     type: 'collapsible',
     label: 'Publications',
+    admin: {
+      description:
+        'Section headings and fallback lists. Live report cards prefer the Publications collection (Annual / Impact Report and Research categories).',
+    },
     fields: [
       { name: 'publicationsEyebrow', type: 'text', defaultValue: d.publications.eyebrow },
       { name: 'publicationsTitle', type: 'text', defaultValue: d.publications.title },

@@ -166,12 +166,14 @@ function mapCmsPage(cms: Record<string, any>, d: typeof alumniPageContent): Epla
       intro: txt(cms.spotlightIntro, d.spotlight.intro),
       items:
         Array.isArray(cms.spotlightItems) && cms.spotlightItems.length
-          ? cms.spotlightItems.map((item: any) => ({
+          ? cms.spotlightItems.map((item: any, index: number) => ({
               tag: item?.tag ?? '',
               title: item?.title ?? '',
               description: item?.description ?? '',
+              image: img(item?.image, d.spotlight.items[index]?.image ?? ''),
             }))
           : d.spotlight.items,
+      supportCta: d.spotlight.supportCta,
     },
     eplanAbout: {
       eyebrow: txt(cms.aboutEyebrow, d.eplanAbout.eyebrow),
@@ -282,9 +284,17 @@ export async function getEplanPageContent(): Promise<EplanPageContent> {
   const d = alumniPageContent
   const page = await getPage('/community/eplan')
   const cms = ((page as Page | null)?.eplanPage ?? {}) as Record<string, any>
-  const content = mapCmsPage(cms, d)
-
   const payload = await tryGetPayload()
+
+  const cmsHero =
+    (await resolveMediaUrl(cms.heroImage, payload)) ||
+    getMediaUrl(cms.heroImage) ||
+    ''
+  const heroImage =
+    cmsHero.startsWith('http://') || cmsHero.startsWith('https://') ? cmsHero : d.hero.image
+
+  const content = mapCmsPage(cms, d)
+  content.hero.image = heroImage
 
   // Prefer a reliable public CDN image when CMS media resolves to a flaky local API path.
   const sustainFromCms = await resolveMediaUrl(cms.sustainImage, payload)
@@ -292,6 +302,28 @@ export async function getEplanPageContent(): Promise<EplanPageContent> {
     content.sustain.image = sustainFromCms
   } else {
     content.sustain.image = d.sustain.image
+  }
+
+  if (Array.isArray(cms.spotlightItems) && cms.spotlightItems.length) {
+    content.spotlight.items = await Promise.all(
+      cms.spotlightItems.map(async (item: any, index: number) => {
+        const fallback = d.spotlight.items[index] ?? d.spotlight.items[0]
+        const resolved =
+          (await resolveMediaUrl(item?.image, payload)) ||
+          getMediaUrl(item?.image) ||
+          ''
+        const image =
+          resolved.startsWith('http://') || resolved.startsWith('https://')
+            ? resolved
+            : fallback?.image ?? ''
+        return {
+          tag: txt(item?.tag, fallback?.tag ?? ''),
+          title: txt(item?.title, fallback?.title ?? ''),
+          description: txt(item?.description, fallback?.description ?? ''),
+          image,
+        }
+      }),
+    )
   }
 
   if (!payload) return content

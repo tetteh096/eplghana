@@ -4,7 +4,7 @@ import {
 } from '@/config/currentFellowsContent'
 import type { Cohort, Fellow } from '@/payload-types'
 import { resolveDonateHref } from '@/utilities/donateLink'
-import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { getMediaUrl, resolveMediaUrl } from '@/utilities/getMediaUrl'
 import { resolveCohortId, resolveCohortLabel } from '@/utilities/resolveCohort'
 import { getPage } from '@/utilities/getPage'
 import { tryGetPayload } from '@/utilities/payloadSafe'
@@ -187,12 +187,19 @@ export async function getCurrentFellowsContent(): Promise<CurrentFellowsPageCont
       ? cms.cohortCount
       : cohortBand.count
 
+  const cmsHero =
+    (await resolveMediaUrl(cms.heroImage, payload)) ||
+    getMediaUrl(cms.heroImage) ||
+    ''
+  const heroImage =
+    cmsHero.startsWith('http://') || cmsHero.startsWith('https://') ? cmsHero : d.hero.image
+
   return {
     hero: {
       eyebrow: txt(cms.heroEyebrow, d.hero.eyebrow),
       title: txt(cms.heroTitle, d.hero.title),
       lead: txt(cms.heroLead, d.hero.lead),
-      image: img(cms.heroImage, d.hero.image),
+      image: heroImage,
       secondaryImage: img(cms.heroSecondaryImage, d.hero.secondaryImage),
       stats: heroStats,
     },

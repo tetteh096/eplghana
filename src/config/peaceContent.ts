@@ -3,9 +3,9 @@ import { EPL_MEDIA } from '@/config/eplMedia'
 export const peaceContent = {
   hero: {
     eyebrow: 'Civic Security & Peacebuilding',
-    title: 'P.E.A.C.E Fellows Project',
+    title: 'P.E.A.C.E. Fellowship Project',
     lead:
-      'The Professionals Engaged Against Conflict & Endangerment (P.E.A.C.E) Fellowship equips public sector professionals and community leaders with peacebuilding skills to strengthen civilian–security relations across northern Ghana.',
+      'equipping security services and local government leaders in Northern Ghana for lasting peace.',
     description:
       'Led by Emerging Public Leaders of Ghana and funded by the U.S. Embassy in Ghana, this 12-month programme engages 100 participants through online symposiums and selects 25 high-performing fellows — at least 50% women — for intensive in-person training in conflict management, negotiation, and human security.',
     images: [
@@ -13,11 +13,15 @@ export const peaceContent = {
       `${EPL_MEDIA}/2025/10/Meeting-with-Deputy-Regional-Commander-2-1024x768.jpeg`,
     ],
     partners: ['U.S. Embassy in Ghana', 'Ministries of Local Government, Defense & Interior'],
-    ctaLabel: 'Get Involved',
-    ctaHref: '/get-involved',
+    ctaLabel: 'Partner on P.E.A.C.E',
+    ctaHref: '/partner-with-us',
   },
-  aboutEyebrow: 'About the Programme',
-  aboutTitle: 'Peacebuilding from within the public sector',
+  aboutEyebrow: 'Supported by the U.S. Embassy in Ghana',
+  aboutTitle: 'Strengthening Civilian-Security Relations in At-Risk Communities',
+  aboutParagraphs: [
+    'The P.E.A.C.E Fellows Project is a 12-month initiative that engages and trains 100 public sector and security professionals via online symposiums in early warning, conflict de-escalation, and situational leadership.',
+    'From the broader cohort, 25 high-performing entry-level professionals (at least 50% women) working in the Ministry of Defense, Ministry of Interior, Ministry of Local Government, and border agencies are selected for practical in-person human security training.',
+  ],
   aboutImage: `${EPL_MEDIA}/2023/12/HN7A8766-1-1024x469.jpg`,
   modelHighlight: {
     eyebrow: 'Model Highlights',

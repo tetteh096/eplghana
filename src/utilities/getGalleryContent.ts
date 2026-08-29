@@ -4,6 +4,7 @@ import {
   galleryPageContent,
 } from '@/config/galleryPageContent'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { resolveRelationId } from '@/utilities/galleryMediaFolder'
 import { getPage } from '@/utilities/getPage'
 import { tryGetPayload } from '@/utilities/payloadSafe'
 import { toPlain } from '@/utilities/toPlain'
@@ -19,6 +20,15 @@ type GalleryAlbumDoc = {
   description?: string | null
   coverImage?: unknown
   photos?: Array<{ id?: string; image?: unknown; title?: string | null; caption?: string | null }> | null
+}
+
+type GalleryMediaDoc = {
+  id: string | number
+  alt?: string | null
+  filename?: string | null
+  galleryAlbum?: unknown
+  galleryOrder?: number | null
+  url?: string | null
 }
 
 export type GalleryPageContent = {
@@ -41,6 +51,13 @@ export type GalleryPageContent = {
   albums: GalleryAlbum[]
 }
 
+function photoTitleFromMedia(doc: GalleryMediaDoc): string {
+  if (doc.alt?.trim()) return doc.alt.trim()
+  const filename = doc.filename?.trim()
+  if (!filename) return 'Photo'
+  return filename.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ').trim() || 'Photo'
+}
+
 function mapPhoto(row: any, fallback?: GalleryPhoto, index = 0): GalleryPhoto | null {
   const image = getMediaUrl(row?.image) || fallback?.image || ''
   if (!image) return null
@@ -52,12 +69,41 @@ function mapPhoto(row: any, fallback?: GalleryPhoto, index = 0): GalleryPhoto | 
   }
 }
 
-function mapAlbumDoc(doc: GalleryAlbumDoc, fallback?: GalleryAlbum): GalleryAlbum | null {
+function mapMediaPhoto(doc: GalleryMediaDoc): GalleryPhoto | null {
+  const image = doc.url?.trim() || getMediaUrl(doc as Parameters<typeof getMediaUrl>[0]) || ''
+  if (!image) return null
+  return {
+    id: String(doc.id),
+    title: photoTitleFromMedia(doc),
+    image,
+  }
+}
+
+function mergeAlbumPhotos(linked: GalleryPhoto[], manual: GalleryPhoto[]): GalleryPhoto[] {
+  const seen = new Set<string>()
+  const merged: GalleryPhoto[] = []
+
+  for (const photo of [...linked, ...manual]) {
+    if (seen.has(photo.image)) continue
+    seen.add(photo.image)
+    merged.push(photo)
+  }
+
+  return merged
+}
+
+function mapAlbumDoc(
+  doc: GalleryAlbumDoc,
+  linkedPhotos: GalleryPhoto[],
+  fallback?: GalleryAlbum,
+): GalleryAlbum | null {
   const category = (doc.category || fallback?.category || 'events') as GalleryCategory
   const fallbackPhotos = fallback?.photos ?? []
-  const photos = (Array.isArray(doc.photos) ? doc.photos : [])
+  const manualPhotos = (Array.isArray(doc.photos) ? doc.photos : [])
     .map((row, i) => mapPhoto(row, fallbackPhotos[i], i))
     .filter(Boolean) as GalleryPhoto[]
+
+  const photos = mergeAlbumPhotos(linkedPhotos, manualPhotos)
 
   const coverImage =
     getMediaUrl(doc.coverImage as Parameters<typeof getMediaUrl>[0]) ||
@@ -100,9 +146,43 @@ function mapCmsShell(cms: Record<string, any>, d: typeof galleryPageContent) {
   }
 }
 
+async function loadLinkedGalleryPhotos(payload: NonNullable<Awaited<ReturnType<typeof tryGetPayload>>>) {
+  const byAlbum = new Map<string, GalleryPhoto[]>()
+
+  try {
+    const result = await payload.find({
+      collection: 'media',
+      depth: 0,
+      limit: 500,
+      sort: 'galleryOrder',
+      where: {
+        galleryAlbum: { exists: true },
+      },
+    })
+
+    for (const raw of result.docs) {
+      const doc = toPlain(raw) as GalleryMediaDoc & { mimeType?: string | null }
+      const albumId = resolveRelationId(doc.galleryAlbum)
+      if (!albumId) continue
+      if (doc.mimeType && !doc.mimeType.startsWith('image/')) continue
+
+      const photo = mapMediaPhoto(doc)
+      if (!photo) continue
+
+      const list = byAlbum.get(albumId) ?? []
+      list.push(photo)
+      byAlbum.set(albumId, list)
+    }
+  } catch {
+    // keep manual photos only
+  }
+
+  return byAlbum
+}
+
 /**
  * Photo Gallery: page copy from Pages → galleryPage; albums from Gallery Albums.
- * Falls back to config defaults when CMS is empty.
+ * Album photos come from Media linked to each album, plus optional manual rows.
  */
 export async function getGalleryPageContent(): Promise<GalleryPageContent> {
   const d = galleryPageContent
@@ -116,6 +196,8 @@ export async function getGalleryPageContent(): Promise<GalleryPageContent> {
   }
 
   try {
+    const linkedByAlbum = await loadLinkedGalleryPhotos(payload)
+
     const result = await payload.find({
       collection: 'gallery-albums',
       depth: 1,
@@ -126,7 +208,11 @@ export async function getGalleryPageContent(): Promise<GalleryPageContent> {
 
     const bySlug = new Map(d.albums.map((a) => [a.slug, a]))
     const albums = result.docs
-      .map((doc) => mapAlbumDoc(toPlain(doc) as GalleryAlbumDoc, bySlug.get(doc.slug)))
+      .map((doc) => {
+        const plain = toPlain(doc) as GalleryAlbumDoc
+        const linked = linkedByAlbum.get(String(plain.id)) ?? []
+        return mapAlbumDoc(plain, linked, bySlug.get(doc.slug))
+      })
       .filter(Boolean) as GalleryAlbum[]
 
     return {

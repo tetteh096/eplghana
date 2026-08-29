@@ -1,189 +1,140 @@
 'use client'
 
-import {
-  AnimatePresence,
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-  type Variants,
-} from 'framer-motion'
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useRef } from 'react'
 
-type ChariticsHomeHeroProps = {
-  images: string[]
-  title: string
-  description: string
-}
+const HERO_LINES = ['Public Service is', 'Strengthened', 'by People'] as const
+
+const HERO_DESCRIPTION =
+  'Developing ethical, critical-thinking and change-driven public leaders to strengthen public service institutions.'
 
 const easeOut = [0.22, 1, 0.36, 1] as const
-const SLIDE_MS = 6500
-const FADE_S = 0.7
 
-const contentVariants: Variants = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.08,
-    },
-  },
+type ChariticsHomeHeroProps = {
+  image: string
 }
 
-const riseVariants: Variants = {
-  hidden: { opacity: 0, y: 16 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.45, ease: easeOut },
-  },
-}
-
-const titleRevealVariants: Variants = {
-  hidden: { opacity: 0, y: 14 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: easeOut },
-  },
-}
-
-export function ChariticsHomeHero({ images, title, description }: ChariticsHomeHeroProps) {
+export function ChariticsHomeHero({ image }: ChariticsHomeHeroProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const reduceMotion = useReducedMotion()
-  const slides = useMemo(() => {
-    const unique = images.map((src) => src.trim()).filter(Boolean)
-    return unique.slice(0, 3)
-  }, [images])
-  const [activeIndex, setActiveIndex] = useState(0)
-  const active = slides[activeIndex] ?? slides[0]
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end start'],
   })
 
-  const imageY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [0, 70])
-  const imageScale = useTransform(scrollYProgress, [0, 1], reduceMotion ? [1, 1] : [1, 1.06])
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.55], reduceMotion ? [1, 1] : [1, 0.4])
-  const contentY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [0, 36])
-
-  useEffect(() => {
-    if (slides.length <= 1 || reduceMotion) return
-
-    const timer = window.setInterval(() => {
-      setActiveIndex((current) => (current + 1) % slides.length)
-    }, SLIDE_MS)
-
-    return () => window.clearInterval(timer)
-  }, [slides.length, reduceMotion])
-
-  if (!active) return null
+  const imageScale = useTransform(
+    scrollYProgress,
+    [0, 1],
+    reduceMotion ? [1.05, 1.05] : [1.05, 1.12],
+  )
+  const contentY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [0, 48])
+  const contentOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.6],
+    reduceMotion ? [1, 1] : [1, 0.35],
+  )
 
   return (
     <section className="epl-new-hero" ref={sectionRef}>
-      <motion.div className="epl-new-hero__media" style={{ y: imageY, scale: imageScale }}>
-        <AnimatePresence initial={false} mode="sync">
-          <motion.img
-            alt="EPL Ghana fellows learning and working together"
-            animate={reduceMotion ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1.04 }}
-            className="epl-new-hero__image"
-            decoding="async"
-            exit={{ opacity: 0 }}
-            fetchPriority={activeIndex === 0 ? 'high' : 'auto'}
-            initial={
-              activeIndex === 0 || reduceMotion
-                ? false
-                : { opacity: 0, scale: 1.02 }
-            }
-            key={active}
-            loading={activeIndex === 0 ? 'eager' : 'lazy'}
-            src={active}
-            transition={{
-              opacity: { duration: reduceMotion ? 0 : FADE_S, ease: 'easeInOut' },
-              scale: { duration: reduceMotion ? 0 : SLIDE_MS / 1000, ease: 'linear' },
-            }}
-          />
-        </AnimatePresence>
+      <motion.div
+        animate={{ opacity: 1 }}
+        className="epl-new-hero__media"
+        initial={reduceMotion ? false : { opacity: 0 }}
+        style={{ scale: imageScale }}
+        transition={{ duration: 0.9, ease: 'easeOut' }}
+      >
+        <img
+          alt="EPL Ghana fellows standing together overlooking the landscape"
+          className="epl-new-hero__image"
+          decoding="async"
+          fetchPriority="high"
+          loading="eager"
+          src={image}
+        />
       </motion.div>
 
+      <div aria-hidden className="epl-new-hero__shade" />
+
       <motion.div
-        aria-hidden
-        className="epl-new-hero__shade"
-        initial={false}
-      />
-
-      <motion.div className="epl-new-hero__content" style={{ opacity: contentOpacity, y: contentY }}>
+        className="epl-new-hero__content"
+        style={{ opacity: contentOpacity, y: contentY }}
+      >
         <motion.div
-          animate="show"
-          initial={reduceMotion ? false : 'hidden'}
-          variants={contentVariants}
+          animate={{ opacity: 1, x: 0 }}
+          className="epl-new-hero__eyebrow"
+          initial={reduceMotion ? false : { opacity: 0, x: -24 }}
+          transition={{ duration: 0.7, delay: 0.3, ease: easeOut }}
         >
-          <motion.span className="epl-new-kicker epl-new-kicker--light" variants={riseVariants}>
-            Emerging Public Leaders of Ghana
-          </motion.span>
+          <span aria-hidden className="epl-new-hero__eyebrow-line" />
+          <span>Emerging Public Leaders of Ghana</span>
+        </motion.div>
 
-          <span className="epl-new-hero__title-mask">
-            <motion.h1 variants={titleRevealVariants}>{title}</motion.h1>
-          </span>
-
-          <motion.p variants={riseVariants}>{description}</motion.p>
-
-          <motion.div className="epl-new-hero__actions" variants={riseVariants}>
-            <motion.div
-              whileHover={reduceMotion ? undefined : { y: -2 }}
-              whileTap={reduceMotion ? undefined : { scale: 0.98 }}
+        <div className="epl-new-hero__title-lines">
+          {HERO_LINES.map((line, index) => (
+            <div
+              className={`epl-new-hero__line epl-new-hero__line--${index + 1}`}
+              key={line}
             >
-              <Link className="epl-new-btn epl-new-btn--gold" href="/get-involved">
-                Get involved <span>↗</span>
-              </Link>
-            </motion.div>
-            <motion.div whileHover={reduceMotion ? undefined : { x: 2 }}>
-              <Link className="epl-new-text-action epl-new-text-action--light" href="/about">
-                Discover our story <span>→</span>
-              </Link>
-            </motion.div>
-          </motion.div>
+              <div className="epl-new-hero__line-mask">
+                <motion.h1
+                  animate={{ opacity: 1, y: 0 }}
+                  initial={reduceMotion ? false : { opacity: 0, y: 100 }}
+                  transition={{
+                    duration: 1,
+                    delay: 0.45 + index * 0.16,
+                    ease: easeOut,
+                  }}
+                >
+                  {line}
+                </motion.h1>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <motion.p
+          animate={{ opacity: 1, y: 0 }}
+          initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+          transition={{ duration: 0.8, delay: 1.05, ease: easeOut }}
+        >
+          {HERO_DESCRIPTION}
+        </motion.p>
+
+        <motion.div
+          animate={{ opacity: 1, y: 0 }}
+          className="epl-new-hero__actions"
+          initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.7, delay: 1.25, ease: easeOut }}
+        >
+          <Link className="epl-new-hero__btn-primary" href="/get-involved">
+            Get Involved
+          </Link>
+          <Link className="epl-new-hero__btn-secondary" href="/about">
+            Learn More <span aria-hidden>→</span>
+          </Link>
         </motion.div>
       </motion.div>
 
-      {slides.length > 1 ? (
-        <div aria-label="Hero image slides" className="epl-new-hero__dots" role="tablist">
-          {slides.map((src, index) => {
-            const isActive = index === activeIndex
-            return (
-              <button
-                aria-label={`Show slide ${index + 1}`}
-                aria-selected={isActive}
-                className={`epl-new-hero__dot${isActive ? ' is-active' : ''}`}
-                key={`${src}-${index}`}
-                onClick={() => setActiveIndex(index)}
-                role="tab"
-                type="button"
-              >
-                {isActive && !reduceMotion ? (
-                  <motion.span
-                    animate={{ scaleX: 1 }}
-                    aria-hidden
-                    className="epl-new-hero__dot-progress"
-                    initial={{ scaleX: 0 }}
-                    key={`progress-${activeIndex}`}
-                    transition={{ duration: SLIDE_MS / 1000, ease: 'linear' }}
-                  />
-                ) : null}
-              </button>
-            )
-          })}
-        </div>
-      ) : null}
-
-      {/* Curve lives inside the hero so the photo fills every gap */}
-      <div aria-hidden className="epl-new-hero__curve">
-        <svg preserveAspectRatio="none" viewBox="0 0 1440 160">
-          <path d="M0,0 L0,48 C240,148 1200,148 1440,48 L1440,160 L0,160 Z" />
-        </svg>
-      </div>
+      <motion.div
+        animate={{ opacity: 1 }}
+        aria-hidden
+        className="epl-new-hero__scroll"
+        initial={reduceMotion ? false : { opacity: 0 }}
+        transition={{ delay: 1.8, duration: 0.6 }}
+      >
+        <motion.span
+          animate={reduceMotion ? undefined : { y: [0, 8, 0] }}
+          className="epl-new-hero__scroll-line"
+          transition={{
+            repeat: Infinity,
+            duration: 1.8,
+            ease: 'easeInOut',
+          }}
+        />
+        <span>Scroll</span>
+      </motion.div>
     </section>
   )
 }

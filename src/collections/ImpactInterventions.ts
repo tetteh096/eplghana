@@ -50,6 +50,12 @@ export const ImpactInterventions: CollectionConfig = {
       admin: { description: 'Short summary shown on the card.' },
     },
     {
+      name: 'image',
+      type: 'upload',
+      relationTo: 'media',
+      admin: { description: 'Optional photo for the community card on /impact.' },
+    },
+    {
       name: 'order',
       type: 'number',
       admin: {

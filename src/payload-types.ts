@@ -197,7 +197,7 @@ export interface User {
   collection: 'users';
 }
 /**
- * Photos, logos, and documents. Upload here once, then pick them on any page via “Browse Media Library” on image fields. Folder only affects where new uploads are stored in R2.
+ * Photos, logos, and documents. For the Photo Gallery: create an album in Gallery Albums, then upload here and choose that album — images appear on /gallery automatically.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
@@ -205,7 +205,15 @@ export interface User {
 export interface Media {
   id: string;
   /**
-   * Storage folder in R2. New uploads are saved under this path.
+   * Link this file to a Photo Gallery album. Uploads are stored in that album’s folder and appear on the website.
+   */
+  galleryAlbum?: (string | null) | GalleryAlbum;
+  /**
+   * Lower numbers appear first inside the album.
+   */
+  galleryOrder?: number | null;
+  /**
+   * Storage folder in R2. When a Gallery album is selected, this is set to Photo Gallery automatically.
    */
   folder:
     | 'general'
@@ -217,7 +225,8 @@ export interface Media {
     | 'projects'
     | 'pages'
     | 'publications'
-    | 'partners';
+    | 'partners'
+    | 'gallery';
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -230,6 +239,44 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * Create a named photo folder for the gallery. Upload images in Media → choose this album. Visitors open the album on /gallery.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery-albums".
+ */
+export interface GalleryAlbum {
+  id: string;
+  title: string;
+  /**
+   * URL path under /gallery/, e.g. events-annual-summits
+   */
+  slug: string;
+  category: 'events' | 'training' | 'programmes' | 'fellows-community';
+  description: string;
+  /**
+   * Shown on the albums grid. If empty, the first linked or manual photo is used.
+   */
+  coverImage?: (string | null) | Media;
+  /**
+   * Optional extras. Most albums are managed by uploading to Media and selecting this album in the Gallery album field.
+   */
+  photos?:
+    | {
+        image: string | Media;
+        title: string;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Lower numbers appear first on the gallery page.
+   */
+  order?: number | null;
+  status?: ('published' | 'draft') | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * Blog articles with rich text. Set a category and tags; toggle Featured on home to show in the home page news slider.
@@ -450,6 +497,12 @@ export interface Project {
     heroCtaUrl?: string | null;
     aboutEyebrow?: string | null;
     aboutTitle?: string | null;
+    aboutParagraphs?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
     aboutImage?: (string | null) | Media;
     modelHighlightEyebrow?: string | null;
     modelHighlightTitle?: string | null;
@@ -973,6 +1026,10 @@ export interface ImpactIntervention {
    */
   description: string;
   /**
+   * Optional photo for the community card on /impact.
+   */
+  image?: (string | null) | Media;
+  /**
    * Lower numbers appear first on the Impact page.
    */
   order?: number | null;
@@ -1071,41 +1128,6 @@ export interface Partner {
    */
   order?: number | null;
   status?: ('draft' | 'published') | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Photo folders for the Photo Gallery. Visitors open an album to browse all photos, then click a photo to view it.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "gallery-albums".
- */
-export interface GalleryAlbum {
-  id: string;
-  title: string;
-  /**
-   * URL path under /gallery/, e.g. events-annual-summits
-   */
-  slug: string;
-  category: 'events' | 'training' | 'programmes' | 'fellows-community';
-  description: string;
-  /**
-   * Shown on the albums grid. If empty, the first photo is used.
-   */
-  coverImage?: (string | null) | Media;
-  photos?:
-    | {
-        image: string | Media;
-        title: string;
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Lower numbers appear first on the gallery page.
-   */
-  order?: number | null;
-  status?: ('published' | 'draft') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1625,6 +1647,7 @@ export interface Page {
           tag: string;
           title: string;
           description: string;
+          image?: (string | null) | Media;
           id?: string | null;
         }[]
       | null;
@@ -1765,58 +1788,16 @@ export interface Page {
     backToGalleryLabel?: string | null;
   };
   /**
-   * Hero, engagement pathways, and fellowship register-interest form labels. Submissions appear in Form Submissions in the dashboard.
+   * Landing page headline and call-to-action buttons.
    */
   getInvolvedPage?: {
     heroEyebrow?: string | null;
-    heroBadge?: string | null;
     fellowshipTitle?: string | null;
     fellowshipDescription?: string | null;
-    fellowshipCtaLabel?: string | null;
-    heroImage?: (string | null) | Media;
-    heroSecondaryImage?: (string | null) | Media;
-    imageBadgeValue?: string | null;
-    imageBadgeLabel?: string | null;
-    heroHighlights?:
-      | {
-          value: string;
-          label: string;
-          id?: string | null;
-        }[]
-      | null;
+    primaryCtaLabel?: string | null;
+    primaryCtaUrl?: string | null;
     secondaryCtaLabel?: string | null;
     secondaryCtaUrl?: string | null;
-    pathwaysEyebrow?: string | null;
-    pathwaysTitle?: string | null;
-    pathways?:
-      | {
-          /**
-           * HTML id for in-page links (e.g. fellowship).
-           */
-          anchorId: string;
-          title: string;
-          body: string;
-          bullets?:
-            | {
-                text: string;
-                id?: string | null;
-              }[]
-            | null;
-          ctaLabel: string;
-          ctaHref: string;
-          id?: string | null;
-        }[]
-      | null;
-    registerEyebrow?: string | null;
-    registerTitle?: string | null;
-    registerDescription?: string | null;
-    registerSubmitLabel?: string | null;
-    registerPoints?:
-      | {
-          text: string;
-          id?: string | null;
-        }[]
-      | null;
   };
   /**
    * Hero, directory controls, EPLAN promo, and Get Involved. Fellow photos and profiles are managed in the Fellows collection.
@@ -1923,6 +1904,7 @@ export interface Page {
     collabHighlightValue?: string | null;
     collabHighlightTitle?: string | null;
     collabHighlightText?: string | null;
+    collabImage?: (string | null) | Media;
     ecosystemEyebrow?: string | null;
     ecosystemTitle?: string | null;
     ecosystemIntro?: string | null;
@@ -2099,6 +2081,7 @@ export interface Page {
           author: string;
           role: string;
           org: string;
+          photo?: (string | null) | Media;
           id?: string | null;
         }[]
       | null;
@@ -2324,6 +2307,8 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  galleryAlbum?: T;
+  galleryOrder?: T;
   folder?: T;
   alt?: T;
   updatedAt?: T;
@@ -2490,6 +2475,12 @@ export interface ProjectsSelect<T extends boolean = true> {
         heroCtaUrl?: T;
         aboutEyebrow?: T;
         aboutTitle?: T;
+        aboutParagraphs?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
         aboutImage?: T;
         modelHighlightEyebrow?: T;
         modelHighlightTitle?: T;
@@ -2836,6 +2827,7 @@ export interface ImpactInterventionsSelect<T extends boolean = true> {
   region?: T;
   assembly?: T;
   description?: T;
+  image?: T;
   order?: T;
   status?: T;
   updatedAt?: T;
@@ -3371,6 +3363,7 @@ export interface PagesSelect<T extends boolean = true> {
               tag?: T;
               title?: T;
               description?: T;
+              image?: T;
               id?: T;
             };
         impactEyebrow?: T;
@@ -3503,51 +3496,12 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         heroEyebrow?: T;
-        heroBadge?: T;
         fellowshipTitle?: T;
         fellowshipDescription?: T;
-        fellowshipCtaLabel?: T;
-        heroImage?: T;
-        heroSecondaryImage?: T;
-        imageBadgeValue?: T;
-        imageBadgeLabel?: T;
-        heroHighlights?:
-          | T
-          | {
-              value?: T;
-              label?: T;
-              id?: T;
-            };
+        primaryCtaLabel?: T;
+        primaryCtaUrl?: T;
         secondaryCtaLabel?: T;
         secondaryCtaUrl?: T;
-        pathwaysEyebrow?: T;
-        pathwaysTitle?: T;
-        pathways?:
-          | T
-          | {
-              anchorId?: T;
-              title?: T;
-              body?: T;
-              bullets?:
-                | T
-                | {
-                    text?: T;
-                    id?: T;
-                  };
-              ctaLabel?: T;
-              ctaHref?: T;
-              id?: T;
-            };
-        registerEyebrow?: T;
-        registerTitle?: T;
-        registerDescription?: T;
-        registerSubmitLabel?: T;
-        registerPoints?:
-          | T
-          | {
-              text?: T;
-              id?: T;
-            };
       };
   currentFellowsPage?:
     | T
@@ -3640,6 +3594,7 @@ export interface PagesSelect<T extends boolean = true> {
         collabHighlightValue?: T;
         collabHighlightTitle?: T;
         collabHighlightText?: T;
+        collabImage?: T;
         ecosystemEyebrow?: T;
         ecosystemTitle?: T;
         ecosystemIntro?: T;
@@ -3812,6 +3767,7 @@ export interface PagesSelect<T extends boolean = true> {
               author?: T;
               role?: T;
               org?: T;
+              photo?: T;
               id?: T;
             };
         publicationsEyebrow?: T;

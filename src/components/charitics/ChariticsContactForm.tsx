@@ -6,11 +6,18 @@ type ChariticsContactFormProps = {
   description?: string
   formId: string
   submitLabel: string
-  variant: 'general' | 'partnership' | 'register-interest'
+  variant: 'general' | 'partnership' | 'register-interest' | 'inquiry'
   sourcePage: string
   sourcePath: string
   /** Light form on white panel (partners page). Default dark for partnership on Contact. */
   tone?: 'dark' | 'light'
+  /** Organisation type options for the partners page enquiry form. */
+  orgTypeOptions?: string[]
+  successTitle?: string
+  successText?: string
+  privacyHref?: string
+  privacyLabel?: string
+  hideDescription?: boolean
 }
 
 const partnershipOptions = [
@@ -24,6 +31,7 @@ const formTypeByVariant = {
   'register-interest': 'register-interest',
   general: 'internship-volunteer',
   partnership: 'partnership',
+  inquiry: 'internship-volunteer',
 } as const
 
 export function ChariticsContactForm({
@@ -34,11 +42,19 @@ export function ChariticsContactForm({
   tone,
   sourcePage,
   sourcePath,
+  orgTypeOptions,
+  successTitle,
+  successText,
+  privacyHref,
+  privacyLabel,
+  hideDescription,
 }: ChariticsContactFormProps) {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
 
+  const isInquiry = variant === 'inquiry'
   const isDark = tone === 'light' ? false : variant === 'partnership'
+  const isPartnersEnquiry = variant === 'partnership' && tone === 'light' && Boolean(orgTypeOptions?.length)
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -90,21 +106,31 @@ export function ChariticsContactForm({
 
   // Dark panels use light fields + dark text so typing stays readable
   // (legacy .ul-contact-form CSS forced light backgrounds).
-  const inputStyles = isDark
+  const inputStyles = isInquiry
+    ? 'w-full bg-white border border-gray-200 px-4 py-3 text-xs text-[#111827] placeholder:text-gray-400 focus:outline-none focus:border-[#4150A3] rounded-none'
+    : isPartnersEnquiry
+    ? 'w-full bg-white border border-gray-200 px-4 py-3 text-sm text-[#0C1427] placeholder:text-gray-400 focus:outline-none focus:border-[#4150A3] rounded-none'
+    : isDark
     ? 'w-full bg-white border border-white/30 px-4 py-3 text-sm text-[#0C1427] placeholder:text-[#6b7280] focus:outline-none focus:border-[var(--epl-new-gold,#f5bd17)] rounded-none'
     : 'w-full bg-[#F8F9FA] border border-[#e2e5eb] px-4 py-3 text-sm text-[#0C1427] placeholder:text-[#9aa0ab] focus:outline-none focus:border-[var(--epl-new-gold,#f5bd17)] focus:bg-white rounded-none'
 
-  const labelStyles = isDark
+  const labelStyles = isInquiry
+    ? 'block text-[10px] font-black text-gray-600 uppercase tracking-[0.2em] mb-1.5'
+    : isDark
     ? 'block text-[11px] font-extrabold text-white/80 uppercase tracking-[0.08em] mb-2'
-    : 'block text-[11px] font-extrabold text-[#0C1427] uppercase tracking-[0.08em] mb-2'
+    : isPartnersEnquiry
+      ? 'block text-[10px] font-black text-gray-600 uppercase tracking-[0.2em] mb-2'
+      : 'block text-[11px] font-extrabold text-[#0C1427] uppercase tracking-[0.08em] mb-2'
 
-  const selectStyles = isDark
+  const selectStyles = isPartnersEnquiry
+    ? inputStyles
+    : isDark
     ? 'w-full bg-white border border-white/30 px-4 py-3 text-sm text-[#0C1427] focus:outline-none focus:border-[var(--epl-new-gold,#f5bd17)] rounded-none'
     : inputStyles
 
   return (
-    <form className="epl-contact-form space-y-5" onSubmit={handleSubmit}>
-      {description ? (
+    <form className={`epl-contact-form ${isInquiry ? 'figma-contact-form' : 'space-y-5'}`} onSubmit={handleSubmit}>
+      {description && !hideDescription ? (
         <p
           className={
             isDark
@@ -117,17 +143,32 @@ export function ChariticsContactForm({
       ) : null}
 
       {status === 'success' ? (
-        <div
-          className="border p-4 text-sm font-bold rounded-none"
-          role="status"
-          style={{
-            background: 'rgba(245, 189, 23, 0.12)',
-            borderColor: 'var(--epl-new-gold, #f5bd17)',
-            color: '#0C1427',
-          }}
-        >
-          Thank you. Your message has been received. Our team will be in touch soon.
-        </div>
+        isInquiry ? (
+          <div className="figma-contact-form__success" role="status">
+            <div className="figma-contact-form__success-icon">✓</div>
+            <h4>{successTitle ?? 'Thank You for Contacting Us'}</h4>
+            <p>{successText ?? 'Your message has been received. Our team will be in touch soon.'}</p>
+            <button
+              className="figma-contact-form__success-reset"
+              onClick={() => setStatus('idle')}
+              type="button"
+            >
+              Send Another Message
+            </button>
+          </div>
+        ) : (
+          <div
+            className="border p-4 text-sm font-bold rounded-none"
+            role="status"
+            style={{
+              background: 'rgba(245, 189, 23, 0.12)',
+              borderColor: 'var(--epl-new-gold, #f5bd17)',
+              color: '#0C1427',
+            }}
+          >
+            Thank you. Your message has been received. Our team will be in touch soon.
+          </div>
+        )
       ) : null}
 
       {status === 'error' ? (
@@ -144,7 +185,7 @@ export function ChariticsContactForm({
         <input autoComplete="off" id={`${formId}-company`} name="company" tabIndex={-1} type="text" />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      <div className={`grid grid-cols-1 ${isInquiry ? 'sm:grid-cols-2 gap-5' : 'sm:grid-cols-2 gap-5'}`}>
         {variant === 'register-interest' ? (
           <>
             <div>
@@ -176,6 +217,94 @@ export function ChariticsContactForm({
               />
             </div>
           </>
+        ) : isPartnersEnquiry ? (
+          <>
+            <div>
+              <label className={labelStyles} htmlFor={`${formId}-name`}>
+                Name
+              </label>
+              <input
+                className={inputStyles}
+                disabled={status === 'submitting'}
+                id={`${formId}-name`}
+                name="name"
+                placeholder="Your full name"
+                required
+                type="text"
+              />
+            </div>
+            <div>
+              <label className={labelStyles} htmlFor={`${formId}-institution`}>
+                Organisation
+              </label>
+              <input
+                className={inputStyles}
+                disabled={status === 'submitting'}
+                id={`${formId}-institution`}
+                name="institution"
+                placeholder="Organisation name"
+                type="text"
+              />
+            </div>
+          </>
+        ) : isInquiry ? (
+          <>
+            <div>
+              <label className={labelStyles} htmlFor={`${formId}-name`}>
+                Full Name
+              </label>
+              <input
+                className={inputStyles}
+                disabled={status === 'submitting'}
+                id={`${formId}-name`}
+                name="name"
+                placeholder="e.g. Kwame Mensah"
+                required
+                type="text"
+              />
+            </div>
+            <div>
+              <label className={labelStyles} htmlFor={`${formId}-email`}>
+                Email Address
+              </label>
+              <input
+                className={inputStyles}
+                disabled={status === 'submitting'}
+                id={`${formId}-email`}
+                name="email"
+                placeholder="you@domain.com"
+                required
+                type="email"
+              />
+            </div>
+            <div>
+              <label className={labelStyles} htmlFor={`${formId}-phone`}>
+                Phone Number
+              </label>
+              <input
+                className={inputStyles}
+                disabled={status === 'submitting'}
+                id={`${formId}-phone`}
+                name="phone"
+                placeholder="+233 ..."
+                type="tel"
+              />
+            </div>
+            <div>
+              <label className={labelStyles} htmlFor={`${formId}-subject`}>
+                Subject / Topic
+              </label>
+              <input
+                className={inputStyles}
+                disabled={status === 'submitting'}
+                id={`${formId}-subject`}
+                name="subject"
+                placeholder="e.g. Fellowship Enquiry / Media"
+                required
+                type="text"
+              />
+            </div>
+          </>
         ) : (
           <div className="sm:col-span-2">
             <label className={labelStyles} htmlFor={`${formId}-name`}>
@@ -193,16 +322,18 @@ export function ChariticsContactForm({
           </div>
         )}
 
+        {!isInquiry ? (
+          <>
         <div>
           <label className={labelStyles} htmlFor={`${formId}-email`}>
-            Email Address *
+            {isPartnersEnquiry ? 'Email' : 'Email Address *'}
           </label>
           <input
             className={inputStyles}
             disabled={status === 'submitting'}
             id={`${formId}-email`}
             name="email"
-            placeholder="name@organisation.org"
+            placeholder={isPartnersEnquiry ? 'your@organisation.com' : 'name@organisation.org'}
             required
             type="email"
           />
@@ -210,7 +341,7 @@ export function ChariticsContactForm({
 
         <div>
           <label className={labelStyles} htmlFor={`${formId}-phone`}>
-            Phone Number
+            Phone{isPartnersEnquiry ? '' : ' Number'}
           </label>
           <input
             className={inputStyles}
@@ -238,7 +369,29 @@ export function ChariticsContactForm({
           </div>
         ) : null}
 
-        {variant === 'partnership' ? (
+        {isPartnersEnquiry ? (
+          <div className="sm:col-span-2">
+            <label className={labelStyles} htmlFor={`${formId}-subject`}>
+              Organisation Type
+            </label>
+            <select
+              className={selectStyles}
+              defaultValue={orgTypeOptions?.[0] ?? ''}
+              disabled={status === 'submitting'}
+              id={`${formId}-subject`}
+              name="subject"
+              required
+            >
+              {orgTypeOptions?.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : null}
+
+        {variant === 'partnership' && !isPartnersEnquiry ? (
           <div className="sm:col-span-2">
             <label className={labelStyles} htmlFor={`${formId}-subject`}>
               Subject *
@@ -278,9 +431,12 @@ export function ChariticsContactForm({
           </div>
         ) : null}
 
+          </>
+        ) : null}
+
         <div className="sm:col-span-2">
           <label className={labelStyles} htmlFor={`${formId}-message`}>
-            Message *
+            {isInquiry ? 'Your Message' : `Message${isPartnersEnquiry ? '' : ' *'}`}
           </label>
           <textarea
             className={`${inputStyles} min-h-[130px]`}
@@ -291,8 +447,10 @@ export function ChariticsContactForm({
               variant === 'register-interest'
                 ? 'Why are you interested in the Public Service Fellowship?'
                 : variant === 'partnership'
-                  ? 'How would you like to partner with EPL Ghana?'
-                  : 'Type your message'
+                  ? 'Tell us about your interest in partnering with EPL...'
+                  : isInquiry
+                    ? 'How can we help you?'
+                    : 'Type your message'
             }
             required
           />
@@ -300,13 +458,25 @@ export function ChariticsContactForm({
 
         <div className="sm:col-span-2 pt-1">
           <button
-            className="epl-new-btn epl-new-btn--gold w-full"
+            className={
+              isInquiry
+                ? 'figma-contact-form__submit'
+                : isPartnersEnquiry
+                ? 'figma-partners-btn figma-partners-btn--primary w-full'
+                : 'epl-new-btn epl-new-btn--gold w-full'
+            }
             disabled={status === 'submitting'}
-            style={{ width: '100%', minHeight: 52 }}
+            style={isInquiry ? undefined : { width: '100%', minHeight: 52 }}
             type="submit"
           >
             {status === 'submitting' ? 'Sending…' : submitLabel}
           </button>
+          {isInquiry && privacyHref && privacyLabel ? (
+            <a className="figma-contact-form__privacy" href={privacyHref}>
+              {privacyLabel}
+              <span aria-hidden>→</span>
+            </a>
+          ) : null}
         </div>
       </div>
     </form>

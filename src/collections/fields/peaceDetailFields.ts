@@ -41,6 +41,13 @@ export const peaceDetailFields: Field[] = [
     fields: [
       { name: 'aboutEyebrow', type: 'text', defaultValue: d.aboutEyebrow },
       { name: 'aboutTitle', type: 'text', defaultValue: d.aboutTitle },
+      {
+        name: 'aboutParagraphs',
+        type: 'array',
+        labels: { singular: 'Paragraph', plural: 'Paragraphs' },
+        defaultValue: d.aboutParagraphs.map((text) => ({ text })),
+        fields: [{ name: 'text', type: 'textarea', required: true }],
+      },
       { name: 'aboutImage', type: 'upload', relationTo: 'media', label: 'About image' },
     ],
   },

@@ -75,6 +75,12 @@ export const partnersPageFields: Field[] = [
             type: 'textarea',
             defaultValue: d.collaboration.highlightText,
           },
+          {
+            name: 'collabImage',
+            type: 'upload',
+            relationTo: 'media',
+            label: 'Collaboration section photo',
+          },
         ],
       },
       {

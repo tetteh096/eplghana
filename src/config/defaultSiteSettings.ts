@@ -25,7 +25,7 @@ export const defaultSiteSettings: SiteSetting = {
   fellowshipDescription:
     'Applications for the 2026 Public Service Fellowship are now closed. Register your interest below to hear about future cohorts, events, and opportunities.',
   fellowshipCtaLabel: 'Register Interest',
-  fellowshipCtaUrl: '/get-involved#register-interest',
+  fellowshipCtaUrl: '/contact',
   stats: eplImpactStats.map((stat) => ({ value: stat.value, label: stat.label })),
   phone: '+233 24 606 4766',
   email: 'info@eplghana.org',

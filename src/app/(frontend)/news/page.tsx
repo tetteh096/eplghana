@@ -3,7 +3,7 @@ import { ChariticsPageMain } from '@/components/charitics/ChariticsPageMain'
 import { blogPageContent } from '@/config/blogContent'
 import { getBlogListingData, getRecentBlogPosts } from '@/utilities/getBlogPosts'
 
-export const metadata = { title: 'Blog' }
+export const metadata = { title: 'News & Insights' }
 
 type PageProps = {
   searchParams: Promise<{ q?: string; category?: string }>

@@ -2,7 +2,7 @@ import {
   impactPageContent,
   type ImpactTestimonialCategory,
 } from '@/config/impactPageContent'
-import type { Fellow } from '@/payload-types'
+import type { Fellow, Media } from '@/payload-types'
 import { getMediaUrl, resolveMediaUrl } from '@/utilities/getMediaUrl'
 import { getPage } from '@/utilities/getPage'
 import { tryGetPayload } from '@/utilities/payloadSafe'
@@ -43,6 +43,7 @@ export type ImpactPageContent = {
       assembly: string
       title: string
       desc: string
+      image: string
     }[]
   }
   testimonials: {
@@ -55,6 +56,7 @@ export type ImpactPageContent = {
       author: string
       role: string
       org: string
+      image: string
     }[]
   }
   publications: {
@@ -64,11 +66,11 @@ export type ImpactPageContent = {
     reportsHeading: string
     reportsCtaLabel: string
     reportsCtaUrl: string
-    reports: { edition: string; title: string; summary: string }[]
+    reports: { edition: string; title: string; summary: string; href?: string }[]
     researchHeading: string
     researchCtaLabel: string
     researchCtaUrl: string
-    research: { tag: string; title: string; authorYear: string; summary: string }[]
+    research: { tag: string; title: string; authorYear: string; summary: string; href?: string }[]
   }
 }
 
@@ -82,9 +84,8 @@ const txt = (v: unknown, d: string) => (typeof v === 'string' && v.trim() ? v : 
 
 import { resolveCohortLabel } from '@/utilities/resolveCohort'
 
-function fellowPhotoFallback(name: string, configPhoto?: string): string {
-  if (configPhoto) return configPhoto
-  return `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(name)}&backgroundColor=0a3d6b&textColor=ffffff&fontSize=38`
+function portraitFallback(name: string): string {
+  return `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(name)}&backgroundColor=4150A3&textColor=ffffff&fontSize=38`
 }
 
 async function loadSuccessStoriesFromFellows(
@@ -94,7 +95,7 @@ async function loadSuccessStoriesFromFellows(
   const result = await payload.find({
     collection: 'fellows',
     depth: 1,
-    limit: 12,
+    limit: 3,
     sort: 'order',
     where: {
       and: [{ status: { equals: 'published' } }, { featuredOnImpact: { equals: true } }],
@@ -110,7 +111,7 @@ async function loadSuccessStoriesFromFellows(
       const image =
         (await resolveMediaUrl(doc.photo, payload)) ||
         getMediaUrl(doc.photo) ||
-        fellowPhotoFallback(doc.name, fb?.image)
+        portraitFallback(doc.name)
       const desc =
         doc.impactStory?.trim() || doc.bio?.trim() || fb?.desc || ''
       return {
@@ -130,7 +131,7 @@ async function loadCommunityStoriesFromCollection(
 ) {
   const result = await payload.find({
     collection: 'impact-interventions',
-    depth: 0,
+    depth: 1,
     limit: 24,
     sort: 'order',
     where: { status: { equals: 'published' } },
@@ -141,20 +142,91 @@ async function loadCommunityStoriesFromCollection(
     assembly?: string | null
     title?: string | null
     description?: string | null
+    image?: unknown
   }> | null
 
   if (!docs?.length) return null
 
-  return docs.map((item, index) => {
-    const fb = defaults[index] ?? defaults[0]
-    return {
-      num: String(index + 1).padStart(2, '0'),
-      region: txt(item.region, fb.region),
-      assembly: txt(item.assembly, fb.assembly),
-      title: txt(item.title, fb.title),
-      desc: txt(item.description, fb.desc),
-    }
-  })
+  return Promise.all(
+    docs.map(async (item, index) => {
+      const fb = defaults[index] ?? defaults[0]
+      const media = item.image as string | number | Media | null | undefined
+      const image =
+        (await resolveMediaUrl(media, payload)) ||
+        getMediaUrl(media) ||
+        fb?.image ||
+        ''
+      return {
+        num: String(index + 1).padStart(2, '0'),
+        region: txt(item.region, fb.region),
+        assembly: txt(item.assembly, fb.assembly),
+        title: txt(item.title, fb.title),
+        desc: txt(item.description, fb.desc),
+        image,
+      }
+    }),
+  )
+}
+
+async function loadPublicationsFromCollection(
+  payload: NonNullable<Awaited<ReturnType<typeof tryGetPayload>>>,
+): Promise<{
+  reports: ImpactPageContent['publications']['reports']
+  research: ImpactPageContent['publications']['research']
+} | null> {
+  const [reportsResult, researchResult] = await Promise.all([
+    payload.find({
+      collection: 'publications',
+      depth: 1,
+      limit: 8,
+      sort: 'order',
+      where: {
+        and: [{ status: { equals: 'published' } }, { category: { equals: 'annual-report' } }],
+      },
+    }),
+    payload.find({
+      collection: 'publications',
+      depth: 1,
+      limit: 8,
+      sort: 'order',
+      where: {
+        and: [{ status: { equals: 'published' } }, { category: { equals: 'research' } }],
+      },
+    }),
+  ])
+
+  const reportDocs = toPlain(reportsResult.docs) ?? []
+  const researchDocs = toPlain(researchResult.docs) ?? []
+  if (!reportDocs.length && !researchDocs.length) return null
+
+  const reports = await Promise.all(
+    reportDocs.map(async (doc: any) => {
+      const year = typeof doc?.year === 'string' && doc.year.trim() ? doc.year.trim() : ''
+      const href = (await resolveMediaUrl(doc?.file, payload)) || getMediaUrl(doc?.file) || undefined
+      return {
+        edition: year ? `${year} Edition` : 'Annual Report',
+        title: typeof doc?.title === 'string' ? doc.title : '',
+        summary: typeof doc?.description === 'string' ? doc.description : '',
+        href,
+      }
+    }),
+  )
+
+  const research = await Promise.all(
+    researchDocs.map(async (doc: any) => {
+      const year = typeof doc?.year === 'string' && doc.year.trim() ? doc.year.trim() : ''
+      const href = (await resolveMediaUrl(doc?.file, payload)) || getMediaUrl(doc?.file) || undefined
+      return {
+        tag: 'Research',
+        title: typeof doc?.title === 'string' ? doc.title : '',
+        authorYear: year || 'EPL Ghana',
+        summary: typeof doc?.description === 'string' ? doc.description : '',
+        href,
+      }
+    }),
+  )
+
+  return { reports, research }
 }
 
 /**
@@ -167,10 +239,12 @@ export async function getImpactPageContent(): Promise<ImpactPageContent> {
   const cms = (page?.impactPage ?? {}) as Record<string, any>
   const payload = await tryGetPayload()
 
-  const heroImage =
+  const cmsHero =
     (await resolveMediaUrl(cms.heroImage, payload)) ||
     getMediaUrl(cms.heroImage) ||
-    d.hero.image
+    ''
+  const heroImage =
+    cmsHero.startsWith('http://') || cmsHero.startsWith('https://') ? cmsHero : d.hero.image
 
   const glanceStats =
     Array.isArray(cms.glanceStats) && cms.glanceStats.length
@@ -185,7 +259,9 @@ export async function getImpactPageContent(): Promise<ImpactPageContent> {
       : d.glance.stats
 
   let successItems = d.successStories.items
-  let communityItems = d.communityStories.items
+  let communityItems: ImpactPageContent['communityStories']['items'] = d.communityStories.items
+  let reports: ImpactPageContent['publications']['reports'] = []
+  let research: ImpactPageContent['publications']['research'] = []
 
   if (payload) {
     try {
@@ -212,7 +288,7 @@ export async function getImpactPageContent(): Promise<ImpactPageContent> {
 
       const fromInterventions = await loadCommunityStoriesFromCollection(
         payload,
-        d.communityStories.items,
+        communityItems,
       )
       if (fromInterventions?.length) communityItems = fromInterventions
       else if (Array.isArray(cms.communityStories) && cms.communityStories.length) {
@@ -224,9 +300,14 @@ export async function getImpactPageContent(): Promise<ImpactPageContent> {
             assembly: txt(item?.assembly, fb.assembly),
             title: txt(item?.title, fb.title),
             desc: txt(item?.desc, fb.desc),
+            image: getMediaUrl(item?.image) || fb.image || '',
           }
         })
       }
+
+      const fromPublications = await loadPublicationsFromCollection(payload)
+      if (fromPublications?.reports.length) reports = fromPublications.reports
+      if (fromPublications?.research.length) research = fromPublications.research
     } catch {
       // Keep config defaults when the DB is unavailable.
     }
@@ -253,52 +334,91 @@ export async function getImpactPageContent(): Promise<ImpactPageContent> {
           assembly: txt(item?.assembly, fb.assembly),
           title: txt(item?.title, fb.title),
           desc: txt(item?.desc, fb.desc),
+          image: getMediaUrl(item?.image) || fb.image || '',
         }
       })
     }
   }
 
-  const testimonials =
-    Array.isArray(cms.testimonials) && cms.testimonials.length
-      ? cms.testimonials.map((item: any, i: number) => {
+  let testimonials: ImpactPageContent['testimonials']['items']
+  if (Array.isArray(cms.testimonials) && cms.testimonials.length) {
+    testimonials = payload
+      ? await Promise.all(
+          cms.testimonials.map(async (item: any, i: number) => {
+            const fb = d.testimonials.items[i] ?? d.testimonials.items[0]
+            const categoryRaw = typeof item?.category === 'string' ? item.category : ''
+            const author = txt(item?.author, fb.author)
+            const image =
+              (await resolveMediaUrl(item?.photo, payload)) ||
+              getMediaUrl(item?.photo) ||
+              portraitFallback(author)
+            return {
+              category: (CATEGORIES.has(categoryRaw as ImpactTestimonialCategory)
+                ? categoryRaw
+                : fb.category) as ImpactTestimonialCategory,
+              quote: txt(item?.quote, fb.quote),
+              author,
+              role: txt(item?.role, fb.role),
+              org: txt(item?.org, fb.org),
+              image,
+            }
+          }),
+        )
+      : cms.testimonials.map((item: any, i: number) => {
           const fb = d.testimonials.items[i] ?? d.testimonials.items[0]
           const categoryRaw = typeof item?.category === 'string' ? item.category : ''
+          const author = txt(item?.author, fb.author)
           return {
             category: (CATEGORIES.has(categoryRaw as ImpactTestimonialCategory)
               ? categoryRaw
               : fb.category) as ImpactTestimonialCategory,
             quote: txt(item?.quote, fb.quote),
-            author: txt(item?.author, fb.author),
+            author,
             role: txt(item?.role, fb.role),
             org: txt(item?.org, fb.org),
+            image: portraitFallback(author),
           }
         })
-      : d.testimonials.items
+  } else {
+    testimonials = d.testimonials.items.map((item) => ({
+      ...item,
+      image: portraitFallback(item.author),
+    }))
+  }
 
-  const reports =
-    Array.isArray(cms.annualReports) && cms.annualReports.length
-      ? cms.annualReports.map((r: any, i: number) => {
-          const fb = d.publications.reports[i] ?? d.publications.reports[0]
-          return {
-            edition: txt(r?.edition, fb.edition),
-            title: txt(r?.title, fb.title),
-            summary: txt(r?.summary, fb.summary),
-          }
-        })
-      : d.publications.reports
+  if (
+    !reports.length &&
+    Array.isArray(cms.annualReports) &&
+    cms.annualReports.length
+  ) {
+    reports = cms.annualReports.map((r: any, i: number) => {
+      const fb = d.publications.reports[i] ?? d.publications.reports[0]
+      return {
+        edition: txt(r?.edition, fb.edition),
+        title: txt(r?.title, fb.title),
+        summary: txt(r?.summary, fb.summary),
+      }
+    })
+  }
 
-  const research =
-    Array.isArray(cms.researchStudies) && cms.researchStudies.length
-      ? cms.researchStudies.map((r: any, i: number) => {
-          const fb = d.publications.research[i] ?? d.publications.research[0]
-          return {
-            tag: txt(r?.tag, fb.tag),
-            title: txt(r?.title, fb.title),
-            authorYear: txt(r?.authorYear, fb.authorYear),
-            summary: txt(r?.summary, fb.summary),
-          }
-        })
-      : d.publications.research
+  if (
+    !research.length &&
+    Array.isArray(cms.researchStudies) &&
+    cms.researchStudies.length
+  ) {
+    research = cms.researchStudies.map((r: any, i: number) => {
+      const fb = d.publications.research[i] ?? d.publications.research[0]
+      return {
+        tag: txt(r?.tag, fb.tag),
+        title: txt(r?.title, fb.title),
+        authorYear: txt(r?.authorYear, fb.authorYear),
+        summary: txt(r?.summary, fb.summary),
+      }
+    })
+  }
+
+  if (!reports.length) reports = d.publications.reports
+  if (!research.length) research = d.publications.research
 
   return {
     hero: {

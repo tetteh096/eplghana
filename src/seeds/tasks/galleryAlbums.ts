@@ -45,18 +45,51 @@ export async function seedGalleryAlbums(payload: Payload): Promise<void> {
     }
 
     if (existing.docs.length) {
-      await payload.update({
+      const updated = await payload.update({
         collection: 'gallery-albums',
         id: existing.docs[0].id,
         data,
       })
       payload.logger.info(`[${TAG}] updated ${album.slug}`)
+      await linkAlbumMedia(payload, String(updated.id), photos, coverImage)
     } else {
-      await payload.create({
+      const created = await payload.create({
         collection: 'gallery-albums',
         data,
       })
       payload.logger.info(`[${TAG}] created ${album.slug}`)
+      await linkAlbumMedia(payload, String(created.id), photos, coverImage)
+    }
+  }
+}
+
+async function linkAlbumMedia(
+  payload: Payload,
+  albumId: string,
+  photos: Array<{ image: string; title: string; caption: string }>,
+  coverImage: string | null,
+) {
+  const imageIds = new Set<string>()
+  if (coverImage) imageIds.add(coverImage)
+  for (const photo of photos) {
+    if (photo.image) imageIds.add(photo.image)
+  }
+
+  let order = 0
+  for (const imageId of imageIds) {
+    try {
+      await payload.update({
+        collection: 'media',
+        id: imageId,
+        data: {
+          galleryAlbum: albumId,
+          galleryOrder: order,
+          folder: 'gallery',
+        },
+      })
+      order += 1
+    } catch {
+      // media row may not exist yet
     }
   }
 }

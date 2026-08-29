@@ -1,0 +1,88 @@
+/* EPL Ghana — Figma-aligned typography (Montserrat) */
+
+:root {
+  --epl-font: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+  --font-primary: var(--epl-font);
+  --font-quicksand: var(--epl-font);
+
+  --epl-type-kicker-size: 10px;
+  --epl-type-kicker-tracking: 0.25em;
+  --epl-type-btn-size: 10px;
+  --epl-type-btn-tracking: 0.22em;
+  --epl-type-body-sm: 14px;
+  --epl-type-body: 16px;
+  --epl-type-lead: clamp(18px, 1.5vw, 20px);
+  --epl-type-h2: clamp(30px, 4vw, 36px);
+  --epl-type-h1: clamp(36px, 5vw, 60px);
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--epl-font);
+  font-size: var(--epl-type-body);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.ul-section-title,
+.epl-section-title {
+  font-family: var(--epl-font);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.ul-section-sub-title,
+.epl-section-subtitle {
+  font-family: var(--epl-font);
+  font-size: var(--epl-type-kicker-size);
+  font-weight: 900;
+  letter-spacing: var(--epl-type-kicker-tracking);
+  text-transform: uppercase;
+}
+
+.ul-btn,
+.epl-btn,
+.epl-btn-outline,
+.epl-btn-white,
+.epl-new-btn,
+.epl-new-text-action {
+  font-family: var(--epl-font);
+  font-size: var(--epl-type-btn-size);
+  font-weight: 900;
+  letter-spacing: var(--epl-type-btn-tracking);
+  text-transform: uppercase;
+}
+
+.ul-header-nav a,
+.epl-new-header__nav a,
+.epl-new-header__donate {
+  font-family: var(--epl-font);
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.figma-wotr-page,
+.figma-peace-page,
+.figma-wotr-detail-page,
+.epl-new-home,
+[class*='figma-'] {
+  font-family: var(--epl-font);
+}
+
+.figma-wotr-hero__lead,
+.figma-peace-highlight__body,
+.figma-wotr-about__paragraph {
+  font-family: var(--epl-font);
+}

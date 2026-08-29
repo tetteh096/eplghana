@@ -26,6 +26,7 @@ import { InlineToolbarFeatureClient as InlineToolbarFeatureClient_e70f5e05f09f93
 import { FixedToolbarFeatureClient as FixedToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { RelationshipFeatureClient as RelationshipFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { FellowsListView as FellowsListView_b4e5c6a49a6d4f7ceccef45fc6dc969a } from '../../../components/admin/FellowsListView'
+import { GalleryAlbumUploadHint as GalleryAlbumUploadHint_346de0f49e07195c08e35f12dc1b3f22 } from '../../../components/admin/GalleryAlbumUploadHint'
 import { PagesListView as PagesListView_d027b32979a012c51529bfaff92efd04 } from '../../../components/admin/PagesListView'
 import { NavItemLabel as NavItemLabel_e8fd49ba35f7657fa5c0465b99f87192 } from '../../../globals/rowLabels/NavItemLabel'
 import { FooterColumnLabel as FooterColumnLabel_ff806d2495d15d0c3f0dce502a9259fd } from '../../../globals/rowLabels/FooterColumnLabel'
@@ -74,6 +75,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#FixedToolbarFeatureClient": FixedToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#RelationshipFeatureClient": RelationshipFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "/components/admin/FellowsListView#FellowsListView": FellowsListView_b4e5c6a49a6d4f7ceccef45fc6dc969a,
+  "/components/admin/GalleryAlbumUploadHint#GalleryAlbumUploadHint": GalleryAlbumUploadHint_346de0f49e07195c08e35f12dc1b3f22,
   "/components/admin/PagesListView#PagesListView": PagesListView_d027b32979a012c51529bfaff92efd04,
   "/globals/rowLabels/NavItemLabel#NavItemLabel": NavItemLabel_e8fd49ba35f7657fa5c0465b99f87192,
   "/globals/rowLabels/FooterColumnLabel#FooterColumnLabel": FooterColumnLabel_ff806d2495d15d0c3f0dce502a9259fd,

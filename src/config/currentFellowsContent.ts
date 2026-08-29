@@ -23,7 +23,7 @@ export const currentFellowsPageContent = {
     image: 'https://eplghana.org/wp-content/uploads/2025/10/CSOE-45-scaled.jpg',
     secondaryImage: 'https://eplghana.org/wp-content/uploads/2025/10/CSOE-48-1024x683.jpg',
     stats: [
-      { value: '7', label: 'Cohorts' },
+      { value: '8', label: 'Cohorts' },
       { value: '500+', label: 'Fellows' },
       { value: '12+', label: 'Institutions' },
     ],
@@ -31,7 +31,8 @@ export const currentFellowsPageContent = {
   directory: {
     defaultCohort: 'Cohort 7',
     cohortTabs: [
-      { label: 'Cohort 7', value: 'Cohort 7' },
+      { label: 'Current Cohort', value: 'Cohort 7' },
+      { label: 'C7', value: 'Cohort 7' },
       { label: 'C6', value: 'C6' },
       { label: 'C5', value: 'C5' },
       { label: 'C4', value: 'C4' },
@@ -78,7 +79,7 @@ export const currentFellowsPageContent = {
       'Graduation from the fellowship marks the transition into EPLAN, a lifelong community of 500+ public sector reformers collaborating across ministries to co-author policy, mentor incoming cohorts, and champion good governance.',
     stats: [
       { value: '500+', label: 'Members' },
-      { value: '7', label: 'Cohorts' },
+      { value: '8', label: 'Cohorts' },
       { value: '85%', label: 'Retained' },
     ],
     ctaLabel: 'Explore EPLAN Hub',

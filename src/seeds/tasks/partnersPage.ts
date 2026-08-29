@@ -26,6 +26,7 @@ export async function seedPartnersPage(payload: Payload): Promise<void> {
     collabHighlightValue: d.collaboration.highlightValue,
     collabHighlightTitle: d.collaboration.highlightTitle,
     collabHighlightText: d.collaboration.highlightText,
+    collabImage: await importImage(d.collaboration.image, 'EPL Ghana community gathering'),
     ecosystemEyebrow: d.ecosystem.eyebrow,
     ecosystemTitle: d.ecosystem.title,
     ecosystemIntro: d.ecosystem.intro,

@@ -2,9 +2,12 @@
 export const EPL_MEDIA = 'https://eplghana.org/wp-content/uploads'
 
 export const eplHomeImages = {
+  /** Full-screen home hero — matches the redesign prototype */
+  heroHome:
+    'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1800&h=1000&fit=crop&auto=format',
   heroDefault: `${EPL_MEDIA}/2025/07/CSG-1024x683.jpg`,
   aboutMain: `${EPL_MEDIA}/2025/07/CSG-1024x683.jpg`,
-  aboutBlock: `${EPL_MEDIA}/2025/10/CSOT-78-scaled.jpg`,
+  aboutBlock: `${EPL_MEDIA}/2025/10/CSG-16-scaled.jpg`,
   missionBanner: [
     `${EPL_MEDIA}/2025/07/CSG-15-1-scaled.jpg`,
     `${EPL_MEDIA}/2025/07/CSG-36-scaled.jpg`,
@@ -24,16 +27,26 @@ export const eplHomeImages = {
     { src: `${EPL_MEDIA}/2025/04/HN7A4284-scaled.jpg`, alt: 'Programme workshop' },
   ],
   projects: {
-    'public-service-fellowship': `${EPL_MEDIA}/2025/10/CSOT-78-scaled.jpg`,
+    'public-service-fellowship': `${EPL_MEDIA}/2025/10/CSG-16-scaled.jpg`,
     'women-on-the-rise': `${EPL_MEDIA}/2025/10/IMG_7245-scaled.jpg`,
     peace: `${EPL_MEDIA}/2023/12/MG_0422-scaled.jpg`,
     'epl-in-maritime': `${EPL_MEDIA}/2025/11/LEMA25-2183-1024x682.jpg`,
+  },
+  projectsFallback: {
+    'public-service-fellowship':
+      'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&h=700&fit=crop&auto=format',
+    'epl-in-maritime':
+      'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&h=700&fit=crop&auto=format',
+    'women-on-the-rise':
+      'https://images.unsplash.com/photo-1573497019236-d22bce4b7c9f?w=800&h=500&fit=crop&auto=format',
+    peace:
+      'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=800&h=500&fit=crop&auto=format',
   },
   events: [
     `${EPL_MEDIA}/2025/10/CSG-21-scaled.jpg`,
     `${EPL_MEDIA}/2025/11/LEMA25-0486-1024x682.jpg`,
     `${EPL_MEDIA}/2023/12/MG_0422-1024x683.jpg`,
-    `${EPL_MEDIA}/2025/10/CSOT-78-1024x683.jpg`,
+    `${EPL_MEDIA}/2025/10/CSG-16-scaled.jpg`,
   ],
   news: {
     graduation: `${EPL_MEDIA}/2023/12/MG_0422-1024x683.jpg`,

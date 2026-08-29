@@ -56,3 +56,6 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 *.pem
+
+# local Figma / design reference (do not push)
+/Generate app details/

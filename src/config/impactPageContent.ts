@@ -6,11 +6,11 @@ export const impactPageContent = {
     title: 'Our Impact',
     description:
       'See how leadership development contributes to stronger people, stronger institutions and meaningful public service.',
-    image: eplHomeImages.aboutMain,
+    image: `${EPL_MEDIA}/2025/10/CSOE-32-1-scaled.jpg`,
   },
   glance: {
     eyebrow: 'Impact at a Glance',
-    title: 'Stronger People. Stronger Institutions.',
+    title: '',
     stats: [
       {
         value: '500+',
@@ -35,8 +35,8 @@ export const impactPageContent = {
     ],
   },
   successStories: {
-    eyebrow: 'Real People. Real Impact.',
-    title: 'Success Stories',
+    eyebrow: 'Success Stories',
+    title: 'Real People. Real Impact.',
     items: [
       {
         name: 'Abena Osei-Bonsu',
@@ -67,7 +67,7 @@ export const impactPageContent = {
     intro:
       'Highlights from municipal assemblies where Fellows turned national public policies into localized community impact.',
     ctaLabel: 'See More Communities',
-    ctaUrl: '/projects',
+    ctaUrl: '/community',
     items: [
       {
         num: '01',
@@ -75,6 +75,7 @@ export const impactPageContent = {
         assembly: 'Kpone Katamanso',
         title: 'Water Sanitation & Waste Audits',
         desc: 'Audited local drain networks and eliminated unauthorized dumpsites with assembly heads.',
+        image: `${EPL_MEDIA}/2025/10/20240830135443__MG_7840-1024x683.jpg`,
       },
       {
         num: '02',
@@ -82,6 +83,7 @@ export const impactPageContent = {
         assembly: 'Asokore Mampong',
         title: 'Primary Health Clinic Logistics',
         desc: 'Modernized patient registration workflows to cut health record wait times by 40%.',
+        image: `${EPL_MEDIA}/2025/10/Meeting-with-Deputy-Regional-Commander-2-1024x768.jpeg`,
       },
       {
         num: '03',
@@ -89,6 +91,7 @@ export const impactPageContent = {
         assembly: 'Tamale Metropolis',
         title: 'Smallholder Farmer Market Access',
         desc: 'Connected 1,200+ grain and shea producers with extension officers and trade desks.',
+        image: `${EPL_MEDIA}/2025/10/CSOE-32-1-scaled.jpg`,
       },
       {
         num: '04',
@@ -96,6 +99,7 @@ export const impactPageContent = {
         assembly: 'Cape Coast',
         title: 'Basic Education Literacy Tracking',
         desc: 'Instituted classroom resource distribution tracking across 18 public primary schools.',
+        image: `${EPL_MEDIA}/2025/07/CSG-2-scaled.jpg`,
       },
     ],
   },

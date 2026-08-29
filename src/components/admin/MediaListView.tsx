@@ -85,6 +85,13 @@ function MediaCard({
   const filename = (doc.filename as string) || 'Untitled file'
   const alt = (doc.alt as string) || ''
   const folder = (doc.folder as string) || 'general'
+  const galleryAlbum = doc.galleryAlbum as { title?: string } | string | null | undefined
+  const galleryAlbumLabel =
+    typeof galleryAlbum === 'object' && galleryAlbum !== null && galleryAlbum.title
+      ? galleryAlbum.title
+      : typeof galleryAlbum === 'string'
+        ? 'Gallery album'
+        : ''
   const mimeType = (doc.mimeType as string) || ''
   const ext = filename.includes('.') ? filename.split('.').pop()!.toUpperCase() : 'FILE'
   const fileSrc = (doc.thumbnailURL as string) || (doc.url as string) || ''
@@ -103,7 +110,9 @@ function MediaCard({
       <span className="epl-media-cardify__name" title={filename}>
         {alt || filename}
       </span>
-      <span className="epl-media-cardify__folder">{folder}</span>
+      <span className="epl-media-cardify__folder">
+        {galleryAlbumLabel ? `Gallery · ${galleryAlbumLabel}` : folder}
+      </span>
       <span className="epl-media-cardify__file" title={filename}>
         {filename}
       </span>

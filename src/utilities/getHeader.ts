@@ -126,6 +126,23 @@ function normalizeProgrammesNav(nav: NavItem[]): NavItem[] {
   )
 }
 
+/** Ensure Get Involved always routes to the dedicated landing page. */
+function normalizeGetInvolvedNav(nav: NavItem[]): NavItem[] {
+  return nav.map((item) => {
+    if (!isNavDropdown(item)) {
+      if (item.label === 'Get Involved') return { ...item, href: '/get-involved' }
+      return item
+    }
+
+    return {
+      ...item,
+      items: item.items.map((child) =>
+        child.label === 'Get Involved' ? { ...child, href: '/get-involved' } : child,
+      ),
+    }
+  })
+}
+
 function normalizeTopLinks(links: { label: string; href: string }[]): { label: string; href: string }[] {
   return links.map((link) => {
     if (link.label === 'Community') return { ...link, href: '/community/current-fellows' }
@@ -202,7 +219,7 @@ export const getHeader = cache(async (): Promise<HeaderData> => {
       void payload
         .updateGlobal({ slug: 'header', data: buildHeaderNavData() as never })
         .catch(() => undefined)
-      return { ...fallback, nav: normalizeProgrammesNav(fallback.nav) }
+      return { ...fallback, nav: normalizeGetInvolvedNav(normalizeProgrammesNav(fallback.nav)) }
     }
 
     const topLinks = (header?.topLinks ?? [])
@@ -224,7 +241,7 @@ export const getHeader = cache(async (): Promise<HeaderData> => {
     }
 
     return {
-      nav: normalizeProgrammesNav(nav),
+      nav: normalizeGetInvolvedNav(normalizeProgrammesNav(nav)),
       cta: mapCta(header?.cta, fallbackCta),
       partnerCta: mapCta(header?.partnerCta, fallbackPartnerCta),
       topLinks: normalizeTopLinks(topLinks.length ? topLinks : TOP_LINKS),

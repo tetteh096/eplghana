@@ -1,116 +1,92 @@
 'use client'
 
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
-import { useRef } from 'react'
 
-export type ProgrammeCard = {
-  slug: string
-  title: string
-  category: string
-  summary: string
-  image: string
-}
+import { MotionReveal } from '@/components/charitics/MotionReveal'
+import { HOME_PROJECT_DEFAULTS, resolveHomeProjects, type HomeProjectCard } from '@/config/homeProjects'
+
+export type ProgrammeCard = HomeProjectCard
 
 type ChariticsProgrammeStackProps = {
-  eyebrow: string
-  title: string
-  projects: ProgrammeCard[]
-}
-
-function StackCard({
-  project,
-  index,
-  total,
-}: {
-  project: ProgrammeCard
-  index: number
-  total: number
-}) {
-  const ref = useRef<HTMLElement>(null)
-  const reduceMotion = useReducedMotion()
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'start start'],
-  })
-
-  const scale = useTransform(
-    scrollYProgress,
-    [0, 1],
-    reduceMotion ? [1, 1] : [0.94, 1],
-  )
-  const y = useTransform(
-    scrollYProgress,
-    [0, 1],
-    reduceMotion ? [0, 0] : [48, 0],
-  )
-
-  const stickyTop = `calc(96px + ${index * 18}px)`
-  const zIndex = index + 1
-
-  return (
-    <article
-      className="epl-programme-stack__item"
-      ref={ref}
-      style={{ top: stickyTop, zIndex }}
-    >
-      <motion.div className="epl-programme-stack__motion" style={{ scale, y }}>
-        <Link className="epl-programme-stack__card" href={`/projects/${project.slug}`}>
-          <img
-            alt={project.title}
-            decoding="async"
-            loading="lazy"
-            src={project.image}
-          />
-          <span className="epl-programme-stack__shade" />
-          <div className="epl-programme-stack__copy">
-            <span className="epl-programme-stack__meta">
-              <b>{String(index + 1).padStart(2, '0')}</b>
-              <em>{project.category}</em>
-            </span>
-            <h3>{project.title}</h3>
-            <p>{project.summary}</p>
-            <strong>
-              Explore programme <span>→</span>
-            </strong>
-          </div>
-          <span aria-hidden className="epl-programme-stack__count">
-            {index + 1}/{total}
-          </span>
-        </Link>
-      </motion.div>
-    </article>
-  )
+  eyebrow?: string
+  title?: string
+  projects?: ProgrammeCard[]
 }
 
 export function ChariticsProgrammeStack({
-  eyebrow,
-  title,
-  projects,
+  eyebrow = 'Our Work',
+  projects = [],
 }: ChariticsProgrammeStackProps) {
-  return (
-    <section className="epl-programme-stack">
-      <div className="epl-new-shell">
-        <div className="epl-new-section-head epl-programme-stack__head">
-          <div>
-            <span className="epl-new-kicker">{eyebrow}</span>
-            <h2>{title}</h2>
-          </div>
-          <Link className="epl-new-text-action" href="/projects">
-            View all programmes <span>→</span>
-          </Link>
-        </div>
+  const cards = resolveHomeProjects(projects.length ? projects : HOME_PROJECT_DEFAULTS)
+  const featured = cards[0]
+  const rest = cards.slice(1)
 
-        <div className="epl-programme-stack__list">
-          {projects.map((project, index) => (
-            <StackCard
-              index={index}
+  if (!featured) return null
+
+  return (
+    <section className="epl-home-projects">
+      <div className="epl-new-shell">
+        <MotionReveal className="epl-home-projects__head">
+          <div className="epl-home-projects__eyebrow">
+            <span aria-hidden className="epl-home-projects__eyebrow-line" />
+            <span>{eyebrow}</span>
+          </div>
+          <h2 className="epl-home-projects__title">
+            Projects That Move
+            <br className="epl-home-projects__title-break" />
+            Public Service Forward
+          </h2>
+        </MotionReveal>
+
+        <MotionReveal delay={0.08}>
+          <Link className="epl-home-projects__featured group" href={`/projects/${featured.slug}`}>
+            <div className="epl-home-projects__featured-media">
+              <img
+                alt={featured.title}
+                decoding="async"
+                loading="lazy"
+                src={featured.image}
+              />
+              <span className="epl-home-projects__featured-shade" />
+              <div className="epl-home-projects__featured-copy">
+                <span className="epl-home-projects__category">{featured.category}</span>
+                <h3>{featured.title}</h3>
+                <p>{featured.summary}</p>
+                <strong>
+                  Explore Project <span aria-hidden>→</span>
+                </strong>
+              </div>
+            </div>
+          </Link>
+        </MotionReveal>
+
+        <div className="epl-home-projects__grid">
+          {rest.map((project) => (
+            <Link
+              className="epl-home-projects__card group"
+              href={`/projects/${project.slug}`}
               key={project.slug}
-              project={project}
-              total={projects.length}
-            />
+            >
+              <div className="epl-home-projects__card-media">
+                <img alt={project.title} decoding="async" loading="lazy" src={project.image} />
+                <span className="epl-home-projects__card-shade" />
+                <div className="epl-home-projects__card-copy">
+                  <span className="epl-home-projects__category">{project.category}</span>
+                  <h3>{project.title}</h3>
+                  <strong>
+                    Explore <span aria-hidden>→</span>
+                  </strong>
+                </div>
+              </div>
+            </Link>
           ))}
         </div>
+
+        <MotionReveal className="epl-home-projects__all" delay={0.15}>
+          <Link href="/projects">
+            All Projects <span aria-hidden>→</span>
+          </Link>
+        </MotionReveal>
       </div>
     </section>
   )

@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 
 import { ChariticsHome } from '@/components/charitics/ChariticsHome'
 import { SITE_DESCRIPTION, SITE_NAME, SITE_SHORT_NAME } from '@/config/site'
-import { getHomeBlogPosts } from '@/utilities/getBlogPosts'
 import { getHomeContent } from '@/utilities/getHomeContent'
+import { getHomeProjects } from '@/utilities/getHomeProjects'
 import { getFeaturedTestimonials } from '@/utilities/getTestimonials'
 import { getSiteSettings, tryGetPayload } from '@/utilities/payloadSafe'
 
@@ -38,20 +38,9 @@ export default async function HomePage() {
   const empty = { docs: [] as never[] }
   const nowISO = new Date().toISOString()
 
-  const [news, projects, upcomingEvents, testimonials] = payload
+  const [homeProjects, upcomingEvents, testimonials] = payload
     ? await Promise.all([
-        getHomeBlogPosts(5),
-        // Home projects: featured ones first, ordered by homeOrder.
-        payload.find({
-          collection: 'projects',
-          depth: 1,
-          limit: 6,
-          sort: 'homeOrder',
-          where: {
-            and: [{ status: { equals: 'published' } }, { featuredOnHome: { equals: true } }],
-          },
-        }),
-        // Upcoming events only (event date in the future), soonest first.
+        getHomeProjects(),
         payload.find({
           collection: 'events',
           depth: 1,
@@ -66,7 +55,7 @@ export default async function HomePage() {
         }),
         getFeaturedTestimonials(payload, 6),
       ])
-    : [empty, empty, empty, [] as never[]]
+    : [await getHomeProjects(), empty, [] as never[]]
 
   // No upcoming events? Show the most recent past events instead (newest first),
   // and tell the component so it hides the countdown and relabels the section.
@@ -102,8 +91,7 @@ export default async function HomePage() {
       heroCurve={heroCurve}
       heroSlides={heroSlides}
       impactStories={impactStories}
-      news={Array.isArray(news) ? news : news.docs}
-      projects={projects.docs}
+      projects={homeProjects}
       sections={sections}
       settings={settings}
       stats={stats}

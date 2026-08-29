@@ -21,6 +21,7 @@ export type PartnerCategory = {
   title: string
   description: string
   highlights: string[]
+  image: string
 }
 
 export const partnersPageContent = {
@@ -70,6 +71,7 @@ export const partnersPageContent = {
     highlightTitle: 'Career Retention Rate',
     highlightText:
       'Fellows transition directly into permanent leadership and technical advisory roles in public service.',
+    image: `${EPL_MEDIA}/2025/10/CSG-16-scaled.jpg`,
   },
   ecosystem: {
     eyebrow: 'Partnership Ecosystem',
@@ -85,6 +87,7 @@ export const partnersPageContent = {
         description:
           'Place top-tier Fellows within key ministries, departments, and regional assemblies to accelerate policy implementation, digital transformation, and service delivery.',
         highlights: ['Civil Service Placements', 'Leadership Development', 'Policy Co-Creation'],
+        image: `${EPL_MEDIA}/2025/10/CSOE-45-scaled.jpg`,
       },
       {
         id: '02',
@@ -92,6 +95,7 @@ export const partnersPageContent = {
         description:
           'Co-fund and scale high-impact governance initiatives targeting gender responsiveness, peace building, climate resilience, and public sector efficiency.',
         highlights: ['Multi-Year Grants', 'Targeted Fellowships', 'Impact Measurement'],
+        image: `${EPL_MEDIA}/2025/07/CSG-32-scaled.jpg`,
       },
       {
         id: '03',
@@ -99,6 +103,7 @@ export const partnersPageContent = {
         description:
           'Support capacity building and public-private dialogue to foster a business-enabling regulatory environment and sustainable economic growth.',
         highlights: ['Executive Mentorship', 'Private-Public Dialogue', 'Corporate Social Impact'],
+        image: `${EPL_MEDIA}/2025/10/IMG_7245-scaled.jpg`,
       },
       {
         id: '04',
@@ -106,6 +111,7 @@ export const partnersPageContent = {
         description:
           'Invest in strategic endowment, leadership awards, and specialized fellowship tracks empowering young ethical leaders across Ghana.',
         highlights: ['Leadership Awards', 'Specialized Tracks', 'Alumni Network Support'],
+        image: `${EPL_MEDIA}/2025/10/CSG-1-scaled.jpg`,
       },
       {
         id: '05',
@@ -113,6 +119,7 @@ export const partnersPageContent = {
         description:
           'Amplify civic awareness, promote public accountability, and collaborate on evidence-based research and advocacy campaigns.',
         highlights: ['Civic Engagement', 'Research Dissemination', 'Media Collaborations'],
+        image: `${EPL_MEDIA}/2025/10/CSOE-56-scaled.jpg`,
       },
       {
         id: '06',
@@ -120,6 +127,7 @@ export const partnersPageContent = {
         description:
           'Partner on research, case study development, and curriculum design to equip Fellows with cutting-edge analytical tools.',
         highlights: ['Curriculum Co-Design', 'Policy Case Studies', 'Joint Publications'],
+        image: `${EPL_MEDIA}/2025/10/CSG-16-scaled.jpg`,
       },
     ] satisfies PartnerCategory[],
   },

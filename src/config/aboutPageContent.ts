@@ -1,6 +1,12 @@
 import type { FellowTestimonialSlide } from '@/config/fellowTestimonials'
 import { EPL_MEDIA } from '@/config/eplMedia'
 
+/** Default imagery from the Figma prototype (`Generate app details`) */
+export const aboutPageRedesignImages = {
+  hero: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1600&h=900&fit=crop&auto=format',
+  story: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=800&h=500&fit=crop&auto=format',
+} as const
+
 export const aboutPageImages = {
   intro: `${EPL_MEDIA}/2025/10/WhatsApp-Image-2025-06-12-at-09.38.56_12598d95-1000x500.jpg`,
   approach: `${EPL_MEDIA}/2023/12/HN7A8676-1000x500.jpg`,

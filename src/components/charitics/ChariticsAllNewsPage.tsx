@@ -45,7 +45,7 @@ export function ChariticsAllNewsPage({ posts = [] }: ChariticsAllNewsPageProps) 
       title: 'Why Ethics and Digital Competence Are the Twins of Modern Public Service',
       excerpt:
         'Examining how modern governance systems in West Africa require leaders who balance moral conviction with technological proficiency.',
-      image: `${EPL_MEDIA}/2025/10/CSOT-78-scaled.jpg`,
+      image: `${EPL_MEDIA}/2025/10/CSG-16-scaled.jpg`,
     },
     {
       slug: 'cohort-8-regional-waste-audit',

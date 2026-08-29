@@ -84,7 +84,14 @@ const eplanPage = {
   spotlightEyebrow: d.spotlight.eyebrow,
   spotlightTitle: d.spotlight.title,
   spotlightIntro: d.spotlight.intro,
-  spotlightItems: d.spotlight.items,
+  spotlightItems: await Promise.all(
+    d.spotlight.items.map(async (item) => ({
+      tag: item.tag,
+      title: item.title,
+      description: item.description,
+      image: await importImage(item.image, item.title),
+    })),
+  ),
   impactEyebrow: d.impact.eyebrow,
   impactTitle: d.impact.title,
   impactStats: d.impact.stats,

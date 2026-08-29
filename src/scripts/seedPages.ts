@@ -22,31 +22,19 @@ const contactContent = {
     eyebrow: d.hero.eyebrow,
     title: d.hero.title,
     lead: d.hero.lead,
-    quickLinks: d.hero.quickLinks.map((q) => ({ label: q.label, href: q.href })),
   },
   visit: {
-    eyebrow: d.visit.eyebrow,
-    title: d.visit.title,
-    description: d.visit.description,
+    title: d.map.title,
+    note: d.map.note,
   },
-  mapEmbedUrl: d.mapEmbedUrl,
+  mapEmbedUrl: d.map.embedUrl,
   formsSection: {
-    eyebrow: d.formsSection.eyebrow,
-    title: d.formsSection.title,
-    intro: d.formsSection.intro,
+    title: d.form.title,
+    intro: d.form.intro,
   },
   forms: {
     general: {
-      eyebrow: d.forms.general.eyebrow,
-      title: d.forms.general.title,
-      description: d.forms.general.description,
-      submitLabel: d.forms.general.submitLabel,
-    },
-    partnership: {
-      eyebrow: d.forms.partnership.eyebrow,
-      title: d.forms.partnership.title,
-      description: d.forms.partnership.description,
-      submitLabel: d.forms.partnership.submitLabel,
+      submitLabel: d.form.submitLabel,
     },
   },
 }
