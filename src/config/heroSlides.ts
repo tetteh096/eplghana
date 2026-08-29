@@ -18,8 +18,8 @@ export const heroImageSlides: HeroImageSlide[] = [
       'A one-year fellowship embedding talented graduates in government institutions to drive innovation, integrity, and lasting impact.',
     ctaLabel: 'Apply Now',
     ctaHref: '/get-involved',
-    image: `${EPL_MEDIA}/2026/02/PSF-CViii-819x1024.jpg`,
-    thumb: `${EPL_MEDIA}/2026/02/PSF-CViii-240x300.jpg`,
+    image: eplHomeImages.heroHome,
+    thumb: `${EPL_MEDIA}/2025/07/CSG-1024x683.jpg`,
   },
   {
     subtitle: 'Women On The Rise',

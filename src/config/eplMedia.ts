@@ -2,9 +2,8 @@
 export const EPL_MEDIA = 'https://eplghana.org/wp-content/uploads'
 
 export const eplHomeImages = {
-  /** Full-screen home hero — matches the redesign prototype */
-  heroHome:
-    'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1800&h=1000&fit=crop&auto=format',
+  /** Full-screen home hero — EPL fellows landscape (not Unsplash) */
+  heroHome: `${EPL_MEDIA}/2025/07/CSG-15-1-scaled.jpg`,
   heroDefault: `${EPL_MEDIA}/2025/07/CSG-1024x683.jpg`,
   aboutMain: `${EPL_MEDIA}/2025/07/CSG-1024x683.jpg`,
   aboutBlock: `${EPL_MEDIA}/2025/10/CSG-16-scaled.jpg`,

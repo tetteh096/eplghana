@@ -212,7 +212,7 @@ export async function getHomeContent(settings: SiteSetting): Promise<{
 
   const heroImageUrl =
     (await resolveMediaUrl(home.heroImage ?? merged.heroImage, payload)) ||
-    eplHomeImages.heroDefault
+    eplHomeImages.heroHome
 
   // Keep a url-bearing object on settings so client-side getMediaUrl() works too.
   merged.heroImage = { url: heroImageUrl } as SiteSetting['heroImage']

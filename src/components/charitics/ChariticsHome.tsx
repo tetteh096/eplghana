@@ -51,7 +51,6 @@ const fallbackStats: HomeStat[] = [
 export function ChariticsHome({
   settings,
   sections,
-  heroSlides,
   heroAvatars = [],
   aboutMission,
   stats: statsProp,
@@ -61,9 +60,10 @@ export function ChariticsHome({
   events,
   testimonials,
 }: ChariticsHomeProps) {
-  const hero = heroSlides?.[0]
+  // Redesign hero is a single full-bleed photo — prefer CMS/settings, then EPL landscape.
+  // Do not use heroSlides[0] (old carousel; often portrait crops).
   const heroImage =
-    hero?.image ?? getMediaUrl(settings.heroImage) ?? eplHomeImages.heroHome
+    getMediaUrl(settings.heroImage) || eplHomeImages.heroHome
   const projectCards = resolveHomeProjects(projects)
   const stats = statsProp?.length ? statsProp : fallbackStats
   const wayCards =
