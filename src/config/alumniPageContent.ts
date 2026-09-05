@@ -1,5 +1,5 @@
 import { eplImpactStats } from '@/config/epl-defaults'
-import { EPL_MEDIA } from '@/config/eplMedia'
+import { EPL_MEDIA, eplHomeImages } from '@/config/eplMedia'
 import type { TeamMember } from '@/config/teamPageContent'
 
 export type AlumniSpotlight = {
@@ -21,6 +21,15 @@ export type AlumniStory = {
   body: string
   photo: string
   quote?: string
+}
+
+export type EplanExecutive = {
+  id: string
+  name: string
+  role: string
+  bio?: string
+  photo: string
+  linkedin?: string
 }
 
 export function alumniToTeamMember(alumni: AlumniSpotlight): TeamMember {
@@ -140,6 +149,54 @@ export const alumniPageContent = {
     title: 'Catalysts for systemic change',
     text:
       'To be a network of ethical public servants committed to excellence; who act as catalysts to drive systemic change in Africa’s public sector.',
+  },
+  mission: {
+    eyebrow: 'Our Mission',
+    text:
+      'To sustain a lifelong community of ethical, critical-thinking public servants who support one another, share knowledge, and drive continuous improvement across Ghana’s public institutions.',
+  },
+  executives: {
+    eyebrow: 'EPLAN Leadership',
+    title: 'Meet the Executive Team',
+    intro:
+      'The executive team stewards the network, strengthens alumni connections, and advances EPLAN’s shared commitment to ethical public leadership.',
+    items: [
+      {
+        id: 'executive-placeholder-1',
+        name: 'Executive Member 01',
+        role: 'EPLAN Executive',
+        bio: 'Executive profile details will be updated from the EPLAN page in Payload.',
+        photo: eplHomeImages.fellows.miriam,
+      },
+      {
+        id: 'executive-placeholder-2',
+        name: 'Executive Member 02',
+        role: 'EPLAN Executive',
+        bio: 'Executive profile details will be updated from the EPLAN page in Payload.',
+        photo: eplHomeImages.fellows.priscilla,
+      },
+      {
+        id: 'executive-placeholder-3',
+        name: 'Executive Member 03',
+        role: 'EPLAN Executive',
+        bio: 'Executive profile details will be updated from the EPLAN page in Payload.',
+        photo: eplHomeImages.fellows.anita,
+      },
+      {
+        id: 'executive-placeholder-4',
+        name: 'Executive Member 04',
+        role: 'EPLAN Executive',
+        bio: 'Executive profile details will be updated from the EPLAN page in Payload.',
+        photo: eplHomeImages.gallery[4].src,
+      },
+      {
+        id: 'executive-placeholder-5',
+        name: 'Executive Member 05',
+        role: 'EPLAN Executive',
+        bio: 'Executive profile details will be updated from the EPLAN page in Payload.',
+        photo: eplHomeImages.gallery[5].src,
+      },
+    ] as EplanExecutive[],
   },
   convening: {
     eyebrow: 'Flagship Gathering',

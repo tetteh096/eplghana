@@ -29,9 +29,10 @@ export const currentFellowsPageContent = {
     ],
   },
   directory: {
-    defaultCohort: 'Cohort 7',
+    defaultCohort: 'Cohort 8',
     cohortTabs: [
-      { label: 'Current Cohort', value: 'Cohort 7' },
+      { label: 'Current Cohort', value: 'Cohort 8' },
+      { label: 'C8', value: 'Cohort 8' },
       { label: 'C7', value: 'Cohort 7' },
       { label: 'C6', value: 'C6' },
       { label: 'C5', value: 'C5' },

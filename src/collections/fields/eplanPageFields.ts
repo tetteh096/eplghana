@@ -76,6 +76,41 @@ export const eplanPageFields: Field[] = [
       },
       {
         type: 'collapsible',
+        label: 'Mission',
+        fields: [
+          { name: 'missionEyebrow', type: 'text', defaultValue: d.mission.eyebrow },
+          { name: 'missionText', type: 'textarea', defaultValue: d.mission.text },
+        ],
+      },
+      {
+        type: 'collapsible',
+        label: 'EPLAN Executive Team',
+        admin: {
+          description:
+            'Add up to five EPLAN executives. This section appears between Vision/Mission and Beyond the Fellowship.',
+        },
+        fields: [
+          { name: 'executivesEyebrow', type: 'text', defaultValue: d.executives.eyebrow },
+          { name: 'executivesTitle', type: 'text', defaultValue: d.executives.title },
+          { name: 'executivesIntro', type: 'textarea', defaultValue: d.executives.intro },
+          {
+            name: 'executivesItems',
+            type: 'array',
+            maxRows: 5,
+            labels: { singular: 'Executive', plural: 'Executives' },
+            admin: { description: 'Drag profiles to control their display order.' },
+            fields: [
+              { name: 'name', type: 'text', required: true },
+              { name: 'role', type: 'text', required: true },
+              { name: 'bio', type: 'textarea' },
+              { name: 'photo', type: 'upload', relationTo: 'media', required: true },
+              { name: 'linkedin', type: 'text', label: 'LinkedIn URL' },
+            ],
+          },
+        ],
+      },
+      {
+        type: 'collapsible',
         label: 'Sustain impact',
         fields: [
           { name: 'sustainEyebrow', type: 'text', defaultValue: d.sustain.eyebrow },

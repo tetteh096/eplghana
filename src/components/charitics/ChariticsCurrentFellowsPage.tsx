@@ -22,6 +22,10 @@ type FellowItem = {
   bio?: string
 }
 
+function currentCommunityStat(stat: { value: string; label: string }) {
+  return stat.label.trim().toLowerCase() === 'cohorts' ? { ...stat, value: '8' } : stat
+}
+
 function FellowDrawer({
   fellow,
   fellowIndex,
@@ -187,7 +191,7 @@ export function ChariticsCurrentFellowsPage({ content }: ChariticsCurrentFellows
             <h1>{hero.title}</h1>
             <p>{hero.lead}</p>
             <div className="figma-community-hero__stats">
-              {hero.stats.map((stat) => (
+              {hero.stats.map(currentCommunityStat).map((stat) => (
                 <div className="figma-community-hero__stat" key={stat.label}>
                   <div className="figma-community-hero__stat-value">{stat.value}</div>
                   <div className="figma-community-hero__stat-label">{stat.label}</div>
@@ -369,7 +373,7 @@ export function ChariticsCurrentFellowsPage({ content }: ChariticsCurrentFellows
               <h2>{eplanPromo.title}</h2>
               <p>{eplanPromo.intro}</p>
               <div className="figma-community-eplan__stats">
-                {eplanPromo.stats.map((stat, index) => (
+                {eplanPromo.stats.map(currentCommunityStat).map((stat, index) => (
                   <div className="figma-community-eplan__stat" key={stat.label}>
                     <div
                       className={`figma-community-eplan__stat-value${index % 2 === 0 ? ' figma-community-eplan__stat-value--gold' : ''}`}
@@ -390,7 +394,7 @@ export function ChariticsCurrentFellowsPage({ content }: ChariticsCurrentFellows
         </div>
       </section>
 
-      <section className="figma-section epl-textured-band" style={{ paddingBlock: '100px' }}>
+      <section className="figma-section epl-textured-band epl-textured-band--light" style={{ paddingBlock: '100px' }}>
         <div className="epl-new-shell">
           <div className="figma-section-head" style={{ textAlign: 'center', maxWidth: '740px', margin: '0 auto' }}>
             <div className="figma-kicker figma-kicker--gold" style={{ justifyContent: 'center' }}>
@@ -401,7 +405,7 @@ export function ChariticsCurrentFellowsPage({ content }: ChariticsCurrentFellows
               style={{
                 fontSize: 'clamp(36px, 4vw, 54px)',
                 fontWeight: 800,
-                color: '#ffffff',
+                color: '#101626',
                 margin: '14px 0 16px',
               }}
             >
@@ -410,7 +414,7 @@ export function ChariticsCurrentFellowsPage({ content }: ChariticsCurrentFellows
             <p
               style={{
                 margin: '0 auto 32px',
-                color: 'rgba(255,255,255,0.92)',
+                color: 'rgba(16,22,38,0.72)',
                 fontSize: '18px',
                 lineHeight: 1.65,
               }}

@@ -1,0 +1,61 @@
+Homepage
+ First section text should be centered
+ Include additional background image so they slide
+The EPL Way
+ Notes under each of the ways we work are missing
+ The learn more is not visible, color needs to be changed
+
+Latest Updates from EPL Ghana – check fonts
+Check icons for Date &amp; Venue
+
+About
+Mission
+Vision
+
+Our Parners &amp; Sponsors - can the logo slide and be more revealing, instead of having
+to hover on it before it shows
+
+Projects
+First section text needs to change to this - Projects That Move Public Service
+Forward
+
+Get Connected
+Change Do You Want To Partner With Us? - Be Part of Our Work
+Contact Us – Become a Fellow
+Community
+8 Cohorts
+500+ fellows
+12+ institutions
+
+Cohort Tab
+C8,C7,C6,C5,C4,C3,C2,C1
+
+Join Us in Building Change Agents – Background color should be white
+Annual reports takes you to a whole different page – kindly check
+
+EPLAN
+After the vision, can we have a section in-between vision and beyond the
+fellowship
+
+Donate
+Take the Ways to Give and Make a Pledge buttons off
+GH Bank Details
+Account Name: Emerging Public Leaders of Ghana
+Name of Bank – GCB Bank
+Account Number – 1681180006278
+Branch: Airport City
+
+Dollar Bank Details
+Account Name: Emerging Public Leaders of Ghana
+Name of Bank – GCB Bank
+Account Number – 1681600002975
+Branch: Airport City
+Momo Details
+Name: Emerging Public Leaders of Ghana
+Number: 0547218843
+Lets align the 3 boxes – can we make it more catchy?
+
+- Is it possible to add the patterns to all footer page?
+
+- ⁠can the website be responsive to the screen size of any device??
+- can we make the boxes a bit rounded - reference site https://leoafricainstitute.org/

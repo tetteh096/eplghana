@@ -31,18 +31,21 @@ const defaultEplWay = [
     number: '01',
     title: 'Think Critically',
     description: 'Analytical rigour and strategic problem-solving.',
+    note: 'We equip aspiring public leaders with data-driven policy analysis, evidence-based reasoning, and strategic innovation to navigate complex institutional challenges.',
     tone: 'blue',
   },
   {
     number: '02',
     title: 'Act Ethically',
     description: 'Integrity, transparency and values-led service.',
+    note: 'Leadership begins with character. We instill an uncompromising commitment to accountability, fairness, and moral conviction across every level of public administration.',
     tone: 'navy',
   },
   {
     number: '03',
     title: 'Drive Change',
     description: 'Transforming institutions and local communities.',
+    note: "Fellows don't just study policy — they put it into action. By leading community initiatives and streamlining civil service processes, they create real, measurable impact.",
     tone: 'gold',
   },
 ]
@@ -504,6 +507,14 @@ export const Pages: CollectionConfig = {
                 { name: 'number', type: 'text', required: true },
                 { name: 'title', type: 'text', required: true },
                 { name: 'description', type: 'textarea', required: true },
+                {
+                  name: 'note',
+                  type: 'textarea',
+                  admin: {
+                    description:
+                      'Longer note revealed when a visitor hovers the card.',
+                  },
+                },
                 {
                   name: 'tone',
                   type: 'select',
@@ -1162,9 +1173,9 @@ export const Pages: CollectionConfig = {
             {
               name: 'ctaTitle',
               type: 'text',
-              defaultValue: 'Do You Want To Partner With Us?',
+              defaultValue: 'Be Part of Our Work',
             },
-            { name: 'ctaLabel', type: 'text', defaultValue: 'Contact Us' },
+            { name: 'ctaLabel', type: 'text', defaultValue: 'Become a Fellow' },
             { name: 'ctaUrl', type: 'text', defaultValue: '/contact#partnership' },
           ],
         },
@@ -1212,7 +1223,7 @@ export const Pages: CollectionConfig = {
               type: 'array',
               labels: { singular: 'Stat', plural: 'Hero stats' },
               defaultValue: [
-                { value: '7', label: 'Cohorts' },
+                { value: '8', label: 'Cohorts' },
                 { value: '500+', label: 'Fellows' },
                 { value: '12+', label: 'Institutions' },
               ],
@@ -1328,7 +1339,7 @@ export const Pages: CollectionConfig = {
               labels: { singular: 'Stat', plural: 'EPLAN stats' },
               defaultValue: [
                 { value: '500+', label: 'Members' },
-                { value: '7', label: 'Cohorts' },
+                { value: '8', label: 'Cohorts' },
                 { value: '85%', label: 'Retained' },
               ],
               fields: [

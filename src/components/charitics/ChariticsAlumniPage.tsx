@@ -10,7 +10,7 @@ type ChariticsAlumniPageProps = {
 }
 
 export function ChariticsAlumniPage({ content }: ChariticsAlumniPageProps) {
-  const { hero, sustain, vision, eplanAbout, spotlight } = content
+  const { hero, sustain, vision, mission, executives, eplanAbout, spotlight } = content
 
   return (
     <div className="figma-eplan-page">
@@ -66,6 +66,57 @@ export function ChariticsAlumniPage({ content }: ChariticsAlumniPageProps) {
           <p>{eplanAbout.paragraphs[0]}</p>
         </div>
       </section>
+
+      <section className="figma-eplan-vision figma-eplan-vision--mission">
+        <div className="figma-eplan-vision__inner">
+          <div className="figma-eplan-vision__kicker">
+            <span className="figma-impact-kicker__line" />
+            <span>{mission.eyebrow.toUpperCase()}</span>
+            <span className="figma-impact-kicker__line" />
+          </div>
+          <div className="figma-eplan-vision__rule" />
+          <p>{mission.text}</p>
+        </div>
+      </section>
+
+      {executives.items.length > 0 ? (
+        <section className="figma-eplan-executives">
+          <div className="epl-new-shell">
+            <div className="figma-eplan-executives__head">
+              <div className="figma-impact-kicker figma-impact-kicker--blue">
+                <span className="figma-impact-kicker__line" />
+                <span>{executives.eyebrow.toUpperCase()}</span>
+              </div>
+              <h2>{executives.title}</h2>
+              <p>{executives.intro}</p>
+            </div>
+            <div className="figma-eplan-executives__grid">
+              {executives.items.map((member) => (
+                <article className="figma-eplan-executive-card" key={member.id}>
+                  <div className="figma-eplan-executive-card__photo">
+                    <ProjectDetailImage
+                      alt={member.name}
+                      className="w-full h-full object-cover"
+                      fallbackClass="epl-project-card-visual"
+                      src={member.photo}
+                    />
+                  </div>
+                  <div className="figma-eplan-executive-card__body">
+                    <h3>{member.name}</h3>
+                    <span>{member.role}</span>
+                    {member.bio ? <p>{member.bio}</p> : null}
+                    {member.linkedin ? (
+                      <a href={member.linkedin} rel="noopener noreferrer" target="_blank">
+                        LinkedIn <span aria-hidden>↗</span>
+                      </a>
+                    ) : null}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section className="figma-eplan-sustain">
         <div className="epl-new-shell">

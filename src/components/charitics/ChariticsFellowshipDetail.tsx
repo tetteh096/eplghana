@@ -44,7 +44,7 @@ export function ChariticsFellowshipDetail({ content }: ChariticsFellowshipDetail
 
   return (
     <div className="figma-fellowship-detail-page">
-      <section className="figma-about-hero">
+      <section className="figma-about-hero figma-about-hero--redesign figma-fellowship-hero">
         <motion.div
           animate={reduceMotion ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1.04 }}
           className="figma-about-hero__bg"
@@ -52,10 +52,10 @@ export function ChariticsFellowshipDetail({ content }: ChariticsFellowshipDetail
           style={{ backgroundImage: `url(${heroImage})` }}
           transition={{ duration: 1.2, ease: easeOut }}
         />
-        <div className="figma-about-hero__overlay" />
+        <div className="figma-about-hero__overlay figma-about-hero__overlay--blue" />
         <motion.div
           animate="show"
-          className="figma-about-hero__content"
+          className="figma-about-hero__content figma-about-hero__content--left"
           initial={reduceMotion ? false : 'hidden'}
           variants={{
             hidden: { opacity: 0, y: 24 },

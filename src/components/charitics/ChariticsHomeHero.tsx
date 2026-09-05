@@ -1,8 +1,8 @@
 'use client'
 
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
+import { motion, useReducedMotion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const HERO_LINES = ['Public Service is', 'Strengthened', 'by People'] as const
 
@@ -11,13 +11,27 @@ const HERO_DESCRIPTION =
 
 const easeOut = [0.22, 1, 0.36, 1] as const
 
+const SLIDE_INTERVAL_MS = 6000
+
 type ChariticsHomeHeroProps = {
   image: string
+  images?: string[]
 }
 
-export function ChariticsHomeHero({ image }: ChariticsHomeHeroProps) {
+export function ChariticsHomeHero({ image, images }: ChariticsHomeHeroProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const reduceMotion = useReducedMotion()
+
+  const slides = images && images.length > 1 ? images : [image]
+  const [slideIndex, setSlideIndex] = useState(0)
+
+  useEffect(() => {
+    if (slides.length < 2 || reduceMotion) return
+    const timer = setInterval(() => {
+      setSlideIndex((current) => (current + 1) % slides.length)
+    }, SLIDE_INTERVAL_MS)
+    return () => clearInterval(timer)
+  }, [slides.length, reduceMotion])
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -45,14 +59,21 @@ export function ChariticsHomeHero({ image }: ChariticsHomeHeroProps) {
         style={{ scale: imageScale }}
         transition={{ duration: 0.9, ease: 'easeOut' }}
       >
-        <img
-          alt="EPL Ghana fellows standing together overlooking the landscape"
-          className="epl-new-hero__image"
-          decoding="async"
-          fetchPriority="high"
-          loading="eager"
-          src={image}
-        />
+        <AnimatePresence>
+          <motion.img
+            alt="EPL Ghana fellows standing together overlooking the landscape"
+            animate={{ opacity: 1 }}
+            className="epl-new-hero__image"
+            decoding="async"
+            exit={{ opacity: 0 }}
+            fetchPriority="high"
+            initial={{ opacity: 0 }}
+            key={slides[slideIndex]}
+            loading="eager"
+            src={slides[slideIndex]}
+            transition={{ duration: 1.2, ease: 'easeInOut' }}
+          />
+        </AnimatePresence>
       </motion.div>
 
       <div aria-hidden className="epl-new-hero__shade" />

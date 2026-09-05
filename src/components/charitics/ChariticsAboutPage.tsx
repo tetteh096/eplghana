@@ -259,19 +259,23 @@ export function ChariticsAboutPage({
           </div>
 
           {partnerGrid.length > 0 ? (
-            <div className="figma-about-partners__grid">
-              {partnerGrid.map((item) => (
-                <div className="figma-about-partners__item" key={item.id}>
-                  <div className="figma-about-partners__badge">
-                    {item.logo ? (
-                      <img alt={item.name} decoding="async" loading="lazy" src={item.logo} />
-                    ) : (
-                      <span>{item.code}</span>
-                    )}
+            <div className="epl-marquee-wrapper">
+              <div className="epl-marquee-track">
+                {[...partnerGrid, ...partnerGrid].map((item, index) => (
+                  <div className="epl-partner-slide-card" key={`${item.id}-${index}`}>
+                    <div className="epl-partner-slide-badge">
+                      {item.logo ? (
+                        <img alt={item.name} decoding="async" loading="lazy" src={item.logo} />
+                      ) : (
+                        <span>{item.code}</span>
+                      )}
+                    </div>
+                    <div className="epl-partner-slide-info">
+                      <h3>{item.name}</h3>
+                    </div>
                   </div>
-                  <span className="figma-about-partners__label">{item.name}</span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           ) : null}
 

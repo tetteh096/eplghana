@@ -166,7 +166,7 @@ export const impactPageContent = {
       'Access our official governance reports, policy whitepapers, and applied research on public sector leadership in Ghana.',
     reportsHeading: 'Annual Accountability Reports',
     reportsCtaLabel: 'Download PDF',
-    reportsCtaUrl: '/knowledge-products/annual-reports',
+    reportsCtaUrl: '/impact#annual-reports',
     reports: [
       {
         edition: '2025 Edition',

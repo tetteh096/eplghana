@@ -41,31 +41,28 @@ type ChariticsHomeProps = {
   testimonials: Testimonial[]
 }
 
-const fallbackStats: HomeStat[] = [
-  { value: '500+', label: 'Fellows' },
-  { value: '12+', label: 'Public Institutions' },
-  { value: '8', label: 'Cohorts' },
-  { value: '85%', label: 'Career Advancement' },
-]
-
 export function ChariticsHome({
   settings,
   sections,
+  heroSlides,
   heroAvatars = [],
   aboutMission,
-  stats: statsProp,
   eplWay,
   impactStories,
   projects,
   events,
   testimonials,
 }: ChariticsHomeProps) {
-  // Redesign hero is a single full-bleed photo — prefer CMS/settings, then EPL landscape.
-  // Do not use heroSlides[0] (old carousel; often portrait crops).
-  const heroImage =
-    getMediaUrl(settings.heroImage) || eplHomeImages.heroHome
+  const heroImage = getMediaUrl(settings.heroImage) || eplHomeImages.heroHome
+  // Only curated photos rotate through the hero — a CMS-uploaded flyer/poster
+  // in settings.heroImage must never get mixed into the slideshow.
+  const heroImages = heroSlides?.length ? heroSlides.map((slide) => slide.image) : [heroImage]
   const projectCards = resolveHomeProjects(projects)
-  const stats = statsProp?.length ? statsProp : fallbackStats
+  const stats: HomeStat[] = [
+    { value: '8', label: 'Cohorts' },
+    { value: '500+', label: 'Fellows' },
+    { value: '12+', label: 'Institutions' },
+  ]
   const wayCards =
     eplWay?.length
       ? eplWay
@@ -74,6 +71,7 @@ export function ChariticsHome({
             number: '01',
             title: 'Think Critically',
             description: 'Analytical rigour and strategic problem-solving.',
+            note: 'We equip aspiring public leaders with data-driven policy analysis, evidence-based reasoning, and strategic innovation to navigate complex institutional challenges.',
             image: aboutMission?.image ?? eplHomeImages.aboutBlock,
             tone: 'blue',
             href: '/about/what-we-do',
@@ -82,6 +80,7 @@ export function ChariticsHome({
             number: '02',
             title: 'Act Ethically',
             description: 'Integrity, transparency and values-led service.',
+            note: 'Leadership begins with character. We instill an uncompromising commitment to accountability, fairness, and moral conviction across every level of public administration.',
             image: eplHomeImages.gallery[1].src,
             tone: 'navy',
             href: '/about/what-we-do',
@@ -90,6 +89,7 @@ export function ChariticsHome({
             number: '03',
             title: 'Drive Change',
             description: 'Transforming institutions and local communities.',
+            note: "Fellows don't just study policy — they put it into action. By leading community initiatives and streamlining civil service processes, they create real, measurable impact.",
             image: eplHomeImages.gallery[3].src,
             tone: 'gold',
             href: '/about/what-we-do',
@@ -143,7 +143,7 @@ export function ChariticsHome({
 
   return (
     <main className="epl-new-home">
-      <ChariticsHomeHero image={heroImage} />
+      <ChariticsHomeHero image={heroImage} images={heroImages} />
 
       <MotionReveal as="section" className="epl-way-section">
         <div className="epl-new-shell">
@@ -170,7 +170,18 @@ export function ChariticsHome({
                     <span>{item.number}</span>
                     <h3>{item.title}</h3>
                     <p>{item.description}</p>
-                    <b>Learn more →</b>
+                    <p className="epl-way-card__note">{item.note}</p>
+                    <b aria-hidden>
+                      <svg fill="none" height="20" viewBox="0 0 24 24" width="20">
+                        <path
+                          d="M5 12h14M13 6l6 6-6 6"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                        />
+                      </svg>
+                    </b>
                   </div>
                 </Link>
               </MotionItem>
@@ -276,15 +287,28 @@ export function ChariticsHome({
             <p>{event.excerpt}</p>
             <dl>
               <div>
-                <span className="epl-latest-event__meta-icon">□</span>
+                <span className="epl-latest-event__meta-icon" aria-hidden>
+                  <svg fill="none" height="20" viewBox="0 0 24 24" width="20">
+                    <rect height="18" rx="2" stroke="currentColor" strokeWidth="1.6" width="18" x="3" y="4" />
+                    <path d="M3 9h18M8 2v4M16 2v4" stroke="currentColor" strokeLinecap="round" strokeWidth="1.6" />
+                  </svg>
+                </span>
                 <div>
                   <dt>Date</dt>
                   <dd>{formatDate(event.eventDate)}</dd>
                 </div>
               </div>
               <div>
-                <span className="epl-latest-event__meta-icon epl-latest-event__meta-icon--gold">
-                  ⌖
+                <span className="epl-latest-event__meta-icon epl-latest-event__meta-icon--gold" aria-hidden>
+                  <svg fill="none" height="20" viewBox="0 0 24 24" width="20">
+                    <path
+                      d="M12 22s7-7.05 7-12.5A7 7 0 0 0 5 9.5C5 14.95 12 22 12 22Z"
+                      stroke="currentColor"
+                      strokeLinejoin="round"
+                      strokeWidth="1.6"
+                    />
+                    <circle cx="12" cy="9.5" r="2.5" stroke="currentColor" strokeWidth="1.6" />
+                  </svg>
                 </span>
                 <div>
                   <dt>Location</dt>

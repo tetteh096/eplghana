@@ -143,6 +143,26 @@ function normalizeGetInvolvedNav(nav: NavItem[]): NavItem[] {
   })
 }
 
+/** Keep the fellowship contact action consistent even when an older CMS menu is loaded. */
+function normalizeFellowshipContactNav(nav: NavItem[]): NavItem[] {
+  return nav.map((item) => {
+    if (!isNavDropdown(item)) {
+      return item.href === '/contact' && item.label === 'Contact Us'
+        ? { ...item, label: 'Become a Fellow' }
+        : item
+    }
+
+    return {
+      ...item,
+      items: item.items.map((child) =>
+        child.href === '/contact' && child.label === 'Contact Us'
+          ? { ...child, label: 'Become a Fellow', description: 'Apply to join the next cohort' }
+          : child,
+      ),
+    }
+  })
+}
+
 function normalizeTopLinks(links: { label: string; href: string }[]): { label: string; href: string }[] {
   return links.map((link) => {
     if (link.label === 'Community') return { ...link, href: '/community/current-fellows' }
@@ -219,7 +239,12 @@ export const getHeader = cache(async (): Promise<HeaderData> => {
       void payload
         .updateGlobal({ slug: 'header', data: buildHeaderNavData() as never })
         .catch(() => undefined)
-      return { ...fallback, nav: normalizeGetInvolvedNav(normalizeProgrammesNav(fallback.nav)) }
+      return {
+        ...fallback,
+        nav: normalizeFellowshipContactNav(
+          normalizeGetInvolvedNav(normalizeProgrammesNav(fallback.nav)),
+        ),
+      }
     }
 
     const topLinks = (header?.topLinks ?? [])
@@ -241,7 +266,7 @@ export const getHeader = cache(async (): Promise<HeaderData> => {
     }
 
     return {
-      nav: normalizeGetInvolvedNav(normalizeProgrammesNav(nav)),
+      nav: normalizeFellowshipContactNav(normalizeGetInvolvedNav(normalizeProgrammesNav(nav))),
       cta: mapCta(header?.cta, fallbackCta),
       partnerCta: mapCta(header?.partnerCta, fallbackPartnerCta),
       topLinks: normalizeTopLinks(topLinks.length ? topLinks : TOP_LINKS),

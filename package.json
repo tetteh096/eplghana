@@ -7,8 +7,8 @@
   "packageManager": "pnpm@10.12.1",
   "scripts": {
     "build": "pnpm generate:importmap && cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
-    "dev": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=4096\" next dev --webpack",
-    "dev:doppler": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/with-doppler.ps1 run --fallback .env -- cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=4096\" next dev --webpack",
+    "dev": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=4096\" next dev --turbo",
+    "dev:doppler": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/with-doppler.ps1 run --fallback .env -- cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=4096\" next dev --turbo",
     "build:doppler": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/with-doppler.ps1 run --fallback .env -- pnpm run build",
     "start:doppler": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/with-doppler.ps1 run --fallback .env -- cross-env NODE_OPTIONS=--no-deprecation next start",
     "doppler:login": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/with-doppler.ps1 login",

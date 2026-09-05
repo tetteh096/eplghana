@@ -12,7 +12,7 @@ const items = [
     description: 'Programme events, graduations, and announcements.',
   },
   {
-    href: '/knowledge-products/annual-reports',
+    href: '/impact#annual-reports',
     label: 'Annual Reports',
     description: 'Impact reports and yearly publications.',
   },

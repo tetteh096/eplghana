@@ -221,8 +221,8 @@ export const publicServiceFellowshipContent = {
     secondaryCtaHref: '/community/current-fellows',
   },
   partnerCta: {
-    title: 'Do You Want To Partner With Us?',
-    ctaLabel: 'Contact Us',
+    title: 'Be Part of Our Work',
+    ctaLabel: 'Become a Fellow',
     ctaHref: '/contact',
     image: fellowshipMedia.partner,
   },
