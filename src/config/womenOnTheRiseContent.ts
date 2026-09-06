@@ -119,10 +119,10 @@ export const womenOnTheRiseContent = {
     secondaryCtaHref: '/blog',
   },
   partnerCta: {
-    title: 'Do You Want To Partner With Us?',
+    title: 'Be Part of Our Work',
     description:
       'Collaborate with EPL Ghana to drive institutional reform and gender equality in public leadership.',
-    ctaLabel: 'Contact Us',
+    ctaLabel: 'Become a Fellow',
     ctaHref: '/contact',
     image: `${EPL_MEDIA}/2025/11/LEMA25-2204-1024x682.jpg`,
   },

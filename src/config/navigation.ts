@@ -64,7 +64,7 @@ export const mainNavigation: NavItem[] = [
       { href: '/impact#success-stories', label: 'Success Stories', description: 'Fellows making a difference' },
       { href: '/impact#community-stories', label: 'Community Stories', description: 'Transformation across districts' },
       { href: '/impact#testimonials', label: 'Testimonials', description: 'Voices from mentors, supervisors & partners' },
-      { href: '/knowledge-products/annual-reports', label: 'Annual Reports', description: 'Our accountability in numbers' },
+      { href: '/impact#annual-reports', label: 'Annual Reports', description: 'Our accountability in numbers' },
       { href: '/impact#research', label: 'Research & Publications', description: 'Knowledge we generate' },
     ],
   },
@@ -83,7 +83,7 @@ export const mainNavigation: NavItem[] = [
       { href: '/get-involved', label: 'Get Involved', description: 'Ways to be part of our work' },
       { href: '/community/partners', label: 'Partner With Us', description: 'Strategic partnerships' },
       { href: '/donate', label: 'Donate', description: 'Support our mission' },
-      { href: '/contact', label: 'Contact Us', description: 'Get in touch with our team' },
+      { href: '/contact', label: 'Become a Fellow', description: 'Apply to join the next cohort' },
     ],
   },
 ]

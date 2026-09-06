@@ -121,6 +121,18 @@ function mapCmsPage(cms: Record<string, any>, d: typeof alumniPageContent): Epla
         }))
       : d.network.benefits
 
+  const executives =
+    Array.isArray(cms.executivesItems) && cms.executivesItems.length
+      ? cms.executivesItems.slice(0, 5).map((member: any, index: number) => ({
+          id: member?.id ?? `eplan-executive-${index}`,
+          name: txt(member?.name, ''),
+          role: txt(member?.role, ''),
+          bio: txt(member?.bio, ''),
+          photo: img(member?.photo, ''),
+          linkedin: txt(member?.linkedin, ''),
+        }))
+      : d.executives.items
+
   return {
     hero: {
       eyebrow: txt(cms.heroEyebrow, d.hero.eyebrow),
@@ -185,6 +197,16 @@ function mapCmsPage(cms: Record<string, any>, d: typeof alumniPageContent): Epla
       eyebrow: txt(cms.visionEyebrow, d.vision.eyebrow),
       title: txt(cms.visionTitle, d.vision.title),
       text: txt(cms.visionText, d.vision.text),
+    },
+    mission: {
+      eyebrow: txt(cms.missionEyebrow, d.mission.eyebrow),
+      text: txt(cms.missionText, d.mission.text),
+    },
+    executives: {
+      eyebrow: txt(cms.executivesEyebrow, d.executives.eyebrow),
+      title: txt(cms.executivesTitle, d.executives.title),
+      intro: txt(cms.executivesIntro, d.executives.intro),
+      items: executives,
     },
     convening: {
       eyebrow: txt(cms.conveningEyebrow, d.convening.eyebrow),

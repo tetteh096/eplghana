@@ -33,6 +33,7 @@ export type HomeEplWayItem = {
   number: string
   title: string
   description: string
+  note: string
   tone: string
   image: string
   href: string
@@ -97,6 +98,7 @@ const defaultEplWay: HomeEplWayItem[] = [
     number: '01',
     title: 'Think Critically',
     description: 'Analytical rigour and strategic problem-solving.',
+    note: 'We equip aspiring public leaders with data-driven policy analysis, evidence-based reasoning, and strategic innovation to navigate complex institutional challenges.',
     tone: 'blue',
     image: eplHomeImages.aboutBlock,
     href: '/about/what-we-do',
@@ -105,6 +107,7 @@ const defaultEplWay: HomeEplWayItem[] = [
     number: '02',
     title: 'Act Ethically',
     description: 'Integrity, transparency and values-led service.',
+    note: 'Leadership begins with character. We instill an uncompromising commitment to accountability, fairness, and moral conviction across every level of public administration.',
     tone: 'navy',
     image: eplHomeImages.gallery[1].src,
     href: '/about/what-we-do',
@@ -113,6 +116,7 @@ const defaultEplWay: HomeEplWayItem[] = [
     number: '03',
     title: 'Drive Change',
     description: 'Transforming institutions and local communities.',
+    note: "Fellows don't just study policy — they put it into action. By leading community initiatives and streamlining civil service processes, they create real, measurable impact.",
     tone: 'gold',
     image: eplHomeImages.gallery[3].src,
     href: '/about/what-we-do',
@@ -335,6 +339,7 @@ export async function getHomeContent(settings: SiteSetting): Promise<{
             number: item?.number || fallback.number,
             title: item?.title || fallback.title,
             description: item?.description || fallback.description,
+            note: item?.note || fallback.note,
             tone: item?.tone || fallback.tone,
             image: (await resolveMediaUrl(item?.image, payload)) || fallback.image,
             href: item?.href || fallback.href,

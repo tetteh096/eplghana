@@ -136,18 +136,15 @@ export function ChariticsProjectsPage({ content }: ChariticsProjectsPageProps) {
     return projectFallbacks
   }, [content.projects])
 
-  const eyebrow = content.intro.eyebrow || 'Our Programmes'
-  const title = content.intro.title || 'Projects That Move Public Service Forward'
-  const description =
-    content.intro.description ||
-    'A flagship suite of leadership development programmes placing young professionals, empowering women, building peace, and driving maritime leadership across Ghana.'
-  const ctaTitle = content.cta.title || 'Be Part of Our Work'
-  const ctaLabel = content.cta.ctaLabel || 'Become a Fellow'
-  const ctaHref = content.cta.ctaHref || '/get-involved'
+  const eyebrow = 'Our Program'
+  const title = 'Projects That Move Public Service Forward'
+  const ctaTitle = 'Be Part of Our Work'
+  const ctaLabel = 'Become a Fellow'
+  const ctaHref = '/contact'
 
   return (
     <div className="figma-projects-page">
-      <section className="figma-about-hero">
+      <section className="figma-about-hero figma-projects-hero">
         <motion.div
           animate={reduceMotion ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1.04 }}
           className="figma-about-hero__bg"
@@ -158,7 +155,7 @@ export function ChariticsProjectsPage({ content }: ChariticsProjectsPageProps) {
         <div className="figma-about-hero__overlay" />
         <motion.div
           animate="show"
-          className="figma-about-hero__content"
+          className="figma-about-hero__content figma-projects-hero__content"
           initial={reduceMotion ? false : 'hidden'}
           variants={{
             hidden: {},
@@ -183,14 +180,6 @@ export function ChariticsProjectsPage({ content }: ChariticsProjectsPageProps) {
           >
             {title}
           </motion.h1>
-          <motion.p
-            variants={{
-              hidden: { opacity: 0, y: 22 },
-              show: { opacity: 1, y: 0, transition: { duration: 0.75, ease: easeOut } },
-            }}
-          >
-            {description}
-          </motion.p>
         </motion.div>
       </section>
 

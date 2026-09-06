@@ -1349,6 +1349,10 @@ export interface Page {
           number: string;
           title: string;
           description: string;
+          /**
+           * Longer note revealed when a visitor hovers the card.
+           */
+          note?: string | null;
           tone: 'blue' | 'navy' | 'gold';
           /**
            * Card photo. Leave empty to keep the current image.
@@ -1624,6 +1628,24 @@ export interface Page {
     visionEyebrow?: string | null;
     visionTitle?: string | null;
     visionText?: string | null;
+    missionEyebrow?: string | null;
+    missionText?: string | null;
+    executivesEyebrow?: string | null;
+    executivesTitle?: string | null;
+    executivesIntro?: string | null;
+    /**
+     * Drag profiles to control their display order.
+     */
+    executivesItems?:
+      | {
+          name: string;
+          role: string;
+          bio?: string | null;
+          photo: string | Media;
+          linkedin?: string | null;
+          id?: string | null;
+        }[]
+      | null;
     sustainEyebrow?: string | null;
     sustainTitle?: string | null;
     sustainLead?: string | null;
@@ -3090,6 +3112,7 @@ export interface PagesSelect<T extends boolean = true> {
               number?: T;
               title?: T;
               description?: T;
+              note?: T;
               tone?: T;
               image?: T;
               href?: T;
@@ -3339,6 +3362,21 @@ export interface PagesSelect<T extends boolean = true> {
         visionEyebrow?: T;
         visionTitle?: T;
         visionText?: T;
+        missionEyebrow?: T;
+        missionText?: T;
+        executivesEyebrow?: T;
+        executivesTitle?: T;
+        executivesIntro?: T;
+        executivesItems?:
+          | T
+          | {
+              name?: T;
+              role?: T;
+              bio?: T;
+              photo?: T;
+              linkedin?: T;
+              id?: T;
+            };
         sustainEyebrow?: T;
         sustainTitle?: T;
         sustainLead?: T;

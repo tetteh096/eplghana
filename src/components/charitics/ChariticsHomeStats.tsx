@@ -71,7 +71,10 @@ function AnimatedStatValue({ value }: { value: string }) {
 
 export function ChariticsHomeStats({ stats }: ChariticsHomeStatsProps) {
   return (
-    <section aria-label="EPL Ghana impact at a glance" className="epl-new-stats">
+    <section
+      aria-label="EPL Ghana impact at a glance"
+      className={`epl-new-stats${stats.length === 3 ? ' epl-new-stats--three' : ''}`}
+    >
       {stats.map((stat) => (
         <div key={`${stat.value}-${stat.label}`}>
           <AnimatedStatValue value={stat.value} />

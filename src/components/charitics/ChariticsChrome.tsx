@@ -39,7 +39,7 @@ const ENGAGE_LINKS = [
   { href: '/get-involved', label: 'Get Involved' },
   { href: '/community/partners', label: 'Partner With Us' },
   { href: '/donate', label: 'Donate' },
-  { href: '/contact', label: 'Contact Us' },
+  { href: '/contact', label: 'Become a Fellow' },
 ]
 
 function socialLinks(settings: SiteSetting) {

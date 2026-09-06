@@ -268,7 +268,7 @@ export function ChariticsImpactPage({ content }: ChariticsImpactPageProps) {
           <p>{publications.intro}</p>
         </div>
 
-        <div className="figma-impact-publications__block">
+        <div className="figma-impact-publications__block" id="annual-reports">
           <div className="figma-impact-publications__subhead">
             <span className="figma-impact-publications__subline figma-impact-publications__subline--blue" />
             <h3>{publications.reportsHeading}</h3>

@@ -457,7 +457,7 @@ export async function getImpactPageContent(): Promise<ImpactPageContent> {
       intro: txt(cms.publicationsIntro, d.publications.intro),
       reportsHeading: txt(cms.reportsHeading, d.publications.reportsHeading),
       reportsCtaLabel: txt(cms.reportsCtaLabel, d.publications.reportsCtaLabel),
-      reportsCtaUrl: txt(cms.reportsCtaUrl, d.publications.reportsCtaUrl),
+      reportsCtaUrl: '/impact#annual-reports',
       reports,
       researchHeading: txt(cms.researchHeading, d.publications.researchHeading),
       researchCtaLabel: txt(cms.researchCtaLabel, d.publications.researchCtaLabel),

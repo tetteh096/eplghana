@@ -93,15 +93,8 @@ function HeartIcon() {
   )
 }
 
-function momoBadgeClass(badge: string) {
-  if (badge === 'Till') return 'figma-donate-momo-badge figma-donate-momo-badge--till'
-  if (badge === 'Direct') return 'figma-donate-momo-badge figma-donate-momo-badge--direct'
-  return 'figma-donate-momo-badge figma-donate-momo-badge--merchant'
-}
-
 export function ChariticsDonatePage({ content, paystackEnabled = false }: Props) {
   const { hero, why, ways, tiers, pledge, modal } = content
-  const [bankCurrency, setBankCurrency] = useState<'GHS' | 'USD'>('GHS')
   const [activeModal, setActiveModal] = useState<DonateTier | null>(null)
   const [modalMethod, setModalMethod] = useState<'card' | 'bank' | 'momo'>('bank')
   const [modalAccountCurrency, setModalAccountCurrency] = useState<'GHS' | 'USD'>('GHS')
@@ -116,19 +109,6 @@ export function ChariticsDonatePage({ content, paystackEnabled = false }: Props)
   const [customAmountMajor, setCustomAmountMajor] = useState('')
   const [paymentSuccess, setPaymentSuccess] = useState<string | null>(null)
   const [paymentError, setPaymentError] = useState('')
-
-  const showHeroCtas = Boolean(
-    hero.primaryCtaLabel?.trim() && hero.secondaryCtaLabel?.trim(),
-  )
-
-  const bankTitle =
-    bankCurrency === 'USD' ? `${ways.bank.title} (USD Account)` : ways.bank.title
-  const bankDescription =
-    bankCurrency === 'USD'
-      ? 'Direct foreign currency transfer & international wire in US Dollars ($).'
-      : ways.bank.description
-  const bankBranch =
-    bankCurrency === 'USD' ? 'Ecobank Ghana PLC, Head Office Accra' : ways.bank.branch
 
   const openTierModal = (tier: DonateTier) => {
     setPaymentError('')
@@ -168,8 +148,8 @@ export function ChariticsDonatePage({ content, paystackEnabled = false }: Props)
       if (modalMethod === 'bank') {
         setPreferredChannel(
           modalAccountCurrency === 'GHS'
-            ? 'Bank Transfer (Ecobank GHS)'
-            : 'Bank Transfer (Ecobank USD $)',
+            ? 'Bank Transfer (GCB GHS)'
+            : 'Bank Transfer (GCB USD $)',
         )
       }
       if (modalMethod === 'momo') setPreferredChannel('MTN MoMo')
@@ -254,25 +234,6 @@ export function ChariticsDonatePage({ content, paystackEnabled = false }: Props)
             </div>
             <h1>{hero.title}</h1>
             <p>{hero.lead}</p>
-            {showHeroCtas ? (
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 28 }}>
-                <a className="figma-donate-btn figma-donate-btn--gold" href={hero.primaryCtaHref}>
-                  {hero.primaryCtaLabel}
-                </a>
-                <a
-                  className="figma-donate-btn"
-                  href={hero.secondaryCtaHref}
-                  style={{
-                    width: 'auto',
-                    border: '1px solid rgba(255,255,255,0.35)',
-                    color: '#fff',
-                    background: 'transparent',
-                  }}
-                >
-                  {hero.secondaryCtaLabel}
-                </a>
-              </div>
-            ) : null}
           </div>
         </div>
       </section>
@@ -312,102 +273,57 @@ export function ChariticsDonatePage({ content, paystackEnabled = false }: Props)
         </div>
 
         <div className="figma-donate-ways-grid">
-          <article className="figma-donate-way-card">
-            <div>
-              <div className="figma-donate-way-card__head">
-                <span className="figma-donate-way-card__code">{ways.bank.code}</span>
-                <div className="figma-donate-currency-toggle">
-                  {(['GHS', 'USD'] as const).map((currency) => (
-                    <button
-                      key={currency}
-                      className={bankCurrency === currency ? 'is-active' : undefined}
-                      onClick={() => setBankCurrency(currency)}
-                      type="button"
-                    >
-                      {currency === 'USD' ? 'USD ($)' : 'GHS'}
-                    </button>
+          {[
+            {
+              code: '01 · Ghana Cedi Account',
+              title: 'GH Bank Details',
+              fields: [
+                ['Account Name', 'Emerging Public Leaders of Ghana'],
+                ['Name of Bank', 'GCB Bank'],
+                ['Account Number', '1681180006278'],
+                ['Branch', 'Airport City'],
+              ],
+            },
+            {
+              code: '02 · US Dollar Account',
+              title: 'Dollar Bank Details',
+              fields: [
+                ['Account Name', 'Emerging Public Leaders of Ghana'],
+                ['Name of Bank', 'GCB Bank'],
+                ['Account Number', '1681600002975'],
+                ['Branch', 'Airport City'],
+              ],
+            },
+            {
+              code: '03 · Mobile Money',
+              title: 'MoMo Details',
+              fields: [
+                ['Name', 'Emerging Public Leaders of Ghana'],
+                ['Number', '0547218843'],
+              ],
+            },
+          ].map((channel) => (
+            <article
+              className="figma-donate-way-card figma-donate-way-card--details"
+              data-card-number={channel.code.slice(0, 2)}
+              key={channel.title}
+            >
+              <div>
+                <span className="figma-donate-way-card__code">{channel.code}</span>
+                <h3>{channel.title}</h3>
+                <div className="figma-donate-details">
+                  {channel.fields.map(([label, value]) => (
+                    <div className="figma-donate-details__row" key={label}>
+                      <span className="figma-donate-details__label">{label}</span>
+                      <strong className={label === 'Account Number' || label === 'Number' ? 'figma-donate-details__mono' : undefined}>
+                        {value}
+                      </strong>
+                    </div>
                   ))}
                 </div>
               </div>
-              <h3>{bankTitle}</h3>
-              <p className="figma-donate-way-card__intro">{bankDescription}</p>
-              <div className="figma-donate-details">
-                <div className="figma-donate-details__row">
-                  <span className="figma-donate-details__label">Account Name</span>
-                  <strong>{ways.bank.accountName}</strong>
-                </div>
-                <div className="figma-donate-details__row">
-                  <span className="figma-donate-details__label">
-                    {bankCurrency === 'USD' ? 'USD Dollar Account No. ($)' : 'Account Number (GHS)'}
-                  </span>
-                  <strong className="figma-donate-details__mono">
-                    {bankCurrency === 'GHS'
-                      ? ways.bank.accountNumberGhs
-                      : ways.bank.accountNumberUsd}
-                  </strong>
-                </div>
-                <div className="figma-donate-details__row">
-                  <span className="figma-donate-details__label">
-                    {bankCurrency === 'USD' ? 'Bank & Branch' : 'Branch'}
-                  </span>
-                  <strong>{bankBranch}</strong>
-                </div>
-                <div className="figma-donate-details__row">
-                  <span className="figma-donate-details__label">SWIFT / BIC</span>
-                  <strong className="figma-donate-details__mono">{ways.bank.swift}</strong>
-                </div>
-              </div>
-            </div>
-            <p className="figma-donate-way-card__note">*{ways.bank.note}</p>
-          </article>
-
-          <article className="figma-donate-way-card">
-            <div>
-              <span className="figma-donate-way-card__code">{ways.momo.code}</span>
-              <h3>{ways.momo.title}</h3>
-              <p className="figma-donate-way-card__intro">{ways.momo.description}</p>
-              <div className="figma-donate-momo-list">
-                {ways.momo.options.map((opt) => (
-                  <div className="figma-donate-momo-item" key={opt.name}>
-                    <div className="figma-donate-momo-item__head">
-                      <span className="figma-donate-momo-item__name">{opt.name}</span>
-                      <span className={momoBadgeClass(opt.badge)}>{opt.badge}</span>
-                    </div>
-                    <div className="figma-donate-momo-item__detail">{opt.detail}</div>
-                    {opt.note ? (
-                      <div className="figma-donate-momo-item__sub">{opt.note}</div>
-                    ) : null}
-                  </div>
-                ))}
-              </div>
-            </div>
-            <p className="figma-donate-way-card__note">*{ways.momo.note}</p>
-          </article>
-
-          <article className="figma-donate-way-card">
-            <div>
-              <span className="figma-donate-way-card__code">{ways.card.code}</span>
-              <h3>{ways.card.title}</h3>
-              <p className="figma-donate-way-card__intro">{ways.card.description}</p>
-              <div className="figma-donate-details">
-                <div className="figma-donate-card-status">
-                  <span className="figma-donate-card-status__dot" />
-                  <span>{ways.card.statusLabel}</span>
-                </div>
-                <div className="figma-donate-details__row">
-                  <span className="figma-donate-details__label">Accepted Cards</span>
-                  <strong>{ways.card.acceptedCards}</strong>
-                </div>
-                <div className="figma-donate-details__row">
-                  <span className="figma-donate-details__label">Currencies Accepted</span>
-                  <strong>{ways.card.currencies}</strong>
-                </div>
-              </div>
-            </div>
-            <a className="figma-donate-btn figma-donate-btn--blue" href={ways.card.ctaHref}>
-              {ways.card.ctaLabel}
-            </a>
-          </article>
+            </article>
+          ))}
         </div>
       </MotionReveal>
 
