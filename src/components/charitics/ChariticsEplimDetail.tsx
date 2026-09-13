@@ -58,35 +58,38 @@ export function ChariticsEplimDetail({
 
         <motion.div
           animate="show"
-          className="epl-detail-hero__content relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-20 lg:py-28 w-full"
+          className="epl-detail-hero__content relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-20 lg:py-28 w-full flex justify-center"
           initial={reduceMotion ? false : 'hidden'}
           variants={{
             hidden: {},
             show: { transition: { staggerChildren: 0.08 } },
           }}
         >
-          <div className="max-w-3xl">
-            <motion.div className="flex items-center gap-3 mb-6" variants={fadeUp}>
+          <div className="epl-detail-hero__copy max-w-3xl mx-auto w-full text-center">
+            <motion.div
+              className="flex items-center justify-center gap-3 mb-6"
+              variants={fadeUp}
+            >
               <div className="w-9 h-[2px] bg-[#F4BD12]" />
-              <span className="text-[#F4BD12] text-[11px] font-black tracking-[0.28em] uppercase">
+              <span className="text-[#F4BD12] text-[11px] font-bold tracking-[0.28em] uppercase">
                 {hero.eyebrow}
               </span>
             </motion.div>
             <motion.h1
-              className="text-4xl sm:text-5xl md:text-6xl font-black text-white leading-[1.1] mb-6"
+              className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.15] mb-6"
               variants={fadeUp}
             >
               {hero.title}
             </motion.h1>
             <motion.p
-              className="text-white/80 text-base sm:text-lg md:text-xl leading-relaxed mb-8 max-w-2xl"
+              className="text-white/80 text-base sm:text-lg md:text-xl leading-relaxed mb-8 mx-auto max-w-2xl"
               variants={fadeUp}
             >
               {hero.lead}
             </motion.p>
-            <motion.div variants={fadeUp}>
+            <motion.div className="flex justify-center" variants={fadeUp}>
               <Link
-                className="inline-block bg-[#F4BD12] text-black font-black text-[11px] tracking-[0.22em] uppercase px-8 py-4 hover:bg-white transition-colors cursor-pointer shadow-lg rounded-none"
+                className="inline-block bg-[#F4BD12] text-black font-bold text-[11px] tracking-[0.22em] uppercase px-8 py-4 hover:bg-white transition-colors cursor-pointer shadow-lg rounded-none"
                 href={hero.ctaHref}
               >
                 {hero.ctaLabel}
@@ -102,7 +105,7 @@ export function ChariticsEplimDetail({
             <div className="lg:col-span-6">
               <div className="relative aspect-[4/3] w-full border border-gray-200 shadow-lg rounded-none overflow-hidden">
                 <ProjectDetailImage
-                  alt="EPLIM Maritime Vessel"
+                  alt="Elevated MINDS career development workshop"
                   className="w-full h-full object-cover rounded-none"
                   fallbackClass={`epl-project-card-visual ${visualClass}`}
                   src={aboutImage}
@@ -153,7 +156,7 @@ export function ChariticsEplimDetail({
 
             <div className="lg:col-span-6 relative min-h-[300px] lg:min-h-[420px]">
               <ProjectDetailImage
-                alt="Capacity Building Maritime"
+                alt="Students in an Elevated MINDS learning session"
                 className="w-full h-full object-cover rounded-none"
                 fallbackClass={`epl-project-card-visual ${visualClass}`}
                 src={capacityBuilding.image}
@@ -175,7 +178,7 @@ export function ChariticsEplimDetail({
             {whyItMatters.title}
           </h2>
 
-          <MotionReveal className="grid md:grid-cols-3 gap-8" stagger>
+          <MotionReveal className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8" stagger>
             {whyItMatters.items.map((item, i) => (
               <MotionItem key={`${item.title}-${i}`}>
                 <div className="bg-gray-50/80 border border-gray-200/80 p-8 h-full flex flex-col justify-between hover:border-[#4150A3] transition-all rounded-none shadow-sm">
@@ -199,7 +202,7 @@ export function ChariticsEplimDetail({
             <div className="lg:col-span-6">
               <div className="relative aspect-[4/3] w-full border border-white/10 shadow-xl rounded-none overflow-hidden">
                 <ProjectDetailImage
-                  alt="Ocean Maritime Impact"
+                  alt="Elevated MINDS students exploring career pathways"
                   className="w-full h-full object-cover rounded-none"
                   fallbackClass={`epl-project-card-visual ${visualClass}`}
                   src={impact.image}

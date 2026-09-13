@@ -39,10 +39,13 @@ export type ImpactPageContent = {
     ctaUrl: string
     items: {
       num: string
+      slug: string
+      href: string
       region: string
       assembly: string
       title: string
       desc: string
+      body: string
       image: string
     }[]
   }
@@ -125,6 +128,42 @@ async function loadSuccessStoriesFromFellows(
   )
 }
 
+function slugify(value: string): string {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+}
+
+function withStoryLinks(
+  items: Array<{
+    num: string
+    slug?: string
+    region: string
+    assembly: string
+    title: string
+    desc: string
+    body?: string
+    image: string
+  }>,
+): ImpactPageContent['communityStories']['items'] {
+  return items.map((item, index) => {
+    const slug = item.slug?.trim() || slugify(item.assembly || item.title) || `story-${index + 1}`
+    return {
+      num: item.num,
+      slug,
+      href: `/impact/stories/${slug}`,
+      region: item.region,
+      assembly: item.assembly,
+      title: item.title,
+      desc: item.desc,
+      body: item.body?.trim() || item.desc,
+      image: item.image,
+    }
+  })
+}
+
 async function loadCommunityStoriesFromCollection(
   payload: NonNullable<Awaited<ReturnType<typeof tryGetPayload>>>,
   defaults: ImpactPageContent['communityStories']['items'],
@@ -138,16 +177,18 @@ async function loadCommunityStoriesFromCollection(
   })
 
   const docs = toPlain(result.docs) as Array<{
+    slug?: string | null
     region?: string | null
     assembly?: string | null
     title?: string | null
     description?: string | null
+    body?: string | null
     image?: unknown
   }> | null
 
   if (!docs?.length) return null
 
-  return Promise.all(
+  const mapped = await Promise.all(
     docs.map(async (item, index) => {
       const fb = defaults[index] ?? defaults[0]
       const media = item.image as string | number | Media | null | undefined
@@ -156,16 +197,27 @@ async function loadCommunityStoriesFromCollection(
         getMediaUrl(media) ||
         fb?.image ||
         ''
+      const assembly = txt(item.assembly, fb.assembly)
+      const title = txt(item.title, fb.title)
+      const desc = txt(item.description, fb.desc)
+      const slug =
+        (typeof item.slug === 'string' && item.slug.trim()) ||
+        fb?.slug ||
+        slugify(assembly || title)
       return {
         num: String(index + 1).padStart(2, '0'),
+        slug,
         region: txt(item.region, fb.region),
-        assembly: txt(item.assembly, fb.assembly),
-        title: txt(item.title, fb.title),
-        desc: txt(item.description, fb.desc),
+        assembly,
+        title,
+        desc,
+        body: txt(item.body, fb.body || desc),
         image,
       }
     }),
   )
+
+  return withStoryLinks(mapped)
 }
 
 async function loadPublicationsFromCollection(
@@ -190,7 +242,14 @@ async function loadPublicationsFromCollection(
       limit: 8,
       sort: 'order',
       where: {
-        and: [{ status: { equals: 'published' } }, { category: { equals: 'research' } }],
+        and: [
+          { status: { not_equals: 'draft' } },
+          {
+            category: {
+              in: ['research', 'studies', 'articles', 'factsheets', 'technical-policy-briefs'],
+            },
+          },
+        ],
       },
     }),
   ])
@@ -215,7 +274,27 @@ async function loadPublicationsFromCollection(
   const research = await Promise.all(
     researchDocs.map(async (doc: any) => {
       const year = typeof doc?.year === 'string' && doc.year.trim() ? doc.year.trim() : ''
-      const href = (await resolveMediaUrl(doc?.file, payload)) || getMediaUrl(doc?.file) || undefined
+      const category =
+        doc?.category === 'research'
+          ? 'studies'
+          : typeof doc?.category === 'string'
+            ? doc.category
+            : 'studies'
+      const slug =
+        (typeof doc?.slug === 'string' && doc.slug.trim()) ||
+        (typeof doc?.title === 'string'
+          ? doc.title
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/^-|-$/g, '')
+          : '')
+      const fileHref =
+        (await resolveMediaUrl(doc?.file, payload)) || getMediaUrl(doc?.file) || undefined
+      const href =
+        slug &&
+        ['articles', 'factsheets', 'studies', 'technical-policy-briefs'].includes(category)
+          ? `/research/${category}/${slug}`
+          : fileHref
       return {
         tag: 'Research',
         title: typeof doc?.title === 'string' ? doc.title : '',
@@ -259,7 +338,9 @@ export async function getImpactPageContent(): Promise<ImpactPageContent> {
       : d.glance.stats
 
   let successItems = d.successStories.items
-  let communityItems: ImpactPageContent['communityStories']['items'] = d.communityStories.items
+  let communityItems: ImpactPageContent['communityStories']['items'] = withStoryLinks(
+    d.communityStories.items,
+  )
   let reports: ImpactPageContent['publications']['reports'] = []
   let research: ImpactPageContent['publications']['research'] = []
 
@@ -292,17 +373,21 @@ export async function getImpactPageContent(): Promise<ImpactPageContent> {
       )
       if (fromInterventions?.length) communityItems = fromInterventions
       else if (Array.isArray(cms.communityStories) && cms.communityStories.length) {
-        communityItems = cms.communityStories.map((item: any, i: number) => {
-          const fb = d.communityStories.items[i] ?? d.communityStories.items[0]
-          return {
-            num: txt(item?.num, fb.num),
-            region: txt(item?.region, fb.region),
-            assembly: txt(item?.assembly, fb.assembly),
-            title: txt(item?.title, fb.title),
-            desc: txt(item?.desc, fb.desc),
-            image: getMediaUrl(item?.image) || fb.image || '',
-          }
-        })
+        communityItems = withStoryLinks(
+          cms.communityStories.map((item: any, i: number) => {
+            const fb = d.communityStories.items[i] ?? d.communityStories.items[0]
+            return {
+              num: txt(item?.num, fb.num),
+              slug: txt(item?.slug, fb.slug),
+              region: txt(item?.region, fb.region),
+              assembly: txt(item?.assembly, fb.assembly),
+              title: txt(item?.title, fb.title),
+              desc: txt(item?.desc, fb.desc),
+              body: txt(item?.body, fb.body),
+              image: getMediaUrl(item?.image) || fb.image || '',
+            }
+          }),
+        )
       }
 
       const fromPublications = await loadPublicationsFromCollection(payload)
@@ -326,17 +411,21 @@ export async function getImpactPageContent(): Promise<ImpactPageContent> {
       }),
     )
     if (Array.isArray(cms.communityStories) && cms.communityStories.length) {
-      communityItems = cms.communityStories.map((item: any, i: number) => {
-        const fb = d.communityStories.items[i] ?? d.communityStories.items[0]
-        return {
-          num: txt(item?.num, fb.num),
-          region: txt(item?.region, fb.region),
-          assembly: txt(item?.assembly, fb.assembly),
-          title: txt(item?.title, fb.title),
-          desc: txt(item?.desc, fb.desc),
-          image: getMediaUrl(item?.image) || fb.image || '',
-        }
-      })
+      communityItems = withStoryLinks(
+        cms.communityStories.map((item: any, i: number) => {
+          const fb = d.communityStories.items[i] ?? d.communityStories.items[0]
+          return {
+            num: txt(item?.num, fb.num),
+            slug: txt(item?.slug, fb.slug),
+            region: txt(item?.region, fb.region),
+            assembly: txt(item?.assembly, fb.assembly),
+            title: txt(item?.title, fb.title),
+            desc: txt(item?.desc, fb.desc),
+            body: txt(item?.body, fb.body),
+            image: getMediaUrl(item?.image) || fb.image || '',
+          }
+        }),
+      )
     }
   }
 
@@ -442,7 +531,7 @@ export async function getImpactPageContent(): Promise<ImpactPageContent> {
       title: txt(cms.communityTitle, d.communityStories.title),
       intro: txt(cms.communityIntro, d.communityStories.intro),
       ctaLabel: txt(cms.communityCtaLabel, d.communityStories.ctaLabel),
-      ctaUrl: txt(cms.communityCtaUrl, d.communityStories.ctaUrl),
+      ctaUrl: '/impact/stories',
       items: communityItems,
     },
     testimonials: {
@@ -461,8 +550,31 @@ export async function getImpactPageContent(): Promise<ImpactPageContent> {
       reports,
       researchHeading: txt(cms.researchHeading, d.publications.researchHeading),
       researchCtaLabel: txt(cms.researchCtaLabel, d.publications.researchCtaLabel),
-      researchCtaUrl: txt(cms.researchCtaUrl, d.publications.researchCtaUrl),
+      researchCtaUrl: '/research',
       research,
     },
+  }
+}
+
+export async function getCommunityStories() {
+  const content = await getImpactPageContent()
+  return {
+    section: {
+      eyebrow: content.communityStories.eyebrow,
+      title: content.communityStories.title,
+      intro: content.communityStories.intro,
+    },
+    items: content.communityStories.items,
+  }
+}
+
+export async function getCommunityStoryBySlug(slug: string) {
+  const { items, section } = await getCommunityStories()
+  const story = items.find((item) => item.slug === slug) ?? null
+  if (!story) return null
+  return {
+    section,
+    story,
+    related: items.filter((item) => item.slug !== slug).slice(0, 3),
   }
 }

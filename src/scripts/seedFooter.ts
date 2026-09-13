@@ -34,7 +34,7 @@ await payload.updateGlobal({
           { label: 'Public Service Fellowship', url: '/projects/public-service-fellowship' },
           { label: 'Women On The Rise', url: '/projects/women-on-the-rise' },
           { label: 'P.E.A.C.E', url: '/projects/peace' },
-          { label: 'EPL in Maritime', url: '/projects/epl-in-maritime' },
+          { label: 'Elevated MINDS', url: '/projects/elevated-minds' },
         ],
       },
     ],

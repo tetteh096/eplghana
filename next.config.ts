@@ -85,6 +85,21 @@ const nextConfig: NextConfig = {
         permanent: false,
         source: '/favicon.ico',
       },
+      {
+        source: '/projects/epl-in-maritime',
+        destination: '/projects/elevated-minds',
+        permanent: true,
+      },
+      {
+        source: '/projects/eplim',
+        destination: '/projects/elevated-minds',
+        permanent: true,
+      },
+      {
+        source: '/projects/maritime',
+        destination: '/projects/elevated-minds',
+        permanent: true,
+      },
     ]
   },
 }

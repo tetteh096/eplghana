@@ -168,7 +168,8 @@ export async function getPartnersPageContent(): Promise<PartnersPageContent> {
       lead: txt(cms.collabLead, d.collaboration.lead),
       benefits,
       highlightValue: txt(cms.collabHighlightValue, d.collaboration.highlightValue),
-      highlightTitle: txt(cms.collabHighlightTitle, d.collaboration.highlightTitle),
+      // Keep Advancement (not Retention) even if CMS still has the old label.
+      highlightTitle: d.collaboration.highlightTitle,
       highlightText: txt(cms.collabHighlightText, d.collaboration.highlightText),
       image: img(cms.collabImage, d.collaboration.image),
     },

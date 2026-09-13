@@ -205,7 +205,7 @@ export function ChariticsGalleryAlbumPage({ content, album }: Props) {
 
   return (
     <div className="figma-gallery-page">
-      <section className="figma-about-hero" style={{ minHeight: '42vh' }}>
+      <section className="figma-about-hero figma-gallery-hero figma-gallery-album-hero" style={{ minHeight: '42vh' }}>
         <div
           className="figma-about-hero__bg"
           style={{ backgroundImage: `url(${album.coverImage || content.hero.image})` }}
@@ -219,17 +219,7 @@ export function ChariticsGalleryAlbumPage({ content, album }: Props) {
           <h1>{album.title}</h1>
           <p>{album.description}</p>
           <p style={{ marginTop: 16 }}>
-            <Link
-              href="/gallery"
-              style={{
-                color: 'var(--epl-new-gold, #f5bd17)',
-                fontWeight: 800,
-                letterSpacing: '0.06em',
-                textTransform: 'uppercase',
-                fontSize: 13,
-                textDecoration: 'none',
-              }}
-            >
+            <Link href="/gallery" className="figma-gallery-album-back">
               {content.backToGalleryLabel}
             </Link>
           </p>

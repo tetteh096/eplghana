@@ -32,6 +32,13 @@ export const ImpactInterventions: CollectionConfig = {
       admin: { description: 'Headline for the intervention card.' },
     },
     {
+      name: 'slug',
+      type: 'text',
+      admin: {
+        description: 'URL slug for the story detail page. Derived from assembly/title if empty.',
+      },
+    },
+    {
       name: 'region',
       type: 'text',
       required: true,
@@ -48,6 +55,13 @@ export const ImpactInterventions: CollectionConfig = {
       type: 'textarea',
       required: true,
       admin: { description: 'Short summary shown on the card.' },
+    },
+    {
+      name: 'body',
+      type: 'textarea',
+      admin: {
+        description: 'Full story for the detail page. Falls back to description if empty.',
+      },
     },
     {
       name: 'image',

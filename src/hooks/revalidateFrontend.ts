@@ -37,10 +37,12 @@ export const revalidatePublicSite: CollectionAfterChangeHook = ({ doc, collectio
       safeRevalidatePath('/')
       // Programme pages are reachable by multiple slug aliases.
       if (
+        slug === 'elevated-minds' ||
         slug === 'epl-in-maritime' ||
         slug === 'eplim' ||
         slug === 'maritime'
       ) {
+        safeRevalidatePath('/projects/elevated-minds')
         safeRevalidatePath('/projects/epl-in-maritime')
         safeRevalidatePath('/projects/eplim')
         safeRevalidatePath('/projects/maritime')

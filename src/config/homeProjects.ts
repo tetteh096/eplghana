@@ -12,26 +12,26 @@ export type HomeProjectCard = {
 export const HOME_PROJECT_DEFAULTS: HomeProjectCard[] = [
   {
     slug: 'public-service-fellowship',
-    title: 'Emerging Public Leaders Fellowship',
+    title: 'Public Service Fellowship',
     category: 'Core Programme',
     summary:
-      'A flagship 12-month leadership development programme placing young professionals in public institutions across Ghana. Fellows receive structured mentorship, targeted training and peer learning that builds lasting leadership capacity.',
+      'A 12-month leadership program placing top graduates inside government ministries with expert training and one-on-one mentorship.',
     image: eplHomeImages.projects['public-service-fellowship'],
   },
   {
-    slug: 'epl-in-maritime',
-    title: 'EPL in Maritime (EPLIM)',
+    slug: 'elevated-minds',
+    title: 'Elevated MINDS',
     category: 'Program',
     summary:
-      'Developing emerging leaders for Ghana’s maritime sector through practical learning, mentorship and professional development.',
-    image: eplHomeImages.projects['epl-in-maritime'],
+      'A school-based career development programme equipping JHS and SHS students with skills, values and exposure for informed education and career decisions.',
+    image: eplHomeImages.projects['elevated-minds'],
   },
   {
     slug: 'women-on-the-rise',
     title: 'Women on the Rise',
     category: 'Program',
     summary:
-      'Creating the space, skills and networks women need to lead and influence Ghana’s public institutions.',
+      'Empowering women in public service through leadership coaching, mentorship networks, and career support.',
     image: eplHomeImages.projects['women-on-the-rise'],
   },
   {
@@ -39,7 +39,7 @@ export const HOME_PROJECT_DEFAULTS: HomeProjectCard[] = [
     title: 'P.E.A.C.E.',
     category: 'Initiative',
     summary:
-      'Building ethical, accountable leadership and practical peacebuilding capacity across the public sector.',
+      'Training public servants and security personnel in Northern Ghana on conflict prevention, early warning, and community peace.',
     image: eplHomeImages.projects.peace,
   },
 ]
@@ -50,13 +50,14 @@ export function resolveHomeProjects(projects: HomeProjectCard[] = []): HomeProje
 
   return HOME_PROJECT_DEFAULTS.map((fallback) => {
     const cms = bySlug.get(fallback.slug)
+    // Home Our Work uses approved homepage copy for Elevated MINDS.
     if (!cms) return fallback
 
     return {
       slug: fallback.slug,
-      title: cms.title || fallback.title,
-      category: cms.category || fallback.category,
-      summary: cms.summary || fallback.summary,
+      title: fallback.title,
+      category: fallback.category,
+      summary: fallback.summary,
       image: fallback.image,
     }
   })

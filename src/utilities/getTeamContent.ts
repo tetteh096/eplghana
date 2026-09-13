@@ -1,7 +1,6 @@
 import {
   boardMembers as fallbackBoard,
   staffMembers as fallbackStaff,
-  teamMembers,
   teamPageIntro,
   type TeamMember,
 } from '@/config/teamPageContent'
@@ -9,19 +8,13 @@ import type { Team } from '@/payload-types'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { getPage } from '@/utilities/getPage'
 import { tryGetPayload } from '@/utilities/payloadSafe'
+import { teamPhotoFallback } from '@/utilities/teamPhotoFallback'
 import { toPlain } from '@/utilities/toPlain'
 
 export type TeamPageContent = {
   intro: typeof teamPageIntro
   boardMembers: TeamMember[]
   staffMembers: TeamMember[]
-}
-
-function teamPhotoFallback(name: string): string {
-  const fromStatic = teamMembers.find((m) => m.name === name)?.photo
-  if (fromStatic) return fromStatic
-
-  return `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(name)}&backgroundColor=0a3d6b&textColor=ffffff&fontSize=38`
 }
 
 function mapTeamDoc(doc: Team): TeamMember {

@@ -169,18 +169,12 @@ export async function getCurrentFellowsContent(): Promise<CurrentFellowsPageCont
     }
   }
 
-  const heroStats =
-    Array.isArray(cms.heroStats) && cms.heroStats.length
-      ? cms.heroStats.map((s: any) => ({ value: s?.value ?? '', label: s?.label ?? '' }))
-      : d.hero.stats
+  const heroStats = d.hero.stats.map((s) => ({ value: s.value, label: s.label }))
 
   const cohortTabsFinal =
     cohortTabs.length > 0 ? cohortTabs : d.directory.cohortTabs
 
-  const eplanStats =
-    Array.isArray(cms.eplanStats) && cms.eplanStats.length
-      ? cms.eplanStats.map((s: any) => ({ value: s?.value ?? '', label: s?.label ?? '' }))
-      : d.eplanPromo.stats
+  const eplanStats = d.eplanPromo.stats.map((s) => ({ value: s.value, label: s.label }))
 
   const cohortCount =
     typeof cms.cohortCount === 'number' && cms.cohortCount > 0
@@ -227,7 +221,7 @@ export async function getCurrentFellowsContent(): Promise<CurrentFellowsPageCont
     eplanPromo: {
       eyebrow: txt(cms.eplanEyebrow, d.eplanPromo.eyebrow),
       title: txt(cms.eplanTitle, d.eplanPromo.title),
-      intro: txt(cms.eplanIntro, d.eplanPromo.intro),
+      intro: d.eplanPromo.intro,
       stats: eplanStats,
       ctaLabel: txt(cms.eplanCtaLabel, d.eplanPromo.ctaLabel),
       ctaHref: txt(cms.eplanCtaUrl, d.eplanPromo.ctaHref),

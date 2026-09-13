@@ -23,7 +23,11 @@ type FellowItem = {
 }
 
 function currentCommunityStat(stat: { value: string; label: string }) {
-  return stat.label.trim().toLowerCase() === 'cohorts' ? { ...stat, value: '8' } : stat
+  const label = stat.label.trim().toLowerCase()
+  if (label === 'cohorts') return { ...stat, value: '8' }
+  if (label.includes('institution')) return { ...stat, value: '15+' }
+  if (label === 'fellows') return { ...stat, value: '200+' }
+  return stat
 }
 
 function FellowDrawer({
@@ -190,14 +194,14 @@ export function ChariticsCurrentFellowsPage({ content }: ChariticsCurrentFellows
             </div>
             <h1>{hero.title}</h1>
             <p>{hero.lead}</p>
-            <div className="figma-community-hero__stats">
-              {hero.stats.map(currentCommunityStat).map((stat) => (
-                <div className="figma-community-hero__stat" key={stat.label}>
-                  <div className="figma-community-hero__stat-value">{stat.value}</div>
-                  <div className="figma-community-hero__stat-label">{stat.label}</div>
-                </div>
-              ))}
-            </div>
+          </div>
+          <div className="figma-community-hero__stats">
+            {hero.stats.map(currentCommunityStat).map((stat) => (
+              <div className="figma-community-hero__stat" key={stat.label}>
+                <div className="figma-community-hero__stat-value">{stat.value}</div>
+                <div className="figma-community-hero__stat-label">{stat.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -363,34 +367,28 @@ export function ChariticsCurrentFellowsPage({ content }: ChariticsCurrentFellows
       </section>
 
       <section className="figma-community-eplan" id="eplan">
-        <div className="epl-new-shell">
-          <div className="figma-community-eplan__card">
-            <div className="figma-community-eplan__copy">
-              <div className="figma-impact-kicker figma-impact-kicker--gold">
-                <span className="figma-impact-kicker__line" />
-                <span>{eplanPromo.eyebrow.toUpperCase()}</span>
-              </div>
-              <h2>{eplanPromo.title}</h2>
-              <p>{eplanPromo.intro}</p>
-              <div className="figma-community-eplan__stats">
-                {eplanPromo.stats.map(currentCommunityStat).map((stat, index) => (
-                  <div className="figma-community-eplan__stat" key={stat.label}>
-                    <div
-                      className={`figma-community-eplan__stat-value${index % 2 === 0 ? ' figma-community-eplan__stat-value--gold' : ''}`}
-                    >
-                      {stat.value}
-                    </div>
-                    <div className="figma-community-eplan__stat-label">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="figma-community-eplan__cta-wrap">
-              <Link className="figma-community-eplan__cta" href={eplanPromo.ctaHref}>
-                {eplanPromo.ctaLabel} <span aria-hidden>→</span>
-              </Link>
-            </div>
+        <div className="epl-new-shell figma-community-eplan__inner">
+          <div className="figma-impact-kicker figma-impact-kicker--gold">
+            <span className="figma-impact-kicker__line" />
+            <span>{eplanPromo.eyebrow.toUpperCase()}</span>
           </div>
+          <h2>{eplanPromo.title}</h2>
+          <p>{eplanPromo.intro}</p>
+          <div className="figma-community-eplan__stats">
+            {eplanPromo.stats.map(currentCommunityStat).map((stat, index) => (
+              <div className="figma-community-eplan__stat" key={stat.label}>
+                <div
+                  className={`figma-community-eplan__stat-value${index % 2 === 0 ? ' figma-community-eplan__stat-value--gold' : ''}`}
+                >
+                  {stat.value}
+                </div>
+                <div className="figma-community-eplan__stat-label">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+          <Link className="figma-community-eplan__cta" href={eplanPromo.ctaHref}>
+            {eplanPromo.ctaLabel} <span aria-hidden>→</span>
+          </Link>
         </div>
       </section>
 

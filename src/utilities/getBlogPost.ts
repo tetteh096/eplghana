@@ -61,7 +61,10 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPostDetail | 
 
   return {
     ...fallback,
-    paragraphs: [fallback.excerpt],
+    paragraphs:
+      fallback.paragraphs && fallback.paragraphs.length > 0
+        ? fallback.paragraphs
+        : [fallback.excerpt],
     galleryImages: [],
     tags: fallback.tags ?? ['Public Service Fellowship', 'Leadership'],
   }

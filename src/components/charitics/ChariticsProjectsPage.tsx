@@ -7,7 +7,6 @@ import { useMemo } from 'react'
 import { MotionItem, MotionReveal } from '@/components/charitics/MotionReveal'
 import { EPL_MEDIA, eplHomeImages, resolveProjectImage } from '@/config/eplMedia'
 import type { ProjectsPageContent } from '@/utilities/getProjectsPageContent'
-import type { PublishedProject } from '@/utilities/getPublishedProjects'
 
 type ChariticsProjectsPageProps = {
   content: ProjectsPageContent
@@ -26,12 +25,19 @@ type ProjectCardFallback = {
   href: string
 }
 
+const PROJECT_PAGE_ORDER = [
+  'public-service-fellowship',
+  'elevated-minds',
+  'women-on-the-rise',
+  'peace',
+] as const
+
 const projectFallbacks: ProjectCardFallback[] = [
   {
     slug: 'public-service-fellowship',
     badge: 'Core Programme',
     badgeType: 'gold',
-    title: 'Emerging Public Leaders Fellowship',
+    title: 'Public Service Fellowship',
     image: `${EPL_MEDIA}/2025/10/CSG-16-scaled.jpg`,
     description:
       'A flagship 12-month leadership development programme placing young professionals in public institutions across Ghana. Fellows receive structured mentorship, targeted training and peer learning that builds lasting leadership capacity.',
@@ -39,15 +45,15 @@ const projectFallbacks: ProjectCardFallback[] = [
     href: '/projects/public-service-fellowship',
   },
   {
-    slug: 'epl-in-maritime',
+    slug: 'elevated-minds',
     badge: 'Program',
     badgeType: 'blue',
-    title: 'EPL in Maritime (EPLIM)',
-    image: `${EPL_MEDIA}/2025/11/LEMA25-0486-1024x682.jpg`,
+    title: 'Elevated MINDS',
+    image: `${EPL_MEDIA}/2025/04/HN7A4284-scaled.jpg`,
     description:
-      "A leadership programme developing emerging leaders in Ghana's maritime sector through practical learning, mentorship, professional development and exposure to the institutions shaping the country's maritime future.",
-    metric: "Developing leaders in Ghana's maritime sector",
-    href: '/projects/epl-in-maritime',
+      'A school-based career development and readiness programme for JHS and SHS students, establishing career clubs across three pilot schools and reaching 500 learners at key education and work transition points.',
+    metric: '500 students across 3 pilot schools',
+    href: '/projects/elevated-minds',
   },
   {
     slug: 'women-on-the-rise',
@@ -74,9 +80,10 @@ const projectFallbacks: ProjectCardFallback[] = [
 ]
 
 const slugAliases: Record<string, string> = {
-  maritime: 'epl-in-maritime',
-  eplim: 'epl-in-maritime',
-  'epl-in-maritime': 'epl-in-maritime',
+  maritime: 'elevated-minds',
+  eplim: 'elevated-minds',
+  'epl-in-maritime': 'elevated-minds',
+  'elevated-minds': 'elevated-minds',
 }
 
 function normalizeSlug(slug: string): string {
@@ -97,43 +104,33 @@ function metricFor(slug: string, cmsMetric: string | null | undefined, fallback?
   return known?.metric ?? 'Learn more about this programme'
 }
 
-function findFallback(project: PublishedProject): ProjectCardFallback | undefined {
-  const slug = normalizeSlug(project.slug)
-  return (
-    projectFallbacks.find((p) => p.slug === slug) ??
-    projectFallbacks.find((p) => project.title.toLowerCase().includes(p.title.toLowerCase().slice(0, 12)))
-  )
-}
-
 export function ChariticsProjectsPage({ content }: ChariticsProjectsPageProps) {
   const reduceMotion = useReducedMotion()
 
   const projects = useMemo(() => {
-    const cmsProjects = content.projects
+    const cmsBySlug = new Map(
+      content.projects.map((cms) => [normalizeSlug(cms.slug), cms] as const),
+    )
 
-    if (cmsProjects.length > 0) {
-      return cmsProjects.map((cms) => {
-        const fallback = findFallback(cms)
-        const image =
-          cms.wideImage ??
-          resolveProjectImage(cms.slug, null) ??
-          fallback?.image ??
-          eplHomeImages.aboutMain
+    return PROJECT_PAGE_ORDER.map((slug) => {
+      const fallback = projectFallbacks.find((p) => p.slug === slug)!
+      const cms = cmsBySlug.get(slug)
+      const image =
+        cms?.wideImage ??
+        resolveProjectImage(slug, null) ??
+        fallback.image
 
-        return {
-          slug: cms.slug,
-          badge: cms.category || fallback?.badge || 'Programme',
-          badgeType: badgeTypeFor(cms.category || '', fallback),
-          title: cms.title || fallback?.title || 'Programme',
-          image,
-          description: cms.summary || fallback?.description || '',
-          metric: metricFor(cms.slug, cms.listingMetric, fallback),
-          href: cms.href || fallback?.href || `/projects/${cms.slug}`,
-        }
-      })
-    }
-
-    return projectFallbacks
+      return {
+        slug,
+        badge: cms?.category || fallback.badge,
+        badgeType: badgeTypeFor(cms?.category || '', fallback),
+        title: fallback.title,
+        image,
+        description: cms?.summary || fallback.description,
+        metric: metricFor(slug, cms?.listingMetric, fallback),
+        href: cms?.href || fallback.href,
+      }
+    })
   }, [content.projects])
 
   const eyebrow = 'Our Program'
@@ -220,50 +217,23 @@ export function ChariticsProjectsPage({ content }: ChariticsProjectsPageProps) {
         </MotionReveal>
       </MotionReveal>
 
-      <MotionReveal
-        as="section"
-        className="figma-section epl-textured-band"
-        style={{ paddingBlock: '100px' }}
-      >
+      <MotionReveal as="section" className="figma-section figma-projects-cta">
         <div className="epl-new-shell">
-          <div
-            className="figma-section-head"
-            style={{ textAlign: 'center', maxWidth: '740px', margin: '0 auto' }}
-          >
+          <div className="figma-projects-cta__inner">
             <div className="figma-kicker figma-kicker--gold" style={{ justifyContent: 'center' }}>
               <span className="figma-kicker__line" />
               <span>GET CONNECTED</span>
             </div>
-            <h2
-              style={{
-                fontSize: 'clamp(36px, 4vw, 54px)',
-                fontWeight: 800,
-                color: '#ffffff',
-                margin: '14px 0 16px',
-              }}
-            >
-              {ctaTitle}
-            </h2>
-            <p
-              style={{
-                margin: '0 auto 32px',
-                color: 'rgba(255,255,255,0.92)',
-                fontSize: '18px',
-                lineHeight: 1.65,
-              }}
-            >
+            <h2 className="figma-projects-cta__title">{ctaTitle}</h2>
+            <p className="figma-projects-cta__text">
               Whether you are an aspiring young leader, a public institution looking to host talent,
               or a strategic partner, there is a place for you in the EPL Ghana community.
             </p>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
+            <div className="figma-projects-cta__actions">
               <Link className="epl-new-btn epl-new-btn--gold" href={ctaHref}>
                 {ctaLabel} <span>↗</span>
               </Link>
-              <Link
-                className="epl-new-btn epl-new-btn--blue"
-                href="/community/partners"
-                style={{ background: '#0C1427', borderColor: '#0C1427' }}
-              >
+              <Link className="epl-new-btn figma-projects-cta__partner" href="/community/partners">
                 Partner With Us <span>↗</span>
               </Link>
             </div>

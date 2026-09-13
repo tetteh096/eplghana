@@ -116,6 +116,58 @@ export const fallbackEvents: EventDetail[] = [
     ],
   },
   {
+    slug: 'epl-annual-public-leadership-forum-2026',
+    title: 'EPL Annual Public Leadership Forum 2026',
+    excerpt:
+      'A full-day flagship convening bringing together current fellows, government heads, and institutional partners to examine ethical governance in Ghana.',
+    image: `${EPL_MEDIA}/2025/10/CSOE-45-scaled.jpg`,
+    eventDate: '2026-09-15T09:00:00.000Z',
+    venue: 'Accra International Conference Centre',
+    paragraphs: [
+      'The EPL Annual Public Leadership Forum is our flagship convening for fellows, alumni, government leaders, and partners committed to ethical public service.',
+      'Sessions examine integrity in institutions, leadership practice inside ministries and assemblies, and the partnerships that help young public servants deliver lasting reform.',
+    ],
+  },
+  {
+    slug: 'civil-service-innovation-digital-governance-summit',
+    title: 'Civil Service Innovation & Digital Governance Summit',
+    excerpt:
+      'Co-hosted with the Ministry of Communications and UNDP Ghana to discuss institutional automation and public sector data frameworks.',
+    image: `${EPL_MEDIA}/2025/10/CSG-16-scaled.jpg`,
+    eventDate: '2026-10-28T10:00:00.000Z',
+    venue: 'Kempinski Hotel Gold Coast City, Accra',
+    paragraphs: [
+      'This partnered summit brings public servants and development partners together around digital governance, automation, and interoperable data systems.',
+      'Participants explore practical frameworks for institutional modernization while keeping ethics, accountability, and citizen service at the centre.',
+    ],
+  },
+  {
+    slug: 'public-sector-career-masterclass-fellowship-info',
+    title: 'Public Sector Career Masterclass & Fellowship Info Session',
+    excerpt:
+      'An orientation for prospective young public servants covering fellowship eligibility, interview prep, and placements.',
+    image: `${EPL_MEDIA}/2025/10/CSRAW56-scaled-e1760539041848.jpg`,
+    eventDate: '2026-11-12T14:00:00.000Z',
+    venue: 'Virtual (Zoom Live Stream)',
+    paragraphs: [
+      'This masterclass introduces prospective applicants to public-sector careers and the Emerging Public Leaders Fellowship pathway.',
+      'Attendees learn about eligibility, interview preparation, placement expectations, and how the fellowship develops ethical, critical-thinking leaders for Ghana’s civil service.',
+    ],
+  },
+  {
+    slug: 'women-in-governance-roundtable-breaking-ceilings',
+    title: 'Women in Governance Roundtable: Breaking Ceilings',
+    excerpt:
+      'An interactive dialogue celebrating the leadership journeys of women leading critical ministries and civil service departments.',
+    image: `${EPL_MEDIA}/2025/10/CSP96-scaled-e1760539888346.jpeg`,
+    eventDate: '2026-12-05T11:00:00.000Z',
+    venue: 'Civil Service Training Centre, Accra',
+    paragraphs: [
+      'Women in Governance Roundtable convenes women leaders across ministries and departments to share journeys, barriers, and strategies for advancing into senior roles.',
+      'The dialogue strengthens mentorship networks and elevates practical reforms that make Ghana’s public service more inclusive.',
+    ],
+  },
+  {
     slug: 'civil-service-week-2025',
     title: 'EPL Ghana participates in 2025 Civil Service Week Public Lecture',
     excerpt:

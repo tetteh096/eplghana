@@ -71,16 +71,18 @@ function AnimatedStatValue({ value }: { value: string }) {
 
 export function ChariticsHomeStats({ stats }: ChariticsHomeStatsProps) {
   return (
-    <section
-      aria-label="EPL Ghana impact at a glance"
-      className={`epl-new-stats${stats.length === 3 ? ' epl-new-stats--three' : ''}`}
-    >
-      {stats.map((stat) => (
-        <div key={`${stat.value}-${stat.label}`}>
-          <AnimatedStatValue value={stat.value} />
-          <span>{stat.label}</span>
-        </div>
-      ))}
+    <section aria-labelledby="epl-impact-numbers-heading" className="epl-new-stats-wrap">
+      <h2 id="epl-impact-numbers-heading" className="epl-new-stats-heading">
+        Impact Numbers
+      </h2>
+      <div className={`epl-new-stats${stats.length === 3 ? ' epl-new-stats--three' : ''}`}>
+        {stats.map((stat) => (
+          <div key={`${stat.value}-${stat.label}`}>
+            <AnimatedStatValue value={stat.value} />
+            <span>{stat.label}</span>
+          </div>
+        ))}
+      </div>
     </section>
   )
 }

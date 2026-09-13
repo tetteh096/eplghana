@@ -29,11 +29,15 @@ export const eplHomeImages = {
     'public-service-fellowship': `${EPL_MEDIA}/2025/10/CSG-16-scaled.jpg`,
     'women-on-the-rise': `${EPL_MEDIA}/2025/10/IMG_7245-scaled.jpg`,
     peace: `${EPL_MEDIA}/2023/12/MG_0422-scaled.jpg`,
-    'epl-in-maritime': `${EPL_MEDIA}/2025/11/LEMA25-2183-1024x682.jpg`,
+    'elevated-minds': `${EPL_MEDIA}/2025/04/HN7A4284-scaled.jpg`,
+    /** @deprecated legacy slug — prefer elevated-minds */
+    'epl-in-maritime': `${EPL_MEDIA}/2025/04/HN7A4284-scaled.jpg`,
   },
   projectsFallback: {
     'public-service-fellowship':
       'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&h=700&fit=crop&auto=format',
+    'elevated-minds':
+      'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&h=700&fit=crop&auto=format',
     'epl-in-maritime':
       'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&h=700&fit=crop&auto=format',
     'women-on-the-rise':

@@ -62,7 +62,7 @@ export const Projects: CollectionConfig = {
         { label: 'Public Service Fellowship', value: 'fellowship' },
         { label: 'Women on the Rise', value: 'wotr' },
         { label: 'P.E.A.C.E', value: 'peace' },
-        { label: 'EPL in Maritime (EPLIM)', value: 'eplim' },
+        { label: 'Elevated MINDS', value: 'eplim' },
       ],
       admin: {
         position: 'sidebar',
@@ -156,7 +156,7 @@ export const Projects: CollectionConfig = {
     {
       type: 'group',
       name: 'eplimDetail',
-      label: 'EPLIM page content',
+      label: 'Elevated MINDS page content',
       admin: {
         condition: (data) => data?.detailLayout === 'eplim',
         description:

@@ -61,7 +61,8 @@ const visualImages: Record<string, string> = {
   'public-service-fellowship': eplHomeImages.gallery[4].src,
   'women-on-the-rise': eplHomeImages.gallery[2].src,
   peace: eplHomeImages.gallery[1].src,
-  'epl-in-maritime': eplHomeImages.gallery[4].src,
+  'elevated-minds': eplHomeImages.gallery[7].src,
+  'epl-in-maritime': eplHomeImages.gallery[7].src,
 }
 
 let created = 0
@@ -87,7 +88,7 @@ for (let index = 0; index < eplFlagshipProjects.length; index++) {
           ? ('wotr' as const)
           : project.slug === 'peace'
             ? ('peace' as const)
-            : project.slug === 'epl-in-maritime'
+            : project.slug === 'elevated-minds' || project.slug === 'epl-in-maritime'
               ? ('eplim' as const)
               : ('generic' as const),
     featuredImage: await importImage(wideUrl, `${project.title}, wide card`),

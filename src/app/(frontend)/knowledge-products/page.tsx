@@ -12,6 +12,11 @@ const items = [
     description: 'Programme events, graduations, and announcements.',
   },
   {
+    href: '/research',
+    label: 'Research & Publications',
+    description: 'Articles, factsheets, studies, and policy briefs.',
+  },
+  {
     href: '/impact#annual-reports',
     label: 'Annual Reports',
     description: 'Impact reports and yearly publications.',

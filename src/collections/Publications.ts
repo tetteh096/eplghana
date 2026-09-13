@@ -5,7 +5,7 @@ import { authenticatedOrPublishedOrVisible } from '@/access/authenticatedOrPubli
 import { publicTotpReadBypass } from '@/config/security'
 
 /**
- * Annual impact reports and research PDFs for the Annual Reports page.
+ * Publications for annual reports and Research & Publications pages.
  */
 export const Publications: CollectionConfig = {
   slug: 'publications',
@@ -14,7 +14,7 @@ export const Publications: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'year', 'status', 'order'],
     description:
-      'Upload PDFs for annual reports and research documents. Shown on /knowledge-products/annual-reports.',
+      'Annual reports plus research categories (articles, factsheets, studies, policy briefs) shown on /research.',
   },
   access: {
     create: canEditContent,
@@ -30,18 +30,37 @@ export const Publications: CollectionConfig = {
       required: true,
     },
     {
+      name: 'slug',
+      type: 'text',
+      admin: {
+        description: 'URL slug for research detail pages. Auto-derived from title if empty.',
+      },
+    },
+    {
       name: 'description',
       type: 'textarea',
       required: true,
+      admin: { description: 'Short summary shown on listing cards.' },
+    },
+    {
+      name: 'body',
+      type: 'textarea',
+      admin: {
+        description: 'Longer write-up for the detail page. Falls back to description if empty.',
+      },
     },
     {
       name: 'category',
       type: 'select',
       required: true,
-      defaultValue: 'research',
+      defaultValue: 'studies',
       options: [
         { label: 'Annual / Impact Report', value: 'annual-report' },
-        { label: 'Research & Impact Document', value: 'research' },
+        { label: 'Articles', value: 'articles' },
+        { label: 'Factsheets', value: 'factsheets' },
+        { label: 'Studies', value: 'studies' },
+        { label: 'Technical and Policy Briefs', value: 'technical-policy-briefs' },
+        { label: 'Research (legacy → Studies)', value: 'research' },
       ],
       admin: { position: 'sidebar' },
     },
@@ -50,7 +69,6 @@ export const Publications: CollectionConfig = {
       type: 'text',
       admin: {
         position: 'sidebar',
-        condition: (_, siblingData) => siblingData?.category === 'annual-report',
         description: 'e.g. 2024',
       },
     },
@@ -58,10 +76,9 @@ export const Publications: CollectionConfig = {
       name: 'coverImage',
       type: 'upload',
       relationTo: 'media',
-      label: 'Cover image',
+      label: 'Cover / card image',
       admin: {
-        condition: (_, siblingData) => siblingData?.category === 'annual-report',
-        description: 'Shown on the report card (book cover style).',
+        description: 'Shown on research cards and detail pages.',
       },
     },
     {
@@ -70,7 +87,7 @@ export const Publications: CollectionConfig = {
       relationTo: 'media',
       label: 'PDF file',
       admin: {
-        description: 'Upload the downloadable PDF. Required when status is Published.',
+        description: 'Optional downloadable PDF.',
       },
     },
     {

@@ -178,8 +178,8 @@ export function ChariticsImpactPage({ content }: ChariticsImpactPageProps) {
 
         <MotionReveal className="figma-impact-communities__grid" stagger>
           {communityStories.items.map((item) => (
-            <MotionItem key={item.num}>
-              <article className="figma-impact-community-card">
+            <MotionItem key={item.slug || item.num}>
+              <Link className="figma-impact-community-card" href={item.href}>
                 {item.image ? (
                   <div className="figma-impact-community-card__media">
                     <div
@@ -199,7 +199,7 @@ export function ChariticsImpactPage({ content }: ChariticsImpactPageProps) {
                   <span className="figma-impact-community-card__focus">{item.title}</span>
                   <p>{item.desc}</p>
                 </div>
-              </article>
+              </Link>
             </MotionItem>
           ))}
         </MotionReveal>
@@ -314,7 +314,9 @@ export function ChariticsImpactPage({ content }: ChariticsImpactPageProps) {
                   <Link
                     className="figma-impact-research-card__cta"
                     href={study.href || publications.researchCtaUrl}
-                    {...(study.href ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    {...(study.href?.endsWith('.pdf')
+                      ? { target: '_blank', rel: 'noopener noreferrer' }
+                      : {})}
                   >
                     <span>{publications.researchCtaLabel}</span>
                     <span aria-hidden>→</span>
