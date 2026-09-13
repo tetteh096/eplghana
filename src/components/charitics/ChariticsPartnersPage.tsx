@@ -4,34 +4,36 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 import { ChariticsContactForm } from '@/components/charitics/ChariticsContactForm'
-import type { PartnerCategory, PartnerEntry } from '@/config/partnersPageContent'
+import { PartnerLogoMarquee } from '@/components/charitics/PartnerLogoMarquee'
+import type { PartnerCategory } from '@/config/partnersPageContent'
 import type { PartnersPageContent } from '@/utilities/getPartnersPageContent'
 
 type ChariticsPartnersPageProps = {
   content: PartnersPageContent
 }
 
-function PartnerLogoTile({ partner }: { partner: PartnerEntry }) {
-  const inner = partner.logo ? (
-    <img alt={partner.name} className="figma-partners-network__logo" src={partner.logo} />
-  ) : (
-    <span>{partner.shortName || partner.name}</span>
-  )
-
-  if (partner.href) {
+/** Force partner card titles onto two lines (e.g. Development / Partners). */
+function PartnerCardTitle({ title }: { title: string }) {
+  const amp = title.indexOf(' & ')
+  if (amp !== -1) {
     return (
-      <a
-        className="figma-partners-network__tile"
-        href={partner.href}
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        {inner}
-      </a>
+      <>
+        {title.slice(0, amp + 2)}
+        <br />
+        {title.slice(amp + 3)}
+      </>
     )
   }
-
-  return <div className="figma-partners-network__tile">{inner}</div>
+  const words = title.trim().split(/\s+/)
+  if (words.length < 2) return <>{title}</>
+  const mid = Math.ceil(words.length / 2)
+  return (
+    <>
+      {words.slice(0, mid).join(' ')}
+      <br />
+      {words.slice(mid).join(' ')}
+    </>
+  )
 }
 
 export function ChariticsPartnersPage({ content }: ChariticsPartnersPageProps) {
@@ -117,7 +119,9 @@ export function ChariticsPartnersPage({ content }: ChariticsPartnersPageProps) {
                 <div className="figma-partners-ecosystem-card__overlay" />
                 <div className="figma-partners-ecosystem-card__body">
                   <span className="figma-partners-ecosystem-card__num">{cat.id}</span>
-                  <h3>{cat.title}</h3>
+                  <h3>
+                    <PartnerCardTitle title={cat.title} />
+                  </h3>
                   <p>{cat.description}</p>
                   <span className="figma-partners-ecosystem-card__cta">
                     {ecosystem.learnMoreLabel} →
@@ -195,11 +199,7 @@ export function ChariticsPartnersPage({ content }: ChariticsPartnersPageProps) {
             <h2>{network.title}</h2>
             <p>{network.intro}</p>
           </div>
-          <div className="figma-partners-network__grid">
-            {networkPartners.map((partner) => (
-              <PartnerLogoTile key={partner.id} partner={partner} />
-            ))}
-          </div>
+          <PartnerLogoMarquee items={networkPartners} />
         </div>
       </section>
 

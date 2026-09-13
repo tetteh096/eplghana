@@ -26,7 +26,7 @@ const PROGRAMME_LINKS: FooterLink[] = [
   { label: 'Public Service Fellowship', href: '/projects/public-service-fellowship' },
   { label: 'Women On The Rise', href: '/projects/women-on-the-rise' },
   { label: 'P.E.A.C.E', href: '/projects/peace' },
-  { label: 'EPL in Maritime', href: '/projects/epl-in-maritime' },
+  { label: 'Elevated MINDS', href: '/projects/elevated-minds' },
 ]
 
 const fallbackColumns: FooterColumn[] = [

@@ -2,11 +2,14 @@
 
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 import { MotionItem, MotionReveal } from '@/components/charitics/MotionReveal'
+import { PartnerLogoMarquee } from '@/components/charitics/PartnerLogoMarquee'
+import { TeamMemberDrawer } from '@/components/charitics/TeamMemberDrawer'
+import { TeamMemberPhoto } from '@/components/charitics/TeamMemberPhoto'
 import { aboutPageRedesignImages } from '@/config/aboutPageContent'
-import { eplHomeImages } from '@/config/eplMedia'
 import type { FellowTestimonialSlide } from '@/config/fellowTestimonials'
 import type { TeamMember } from '@/config/teamPageContent'
 import type { SiteSetting } from '@/payload-types'
@@ -36,6 +39,10 @@ export function ChariticsAboutPage({
   const { intro, story, mission, vision, partner, coreValues } = content
   const [activeTeamTab, setActiveTeamTab] = useState<'leadership' | 'team'>('leadership')
   const [flippedCards, setFlippedCards] = useState<Record<number, boolean>>({})
+  const [mounted, setMounted] = useState(false)
+  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const [slideDirection, setSlideDirection] = useState(1)
   const reduceMotion = useReducedMotion()
 
   useEffect(() => {
@@ -56,7 +63,67 @@ export function ChariticsAboutPage({
   }, [])
 
   const displayedTeam = activeTeamTab === 'leadership' ? boardMembers : staffMembers
-  const partnerGrid = partners.slice(0, 6)
+  const activeTabLabel = activeTeamTab === 'leadership' ? 'Leadership' : 'Team'
+  const selectedIndex = useMemo(
+    () => displayedTeam.findIndex((member) => member.id === selectedId),
+    [displayedTeam, selectedId],
+  )
+  const selected = selectedIndex >= 0 ? displayedTeam[selectedIndex] : null
+
+  const openMember = useCallback((member: TeamMember) => {
+    setSelectedId(member.id)
+    setIsDrawerOpen(true)
+  }, [])
+
+  const closePanel = useCallback(() => {
+    setIsDrawerOpen(false)
+  }, [])
+
+  const clearSelection = useCallback(() => {
+    setSelectedId(null)
+  }, [])
+
+  const goToMember = useCallback(
+    (direction: -1 | 1) => {
+      if (selectedIndex < 0 || displayedTeam.length === 0) return
+      setSlideDirection(direction)
+      const nextIndex = (selectedIndex + direction + displayedTeam.length) % displayedTeam.length
+      setSelectedId(displayedTeam[nextIndex].id)
+    },
+    [displayedTeam, selectedIndex],
+  )
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    document.body.style.overflow = isDrawerOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isDrawerOpen])
+
+  useEffect(() => {
+    if (!isDrawerOpen) return
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closePanel()
+      if (event.key === 'ArrowRight') goToMember(1)
+      if (event.key === 'ArrowLeft') goToMember(-1)
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [closePanel, goToMember, isDrawerOpen])
+
+  useEffect(() => {
+    if (selectedId && !displayedTeam.some((member) => member.id === selectedId)) {
+      setIsDrawerOpen(false)
+      setSelectedId(null)
+    }
+  }, [displayedTeam, selectedId])
+
   const heroImage = intro.image || aboutPageRedesignImages.hero
   const storyImage = intro.secondaryImage || aboutPageRedesignImages.story
 
@@ -77,7 +144,7 @@ export function ChariticsAboutPage({
         <div className="figma-about-hero__overlay figma-about-hero__overlay--blue" />
         <motion.div
           animate="show"
-          className="figma-about-hero__content figma-about-hero__content--left"
+          className="figma-about-hero__content"
           initial={reduceMotion ? false : 'hidden'}
           variants={{
             hidden: {},
@@ -203,18 +270,30 @@ export function ChariticsAboutPage({
       <MotionReveal as="section" className="figma-about-team" id="people">
         <div className="epl-new-shell">
           <div className="figma-about-team__head">
-            <h2>The People Behind EPL Ghana</h2>
+            <div>
+              <h2>The People Behind EPL Ghana</h2>
+              <p className="figma-about-team__intro">
+                Meet the dedicated board members, directors, and coordinators guiding our mission
+                and supporting our Fellows every day.
+              </p>
+            </div>
             <div className="figma-about-team__tabs">
               <button
                 className={`figma-about-team__tab${activeTeamTab === 'leadership' ? ' is-active' : ''}`}
-                onClick={() => setActiveTeamTab('leadership')}
+                onClick={() => {
+                  setActiveTeamTab('leadership')
+                  closePanel()
+                }}
                 type="button"
               >
                 Leadership
               </button>
               <button
                 className={`figma-about-team__tab${activeTeamTab === 'team' ? ' is-active' : ''}`}
-                onClick={() => setActiveTeamTab('team')}
+                onClick={() => {
+                  setActiveTeamTab('team')
+                  closePanel()
+                }}
                 type="button"
               >
                 Team
@@ -232,19 +311,45 @@ export function ChariticsAboutPage({
               transition={{ duration: 0.35, ease: easeOut }}
             >
               {displayedTeam.map((member) => (
-                <article className="figma-about-team__card" key={member.id}>
-                  <div
-                    className="figma-about-team__photo"
-                    style={{ backgroundImage: `url(${member.photo || eplHomeImages.fellows.miriam})` }}
-                  />
+                <button
+                  aria-label={`View profile for ${member.name}`}
+                  className={`figma-about-team__card${member.id === selectedId ? ' is-active' : ''}`}
+                  key={member.id}
+                  onClick={() => openMember(member)}
+                  type="button"
+                >
+                  <div className="figma-about-team__photo">
+                    <TeamMemberPhoto alt={member.name} src={member.photo} />
+                  </div>
                   <div className="figma-about-team__name">{member.name}</div>
                   <div className="figma-about-team__role">{member.role}</div>
-                </article>
+                </button>
               ))}
             </motion.div>
           </AnimatePresence>
         </div>
       </MotionReveal>
+
+      {mounted && typeof document !== 'undefined'
+        ? createPortal(
+            <AnimatePresence mode="wait" onExitComplete={clearSelection}>
+              {isDrawerOpen && selected ? (
+                <TeamMemberDrawer
+                  activeTabLabel={activeTabLabel}
+                  key="epl-about-team-drawer"
+                  member={selected}
+                  memberIndex={selectedIndex}
+                  memberTotal={displayedTeam.length}
+                  onClose={closePanel}
+                  onNext={() => goToMember(1)}
+                  onPrev={() => goToMember(-1)}
+                  slideDirection={slideDirection}
+                />
+              ) : null}
+            </AnimatePresence>,
+            document.body,
+          )
+        : null}
 
       <MotionReveal as="section" className="figma-about-partners" id="partners">
         <div className="epl-new-shell">
@@ -258,26 +363,7 @@ export function ChariticsAboutPage({
             <p>{partner.lead}</p>
           </div>
 
-          {partnerGrid.length > 0 ? (
-            <div className="epl-marquee-wrapper">
-              <div className="epl-marquee-track">
-                {[...partnerGrid, ...partnerGrid].map((item, index) => (
-                  <div className="epl-partner-slide-card" key={`${item.id}-${index}`}>
-                    <div className="epl-partner-slide-badge">
-                      {item.logo ? (
-                        <img alt={item.name} decoding="async" loading="lazy" src={item.logo} />
-                      ) : (
-                        <span>{item.code}</span>
-                      )}
-                    </div>
-                    <div className="epl-partner-slide-info">
-                      <h3>{item.name}</h3>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ) : null}
+          <PartnerLogoMarquee items={partners} />
 
           <div className="figma-about-partners__cta">
             <Link className="figma-about-partners__btn" href="/community/partners">

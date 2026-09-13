@@ -11,6 +11,7 @@ export type BlogPostSummary = {
   categorySlug: BlogCategorySlug
   author?: string
   tags?: string[]
+  paragraphs?: string[]
 }
 
 export const blogPageContent = {
@@ -132,6 +133,57 @@ export const fallbackBlogPosts: BlogPostSummary[] = [
     categorySlug: 'blog-posts',
     author: 'EPL Ghana',
     tags: ['Graduation', 'Public Service Fellowship'],
+  },
+  {
+    slug: 'annual-end-of-year-fellows-gathering',
+    title: 'Annual End-of-Year Fellows Gathering',
+    excerpt:
+      'Flagship reunion bringing alumni together in strategic dialogue on public sector innovation, peer accountability, and policy milestones.',
+    publishedAt: '2025-12-15',
+    image: `${EPL_MEDIA}/2025/10/CSG-1-scaled.jpg`,
+    category: 'Blog Posts',
+    categorySlug: 'blog-posts',
+    author: 'EPL Ghana',
+    tags: ['EPLAN', 'Alumni', 'Leadership'],
+    paragraphs: [
+      'Each year, Emerging Public Leaders of Ghana convenes alumni for the Annual End-of-Year Fellows Gathering — a flagship reunion that strengthens peer accountability and renews shared commitment to ethical public service.',
+      'The gathering brings cohorts together for strategic dialogue on public sector innovation, institutional reform, and the practical challenges fellows face inside ministries and assemblies.',
+      'Beyond celebration, the convening is a working space: alumni exchange lessons, mentor newer cohorts, and identify collaborations that turn individual placements into collective impact across Ghana’s public service.',
+    ],
+  },
+  {
+    slug: 'pioneering-municipal-health-data-systems',
+    title: 'Pioneering Municipal Health Data Systems',
+    excerpt:
+      'EPLAN alumni stationed at regional health directorates modernized digital record-keeping, reducing patient wait times across 8 local clinics.',
+    publishedAt: '2025-11-20',
+    image: `${EPL_MEDIA}/2025/10/CSOE-45-scaled.jpg`,
+    category: 'Blog Posts',
+    categorySlug: 'blog-posts',
+    author: 'EPL Ghana',
+    tags: ['EPLAN', 'Health', 'Governance'],
+    paragraphs: [
+      'EPLAN alumni working with regional health directorates have been pioneering practical improvements to municipal health data systems — starting with the records patients and clinicians rely on every day.',
+      'By modernizing digital record-keeping workflows across eight local clinics, fellows and alumni helped cut unnecessary delays at registration and follow-up, freeing staff time for care.',
+      'The work shows how alumni networks sustain fellowship impact: technical skill, ethical leadership, and institutional partnership combining to deliver measurable service improvements for communities.',
+    ],
+  },
+  {
+    slug: 'cross-ministerial-civil-service-working-group',
+    title: 'Cross-Ministerial Civil Service Working Group',
+    excerpt:
+      'Alumni across the Ministry of Finance and Ministry of Local Government published recommendations for digitized municipal revenue oversight.',
+    publishedAt: '2025-10-28',
+    image: `${EPL_MEDIA}/2025/07/CSG-32-scaled.jpg`,
+    category: 'Blog Posts',
+    categorySlug: 'blog-posts',
+    author: 'EPL Ghana',
+    tags: ['EPLAN', 'Policy', 'Governance'],
+    paragraphs: [
+      'A cross-ministerial working group of EPLAN alumni from the Ministry of Finance and the Ministry of Local Government has published recommendations to strengthen digitized municipal revenue oversight.',
+      'The collaboration reflects EPLAN’s model of peer problem-solving across institutions — connecting fellows and alumni who share a commitment to transparency, accountability, and better public finance systems.',
+      'Their recommendations offer practical steps for assemblies and central agencies seeking clearer oversight, stronger data use, and more reliable revenue administration in service of citizens.',
+    ],
   },
 ]
 

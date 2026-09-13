@@ -1,66 +1,80 @@
 import { EPL_MEDIA } from '@/config/eplMedia'
 
+const ELEVATED_MINDS_SUMMARY =
+  'A school-based career development programme equipping Junior and Senior High School students with the skills, knowledge, values and exposure to make informed education and career decisions.'
+
 export const eplimContent = {
   hero: {
-    eyebrow: 'Maritime Leadership',
-    title: 'EPL in Maritime (EPLIM)',
-    lead:
-      "Developing the next generation of ethical, capable and innovative leaders within Ghana's maritime and blue economy sectors.",
+    eyebrow: 'School-Based Career Development',
+    title: 'Elevated MINDS',
+    lead: ELEVATED_MINDS_SUMMARY,
     description:
-      "EPL in Maritime (EPLIM) is a leadership initiative focused on developing emerging professionals who will steward Ghana's maritime resources, port authorities, shipping lanes, and coastal development policies.\n\nThe programme creates opportunities for participants to build practical leadership skills, gain first-hand exposure to the maritime ecosystem, and connect with seasoned institutional leaders driving blue economy sustainability.",
+      'Elevated Minds is a structured school-based career development and readiness programme designed to equip Junior High School and Senior High School students with the skills, knowledge, values and exposure required to make informed educational and career decisions and successfully navigate key transitions into tertiary education and the world of work.\n\nThe project will establish structured career clubs in La Cluster of Schools (JHS), Mawuko Girls SHS, and either Akrofufu SHTS or Osino SHTS, reaching 500 students at critical educational transition points — 100 JHS Form 2–3 students and 400 SHS Form 2–3 students. These cohorts are preparing for BECE, WASSCE, subject and academic decisions, tertiary education and post-secondary pathways.',
     images: [
-      `${EPL_MEDIA}/2025/11/LEMA25-2183-1024x682.jpg`,
-      `${EPL_MEDIA}/2025/10/CSOE-32-1-scaled.jpg`,
+      `${EPL_MEDIA}/2025/04/HN7A4284-scaled.jpg`,
+      `${EPL_MEDIA}/2025/10/CSG-21-scaled.jpg`,
     ],
-    partners: ['Ghana Maritime Authority', 'Ghana Ports & Harbours Authority', 'Ministry of Transport'],
-    ctaLabel: 'Partner on Maritime Leadership',
+    partners: [
+      'La Cluster of Schools (JHS)',
+      'Mawuko Girls SHS',
+      'Akrofufu SHTS / Osino SHTS',
+    ],
+    ctaLabel: 'Partner on Elevated MINDS',
     ctaHref: '/partner-with-us',
   },
-  aboutEyebrow: 'EPLIM Overview',
-  aboutTitle: "Strengthening Ghana's Maritime Future",
-  aboutImage: `${EPL_MEDIA}/2025/11/LEMA25-2212-1000x1000.jpg`,
+  aboutEyebrow: 'Programme Overview',
+  aboutTitle: 'Preparing Students for Education and Work Transitions',
+  aboutImage: `${EPL_MEDIA}/2025/10/CSG-21-scaled.jpg`,
   capacityBuilding: {
-    eyebrow: 'Capacity Building',
-    title: 'Preparing Leaders for the Maritime Frontier',
+    eyebrow: 'Learning Model',
+    title: 'Blended, Competency-Based and Experiential',
     description:
-      'EPLIM equips participants with the analytical confidence, ethical principles, and regulatory understanding required to resolve complex supply-chain, security, and trade bottlenecks across maritime agencies.',
-    image: `${EPL_MEDIA}/2025/10/CSOE-32-1-scaled.jpg`,
+      'Elevated Minds combines structured in-person workshops, mentorship, career exposure, practical exercises and student-led activities. Students take part in career exploration assessments, pathway guidance, public speaking and communication training, research and problem-solving activities, ethical leadership exercises, mentorship, tertiary preparation clinics, interview simulations, and the development of individual Career Development Plans.',
+    image: `${EPL_MEDIA}/2025/04/HN7A4284-scaled.jpg`,
   },
   whyItMatters: {
-    eyebrow: 'Core Focus Areas',
-    title: 'Building Maritime Excellence',
+    eyebrow: 'Thematic Areas',
+    title: 'Four Pillars of Career Readiness',
     items: [
       {
-        title: 'Leadership Development',
+        title: 'Communication & Professional Skills',
         description:
-          'Instilling values-based leadership that enables emerging maritime professionals to operate with integrity, accountability, and strategic foresight.',
+          'Public speaking, workplace communication, CV and cover-letter development, and interview preparation that build confidence for tertiary and employment pathways.',
       },
       {
-        title: 'Industry Exposure',
+        title: 'Tech & Personal Branding',
         description:
-          'Direct on-site immersion across major commercial ports, logistics hubs, maritime safety authorities, and national shipping agencies.',
+          'Practical tools for presenting yourself professionally online and offline, and for navigating technology-enabled learning and career opportunities.',
       },
       {
-        title: 'Policy & Network Growth',
+        title: 'Leadership & Character Development',
         description:
-          'Connecting young practitioners with maritime executives, environmental scientists, and public policy working groups across West Africa.',
+          'Ethical leadership exercises, values formation and student-led activities that strengthen character, responsibility and service mindset.',
+      },
+      {
+        title: 'Digital Skills & Digital Careers',
+        description:
+          'Foundational digital competencies and exposure to emerging digital career pathways that shape the world of work students are entering.',
       },
     ],
   },
   impact: {
-    eyebrow: 'Our Impact',
-    title: 'Shaping the Future of Maritime Leadership',
+    eyebrow: 'Project Aims',
+    title: '500 Students. Three Pilot Schools. Clearer Pathways.',
     description:
-      "EPLIM is part of EPL Ghana's broader commitment to developing leaders who can strengthen institutions, drive innovation, and contribute to national sustainable development.",
-    image: `${EPL_MEDIA}/2025/11/LEMA25-2204-1024x682.jpg`,
-    ctaLabel: 'Join the Initiative',
-    ctaHref: '/get-involved',
+      'Elevated Minds aims to improve critical thinking, research and problem-solving through structured modules, research mini-projects, case studies, debates and experiential learning; establish career clubs in La Cluster of Schools (JHS), Mawuko Girls SHS, and Akrofufu/Osino SHTS; conduct career clinics for 500 students; strengthen employability readiness through exploration, mentorship and tertiary guidance; and expose students to diverse career pathways through talks, professional engagement and interaction with people working across different fields.',
+    image: `${EPL_MEDIA}/2025/10/CSOE-32-1-scaled.jpg`,
+    ctaLabel: 'Support Elevated MINDS',
+    ctaHref: '/donate',
   },
   partnerCta: {
-    title: 'Join the Initiative',
-    description: 'Partner with EPL Ghana to grow ethical maritime leadership across Ghana’s blue economy.',
+    title: 'Partner on Elevated MINDS',
+    description:
+      'Work with EPL Ghana to equip JHS and SHS students with the career readiness, mentorship and pathway guidance they need at critical transition points.',
     ctaLabel: 'Contact Us',
     ctaHref: '/contact',
-    image: `${EPL_MEDIA}/2025/11/LEMA25-2204-1024x682.jpg`,
+    image: `${EPL_MEDIA}/2025/10/CSOE-32-1-scaled.jpg`,
   },
 }
+
+export { ELEVATED_MINDS_SUMMARY }

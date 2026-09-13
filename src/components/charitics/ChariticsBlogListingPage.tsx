@@ -21,6 +21,7 @@ const EVENT_TABS = ['ALL EVENTS', 'EPL GHANA HOSTED', 'PARTNERED EVENT', 'UPCOMI
 const events = [
   {
     id: 'e-1',
+    slug: 'epl-annual-public-leadership-forum-2026',
     tag: 'EPL HOSTED',
     category: 'EPL GHANA HOSTED',
     title: 'EPL Annual Public Leadership Forum 2026',
@@ -32,6 +33,7 @@ const events = [
   },
   {
     id: 'e-2',
+    slug: 'civil-service-innovation-digital-governance-summit',
     tag: 'PARTNERED EVENT',
     category: 'PARTNERED EVENT',
     title: 'Civil Service Innovation & Digital Governance Summit',
@@ -43,6 +45,7 @@ const events = [
   },
   {
     id: 'e-3',
+    slug: 'public-sector-career-masterclass-fellowship-info',
     tag: 'UPCOMING EVENT',
     category: 'UPCOMING EVENT',
     title: 'Public Sector Career Masterclass & Fellowship Info Session',
@@ -54,6 +57,7 @@ const events = [
   },
   {
     id: 'e-4',
+    slug: 'women-in-governance-roundtable-breaking-ceilings',
     tag: 'EPL HOSTED',
     category: 'EPL GHANA HOSTED',
     title: 'Women in Governance Roundtable: Breaking Ceilings',
@@ -67,25 +71,27 @@ const events = [
 
 const fallbackArticles = [
   {
-    slug: 'equipping-public-servants-gender-responsive-governance',
+    slug: 'equipping-public-servants-for-gender-responsive-governance-gdo-sensitisation-workshop-held-in-may-2025',
     tag: 'NEWS',
     meta: '3 NOVEMBER 2025 · EPL GHANA',
-    title: 'Equipping Public Servants for Gender-Responsive Governance: GDO Sensitisation Workshop Held in May 2025',
+    title:
+      'Equipping Public Servants for Gender-Responsive Governance: GDO Sensitisation Workshop Held in May 2025',
     excerpt:
       'On May 13, 2025, the National Gender Diversity Taskforce and the Civil Service Training Centre convened public servants for a gender-responsive governance workshop.',
     image: `${EPL_MEDIA}/2025/10/CSOE-45-scaled.jpg`,
   },
   {
-    slug: 'inspiring-next-generation-inclusive-leaders',
+    slug: 'inspiring-the-next-generation-of-inclusive-leaders-epl-ghanas-empowerment-and-leadership-tour-june-2025',
     tag: 'NEWS',
     meta: '3 NOVEMBER 2025 · EPL GHANA',
-    title: 'Inspiring the Next Generation of Inclusive Leaders: EPL Ghana’s Empowerment and Leadership Tour, June 2025',
+    title:
+      'Inspiring the Next Generation of Inclusive Leaders: EPL Ghana’s Empowerment and Leadership Tour, June 2025',
     excerpt:
       'From June 2 to 6, 2025, Emerging Public Leaders of Ghana embarked on an Empowerment and Leadership Tour connecting fellows with institutions shaping inclusive governance.',
     image: `${EPL_MEDIA}/2025/10/CSG-16-scaled.jpg`,
   },
   {
-    slug: 'validating-gender-inclusion-civil-service-sop',
+    slug: 'validating-gender-inclusion-civil-service-finalises-gender-mainstreaming-sop-in-may-2025',
     tag: 'NEWS',
     meta: '31 OCTOBER 2025 · EPL GHANA',
     title: 'Validating Gender Inclusion: Civil Service Finalises Gender Mainstreaming SOP in May 2025',
@@ -94,7 +100,7 @@ const fallbackArticles = [
     image: `${EPL_MEDIA}/2025/10/CSP64-scaled-e1760540014318.jpeg`,
   },
   {
-    slug: 'april-2025-national-gender-diversity-taskforce',
+    slug: 'highlights-from-the-april-2025national-gender-diversity-taskforce-meeting',
     tag: 'NEWS',
     meta: '30 OCTOBER 2025 · EPL GHANA',
     title: 'Highlights from the April 2025 National Gender Diversity Taskforce Meeting',
@@ -171,8 +177,13 @@ export function ChariticsBlogListingPage({ posts = [] }: ChariticsBlogListingPag
 
           <div className="figma-news-events__grid">
             {filteredEvents.map((event) => (
-              <article className="figma-news-event-card" key={event.id}>
+              <Link
+                className="figma-news-event-card"
+                href={`/events/${event.slug}`}
+                key={event.id}
+              >
                 <div className="figma-news-event-card__media">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img alt={event.title} src={event.image} />
                   <span className="figma-news-event-card__tag">{event.tag}</span>
                 </div>
@@ -190,7 +201,7 @@ export function ChariticsBlogListingPage({ posts = [] }: ChariticsBlogListingPag
                     </p>
                   </div>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         </div>
@@ -267,8 +278,13 @@ export function ChariticsBlogListingPage({ posts = [] }: ChariticsBlogListingPag
 
           <div className="figma-news-articles__grid">
             {displayArticles.slice(0, 4).map((article) => (
-              <article className="figma-news-article-card" key={article.slug}>
+              <Link
+                className="figma-news-article-card"
+                href={`/news/${article.slug}`}
+                key={article.slug}
+              >
                 <div className="figma-news-article-card__media">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img alt={article.title} src={article.image} />
                   <span
                     className={`figma-news-article-card__tag${
@@ -283,10 +299,10 @@ export function ChariticsBlogListingPage({ posts = [] }: ChariticsBlogListingPag
                   <h3>{article.title}</h3>
                   <p>{article.excerpt}</p>
                   <div className="figma-news-article-card__footer">
-                    <Link href={`/news/${article.slug}`}>READ FULL STORY →</Link>
+                    <span>READ FULL STORY →</span>
                   </div>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
 

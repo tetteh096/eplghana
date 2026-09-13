@@ -1,8 +1,15 @@
 'use client'
 
+import { AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 import { ProjectDetailImage } from '@/components/charitics/ProjectDetailImage'
+import { TeamMemberDrawer } from '@/components/charitics/TeamMemberDrawer'
+import { TeamMemberPhoto } from '@/components/charitics/TeamMemberPhoto'
+import { executiveToTeamMember, type EplanExecutive } from '@/config/alumniPageContent'
+import type { TeamMember } from '@/config/teamPageContent'
 import type { EplanPageContent } from '@/utilities/getEplanPageContent'
 
 type ChariticsAlumniPageProps = {
@@ -10,7 +17,71 @@ type ChariticsAlumniPageProps = {
 }
 
 export function ChariticsAlumniPage({ content }: ChariticsAlumniPageProps) {
-  const { hero, sustain, vision, mission, executives, eplanAbout, spotlight } = content
+  const { hero, sustain, vision, mission, executives, spotlight } = content
+  const members = executives.items
+
+  const [mounted, setMounted] = useState(false)
+  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const [slideDirection, setSlideDirection] = useState(1)
+
+  const teamMembers: TeamMember[] = useMemo(
+    () => members.map(executiveToTeamMember),
+    [members],
+  )
+
+  const selectedIndex = useMemo(
+    () => teamMembers.findIndex((member) => member.id === selectedId),
+    [selectedId, teamMembers],
+  )
+  const selected = selectedIndex >= 0 ? teamMembers[selectedIndex] : null
+
+  const openMember = useCallback((member: EplanExecutive) => {
+    setSelectedId(member.id)
+    setIsDrawerOpen(true)
+  }, [])
+
+  const closePanel = useCallback(() => {
+    setIsDrawerOpen(false)
+  }, [])
+
+  const clearSelection = useCallback(() => {
+    setSelectedId(null)
+  }, [])
+
+  const goToMember = useCallback(
+    (direction: -1 | 1) => {
+      if (selectedIndex < 0 || teamMembers.length === 0) return
+      setSlideDirection(direction)
+      const nextIndex = (selectedIndex + direction + teamMembers.length) % teamMembers.length
+      setSelectedId(teamMembers[nextIndex].id)
+    },
+    [selectedIndex, teamMembers],
+  )
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    document.body.style.overflow = isDrawerOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isDrawerOpen])
+
+  useEffect(() => {
+    if (!isDrawerOpen) return
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closePanel()
+      if (event.key === 'ArrowRight') goToMember(1)
+      if (event.key === 'ArrowLeft') goToMember(-1)
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [closePanel, goToMember, isDrawerOpen])
 
   return (
     <div className="figma-eplan-page">
@@ -61,9 +132,7 @@ export function ChariticsAlumniPage({ content }: ChariticsAlumniPageProps) {
             <span>{vision.eyebrow.toUpperCase()}</span>
             <span className="figma-impact-kicker__line" />
           </div>
-          <h2>&ldquo;{vision.text}&rdquo;</h2>
-          <div className="figma-eplan-vision__rule" />
-          <p>{eplanAbout.paragraphs[0]}</p>
+          <h2 className="figma-eplan-vision__statement">&ldquo;{vision.text}&rdquo;</h2>
         </div>
       </section>
 
@@ -74,12 +143,11 @@ export function ChariticsAlumniPage({ content }: ChariticsAlumniPageProps) {
             <span>{mission.eyebrow.toUpperCase()}</span>
             <span className="figma-impact-kicker__line" />
           </div>
-          <div className="figma-eplan-vision__rule" />
-          <p>{mission.text}</p>
+          <h2 className="figma-eplan-vision__statement">{mission.text}</h2>
         </div>
       </section>
 
-      {executives.items.length > 0 ? (
+      {members.length > 0 ? (
         <section className="figma-eplan-executives">
           <div className="epl-new-shell">
             <div className="figma-eplan-executives__head">
@@ -91,27 +159,20 @@ export function ChariticsAlumniPage({ content }: ChariticsAlumniPageProps) {
               <p>{executives.intro}</p>
             </div>
             <div className="figma-eplan-executives__grid">
-              {executives.items.map((member) => (
-                <article className="figma-eplan-executive-card" key={member.id}>
-                  <div className="figma-eplan-executive-card__photo">
-                    <ProjectDetailImage
-                      alt={member.name}
-                      className="w-full h-full object-cover"
-                      fallbackClass="epl-project-card-visual"
-                      src={member.photo}
-                    />
+              {members.map((member) => (
+                <button
+                  aria-label={`View profile for ${member.role}`}
+                  className={`figma-eplan-executive${member.id === selectedId ? ' is-active' : ''}`}
+                  key={member.id}
+                  onClick={() => openMember(member)}
+                  type="button"
+                >
+                  <div className="figma-eplan-executive__photo">
+                    <TeamMemberPhoto alt={member.name} src={member.photo} />
                   </div>
-                  <div className="figma-eplan-executive-card__body">
-                    <h3>{member.name}</h3>
-                    <span>{member.role}</span>
-                    {member.bio ? <p>{member.bio}</p> : null}
-                    {member.linkedin ? (
-                      <a href={member.linkedin} rel="noopener noreferrer" target="_blank">
-                        LinkedIn <span aria-hidden>↗</span>
-                      </a>
-                    ) : null}
-                  </div>
-                </article>
+                  <span className="figma-eplan-executive__role">{member.role}</span>
+                  <span className="figma-eplan-executive__name">{member.name}</span>
+                </button>
               ))}
             </div>
           </div>
@@ -167,7 +228,11 @@ export function ChariticsAlumniPage({ content }: ChariticsAlumniPageProps) {
 
           <div className="figma-eplan-spotlight__grid">
             {spotlight.items.map((item) => (
-              <article className="figma-eplan-spotlight-card" key={item.title}>
+              <Link
+                className="figma-eplan-spotlight-card"
+                href={item.href || '/news'}
+                key={item.title}
+              >
                 <div className="figma-eplan-spotlight-card__media">
                   <ProjectDetailImage
                     alt={item.title}
@@ -181,7 +246,7 @@ export function ChariticsAlumniPage({ content }: ChariticsAlumniPageProps) {
                   <h3>{item.title}</h3>
                   <p>{item.description}</p>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
 
@@ -192,6 +257,27 @@ export function ChariticsAlumniPage({ content }: ChariticsAlumniPageProps) {
           </div>
         </div>
       </section>
+
+      {mounted && typeof document !== 'undefined'
+        ? createPortal(
+            <AnimatePresence mode="wait" onExitComplete={clearSelection}>
+              {isDrawerOpen && selected ? (
+                <TeamMemberDrawer
+                  activeTabLabel="EPLAN Executive"
+                  key="epl-eplan-executive-drawer"
+                  member={selected}
+                  memberIndex={selectedIndex}
+                  memberTotal={teamMembers.length}
+                  onClose={closePanel}
+                  onNext={() => goToMember(1)}
+                  onPrev={() => goToMember(-1)}
+                  slideDirection={slideDirection}
+                />
+              ) : null}
+            </AnimatePresence>,
+            document.body,
+          )
+        : null}
     </div>
   )
 }

@@ -36,7 +36,7 @@ export const partnersPageContent = {
     secondaryImage: `${EPL_MEDIA}/2025/10/IMG_7245-scaled.jpg`,
     stats: [
       { value: '4', label: 'Strategic funders & collaborators' },
-      { value: '12+', label: 'Government host institutions' },
+      { value: '15+', label: 'Government host institutions' },
       { value: '3', label: 'Flagship fellowship programmes' },
     ],
   },
@@ -68,7 +68,7 @@ export const partnersPageContent = {
       },
     ] satisfies PartnerBenefit[],
     highlightValue: '85%',
-    highlightTitle: 'Career Retention Rate',
+    highlightTitle: 'Career Advancement',
     highlightText:
       'Fellows transition directly into permanent leadership and technical advisory roles in public service.',
     image: `${EPL_MEDIA}/2025/10/CSG-16-scaled.jpg`,

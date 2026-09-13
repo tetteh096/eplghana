@@ -29,24 +29,31 @@ export const staticProjects: StaticProject[] = [
   },
   {
     slug: 'eplim',
-    title: 'EPL in Maritime (EPLIM)',
-    summary: 'Maritime Leadership',
+    title: 'Elevated MINDS',
+    summary: 'School-Based Career Development',
     description:
-      'Developing leaders for Ghana’s maritime future through targeted capacity building, mentorship, and policy engagement across maritime institutions.',
+      'A structured school-based career development and readiness programme equipping Junior and Senior High School students with the skills, knowledge, values and exposure to make informed educational and career decisions.',
   },
   {
     slug: 'maritime',
-    title: 'EPL in Maritime (EPLIM)',
-    summary: 'Maritime Leadership',
+    title: 'Elevated MINDS',
+    summary: 'School-Based Career Development',
     description:
-      'Developing leaders for Ghana’s maritime future through targeted capacity building, mentorship, and policy engagement across maritime institutions.',
+      'A structured school-based career development and readiness programme equipping Junior and Senior High School students with the skills, knowledge, values and exposure to make informed educational and career decisions.',
   },
   {
     slug: 'epl-in-maritime',
-    title: 'EPL in Maritime (EPLIM)',
-    summary: 'Maritime Leadership',
+    title: 'Elevated MINDS',
+    summary: 'School-Based Career Development',
     description:
-      'Developing leaders for Ghana’s maritime future through targeted capacity building, mentorship, and policy engagement across maritime institutions.',
+      'A structured school-based career development and readiness programme equipping Junior and Senior High School students with the skills, knowledge, values and exposure to make informed educational and career decisions.',
+  },
+  {
+    slug: 'elevated-minds',
+    title: 'Elevated MINDS',
+    summary: 'School-Based Career Development',
+    description:
+      'A structured school-based career development and readiness programme equipping Junior and Senior High School students with the skills, knowledge, values and exposure to make informed educational and career decisions.',
   },
 ]
 

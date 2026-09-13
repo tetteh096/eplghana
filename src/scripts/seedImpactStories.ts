@@ -137,9 +137,11 @@ for (const [index, item] of d.communityStories.items.entries()) {
 
   const data = {
     title: item.title,
+    slug: item.slug,
     region: item.region,
     assembly: item.assembly,
     description: item.desc,
+    body: item.body,
     order: index,
     status: 'published' as const,
   }

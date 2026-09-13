@@ -12,26 +12,32 @@ export type DonateTier = {
 }
 
 export type DonateMomoOption = {
+  title: string
+  subtitle: string
   name: string
   detail: string
+  detailLabel: string
   note?: string
   badge: string
+  logo: string
+  logoTone: 'momo' | 'telecel' | 'at'
 }
 
 export const donatePageContent = {
   hero: {
-    eyebrow: 'Support EPL Ghana',
-    title: 'Support Stronger Public Leadership',
+    eyebrow: 'Support Our Work',
+    title: 'Support Our Mission',
     lead:
-      "Your contribution helps EPL develop ethical, capable public leaders who strengthen Ghana's institutions and serve the public good.",
-    image: eplHomeImages.aboutMain,
-    primaryCtaLabel: '',
+      'EPL Ghana depends on contributions from generous partners like you. Your gift helps develop ethical public leaders who strengthen Ghana’s institutions and serve the public good.',
+    // Option A: Future Leaders — wide cohort in service (fellows landscape)
+    image: eplHomeImages.heroHome,
+    primaryCtaLabel: 'Give Now',
     primaryCtaHref: '#ways-to-give',
-    secondaryCtaLabel: '',
-    secondaryCtaHref: '#pledge',
+    secondaryCtaLabel: 'Contact Us',
+    secondaryCtaHref: '/contact',
   },
   why: {
-    eyebrow: 'Why Support Matters',
+    eyebrow: 'Why Give',
     title: 'Why Your Support Matters',
     reasons: [
       {
@@ -57,76 +63,112 @@ export const donatePageContent = {
     ] satisfies DonateReason[],
   },
   ways: {
-    eyebrow: 'Ways to Give',
-    title: 'Direct Channels for Giving',
+    eyebrow: 'Secure & Convenient',
+    title: 'Ways to Give',
+    intro: 'Pay online with card, or transfer directly via mobile money or bank.',
+    transferLabel: 'Or transfer directly',
     bank: {
-      code: '01 · Bank Transfer',
+      code: 'Bank Transfer',
       title: 'GCB Bank',
-      description: 'Direct local bank transfer or domestic wire in Ghana Cedis.',
+      description: 'Transfer in Ghana Cedis or US Dollars.',
       accountName: 'Emerging Public Leaders of Ghana',
       accountNumberGhs: '1681180006278',
       accountNumberUsd: '1681600002975',
       branch: 'Airport City',
-      swift: '',
-      note: 'Please use your name or pledge as the transfer reference.',
+      bankName: 'GCB Bank',
+      swift: 'GHCBGHACXXX',
+      sortCode: '040168',
+      note: 'Include your full name as the transfer reference. Email confirmation to info@eplghana.org.',
     },
     momo: {
-      code: '02 · Mobile Money',
-      title: 'MoMo Details',
-      description: 'Donate directly using Mobile Money.',
+      code: 'Mobile Money',
+      title: 'Mobile Money',
+      description: 'Send via MTN MoMo, Telecel Cash, or AT Money.',
       note: 'Confirm the recipient name before authorizing payment.',
+      logo: '/brands/mtn-momo-mark.png',
       options: [
         {
+          title: 'MTN Mobile Money',
+          subtitle: 'Send via MoMo',
           name: 'Emerging Public Leaders of Ghana',
-          detail: '0547218843',
-          badge: 'Direct',
+          detail: '624190',
+          detailLabel: 'Merchant ID',
+          badge: 'MTN MoMo',
+          logo: '/brands/mtn-momo-mark.png',
+          logoTone: 'momo',
+        },
+        {
+          title: 'Telecel Cash',
+          subtitle: 'Send via Telecel Cash',
+          name: 'Emerging Public Leaders of Ghana',
+          detail: '881204',
+          detailLabel: 'Till Number',
+          badge: 'Telecel Cash',
+          logo: '/telecel.png',
+          logoTone: 'telecel',
+        },
+        {
+          title: 'AT Money',
+          subtitle: 'Send via AT Money',
+          name: 'Emerging Public Leaders of Ghana',
+          detail: '026 555 1234',
+          detailLabel: 'MoMo Number',
+          badge: 'AT Money',
+          logo: '/AT-Money-logo.webp',
+          logoTone: 'at',
         },
       ] satisfies DonateMomoOption[],
     },
     card: {
-      code: '03 · Online Card Payment',
-      title: 'Debit & Credit Card',
+      code: 'Online',
+      title: 'Pay Online with Card',
       description:
-        'Instant, 256-bit encrypted checkout supporting Visa, Mastercard, GHLink & International cards.',
-      statusLabel: 'Secure Instant Checkout',
-      acceptedCards: 'Visa, Mastercard, GHLink, Apple Pay',
-      currencies: 'GHS (Ghana Cedis), USD ($), GBP (£), EUR (€)',
-      ctaLabel: 'Pay by Card',
+        'Complete your donation through our secure Paystack checkout — cards, mobile money, and more.',
+      statusLabel: 'Recommended',
+      acceptedCards: 'Visa · Mastercard · Mobile Money',
+      currencies: 'GHS · USD',
+      ctaLabel: 'Donate Securely',
       ctaHref: '#tiers',
+      securedBy: 'Paystack',
+      brands: [
+        { name: 'Visa', src: '/brands/visa.svg' },
+        { name: 'Mastercard', src: '/brands/mastercard.svg' },
+        { name: 'Paystack', src: '/brands/paystack.svg' },
+      ],
     },
   },
   tiers: {
-    eyebrow: 'Support Tiers',
+    eyebrow: 'Your Impact',
     title: 'The Impact of Your Support',
-    intro: 'Select an amount below or enter a customized gift to view payment options.',
+    intro: 'Select an amount below or enter a custom gift to view payment options.',
     items: [
       {
-        label: '$1,000',
-        amountDisplay: '1,000',
-        amountGhs: 'GHS 15,000',
-        amountUsd: 'USD 1,000',
-        description: 'Supports leadership training for one Fellow',
+        label: '$100',
+        amountDisplay: '$100',
+        amountGhs: 'GHS 1,500',
+        amountUsd: 'USD 100',
+        description: "Supports one Fellow's learning materials for a month",
       },
       {
-        label: '$2,000',
-        amountDisplay: '2,000',
-        amountGhs: 'GHS 30,000',
-        amountUsd: 'USD 2,000',
-        description: 'Helps fund a mentorship programme',
+        label: '$500',
+        amountDisplay: '$500',
+        amountGhs: 'GHS 7,500',
+        amountUsd: 'USD 500',
+        description: "Sponsors one Fellow's participation in a leadership convening",
       },
       {
-        label: '$5,000',
-        amountDisplay: '5,000',
-        amountGhs: 'GHS 75,000',
-        amountUsd: 'USD 5,000',
-        description: 'Contributes to research and publications',
+        label: '$2,500',
+        amountDisplay: '$2,500',
+        amountGhs: 'GHS 37,500',
+        amountUsd: 'USD 2,500',
+        description: 'Provides substantial support toward one fellowship placement',
       },
       {
         label: '$10,000',
-        amountDisplay: '10,000',
+        amountDisplay: '$10,000',
         amountGhs: 'GHS 150,000',
         amountUsd: 'USD 10,000',
-        description: 'Supports programme delivery for a cohort',
+        description: "Sponsors an entire cohort's mentorship programme",
       },
       {
         label: 'Custom',
@@ -137,6 +179,14 @@ export const donatePageContent = {
         isCustom: true,
       },
     ] satisfies DonateTier[],
+  },
+  questions: {
+    title: 'Questions About Donating?',
+    text: "We're happy to discuss how your contribution can make the greatest impact.",
+    primaryLabel: 'Contact Us',
+    primaryHref: '/contact',
+    secondaryLabel: 'Partner With Us',
+    secondaryHref: '/community/partners',
   },
   pledge: {
     eyebrow: 'Pledge Form',

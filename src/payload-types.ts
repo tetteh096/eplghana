@@ -817,7 +817,7 @@ export interface Event {
   createdAt: string;
 }
 /**
- * Upload PDFs for annual reports and research documents. Shown on /knowledge-products/annual-reports.
+ * Annual reports plus research categories (articles, factsheets, studies, policy briefs) shown on /research.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "publications".
@@ -825,18 +825,29 @@ export interface Event {
 export interface Publication {
   id: string;
   title: string;
+  /**
+   * URL slug for research detail pages. Auto-derived from title if empty.
+   */
+  slug?: string | null;
+  /**
+   * Short summary shown on listing cards.
+   */
   description: string;
-  category: 'annual-report' | 'research';
+  /**
+   * Longer write-up for the detail page. Falls back to description if empty.
+   */
+  body?: string | null;
+  category: 'annual-report' | 'articles' | 'factsheets' | 'studies' | 'technical-policy-briefs' | 'research';
   /**
    * e.g. 2024
    */
   year?: string | null;
   /**
-   * Shown on the report card (book cover style).
+   * Shown on research cards and detail pages.
    */
   coverImage?: (string | null) | Media;
   /**
-   * Upload the downloadable PDF. Required when status is Published.
+   * Optional downloadable PDF.
    */
   file?: (string | null) | Media;
   /**
@@ -1014,6 +1025,10 @@ export interface ImpactIntervention {
    */
   title: string;
   /**
+   * URL slug for the story detail page. Derived from assembly/title if empty.
+   */
+  slug?: string | null;
+  /**
    * e.g. Greater Accra Region
    */
   region: string;
@@ -1025,6 +1040,10 @@ export interface ImpactIntervention {
    * Short summary shown on the card.
    */
   description: string;
+  /**
+   * Full story for the detail page. Falls back to description if empty.
+   */
+  body?: string | null;
   /**
    * Optional photo for the community card on /impact.
    */
@@ -1634,7 +1653,7 @@ export interface Page {
     executivesTitle?: string | null;
     executivesIntro?: string | null;
     /**
-     * Drag profiles to control their display order.
+     * Roles: President, Vice President, Secretary, Communications and Public Relation Personnel, Treasurer, Organizer. Drag to reorder.
      */
     executivesItems?:
       | {
@@ -1643,6 +1662,9 @@ export interface Page {
           bio?: string | null;
           photo: string | Media;
           linkedin?: string | null;
+          twitter?: string | null;
+          facebook?: string | null;
+          instagram?: string | null;
           id?: string | null;
         }[]
       | null;
@@ -1669,6 +1691,10 @@ export interface Page {
           tag: string;
           title: string;
           description: string;
+          /**
+           * Link to blog/news detail, e.g. /news/my-story-slug
+           */
+          href?: string | null;
           image?: (string | null) | Media;
           id?: string | null;
         }[]
@@ -1997,19 +2023,27 @@ export interface Page {
     bankAccountName?: string | null;
     bankAccountGhs?: string | null;
     bankAccountUsd?: string | null;
+    bankName?: string | null;
     bankBranch?: string | null;
     bankSwift?: string | null;
+    bankSortCode?: string | null;
     bankNote?: string | null;
     momoCode?: string | null;
     momoTitle?: string | null;
     momoDescription?: string | null;
     momoNote?: string | null;
+    momoLogo?: string | null;
     momoOptions?:
       | {
+          title: string;
+          subtitle?: string | null;
           name: string;
           detail: string;
+          detailLabel?: string | null;
           note?: string | null;
           badge: string;
+          logo?: string | null;
+          logoTone?: ('momo' | 'telecel' | 'at') | null;
           id?: string | null;
         }[]
       | null;
@@ -2086,10 +2120,12 @@ export interface Page {
     communityStories?:
       | {
           num: string;
+          slug?: string | null;
           region: string;
           assembly: string;
           title: string;
           desc: string;
+          body?: string | null;
           id?: string | null;
         }[]
       | null;
@@ -2756,7 +2792,9 @@ export interface EventsSelect<T extends boolean = true> {
  */
 export interface PublicationsSelect<T extends boolean = true> {
   title?: T;
+  slug?: T;
   description?: T;
+  body?: T;
   category?: T;
   year?: T;
   coverImage?: T;
@@ -2846,9 +2884,11 @@ export interface FellowsSelect<T extends boolean = true> {
  */
 export interface ImpactInterventionsSelect<T extends boolean = true> {
   title?: T;
+  slug?: T;
   region?: T;
   assembly?: T;
   description?: T;
+  body?: T;
   image?: T;
   order?: T;
   status?: T;
@@ -3375,6 +3415,9 @@ export interface PagesSelect<T extends boolean = true> {
               bio?: T;
               photo?: T;
               linkedin?: T;
+              twitter?: T;
+              facebook?: T;
+              instagram?: T;
               id?: T;
             };
         sustainEyebrow?: T;
@@ -3401,6 +3444,7 @@ export interface PagesSelect<T extends boolean = true> {
               tag?: T;
               title?: T;
               description?: T;
+              href?: T;
               image?: T;
               id?: T;
             };
@@ -3699,20 +3743,28 @@ export interface PagesSelect<T extends boolean = true> {
         bankAccountName?: T;
         bankAccountGhs?: T;
         bankAccountUsd?: T;
+        bankName?: T;
         bankBranch?: T;
         bankSwift?: T;
+        bankSortCode?: T;
         bankNote?: T;
         momoCode?: T;
         momoTitle?: T;
         momoDescription?: T;
         momoNote?: T;
+        momoLogo?: T;
         momoOptions?:
           | T
           | {
+              title?: T;
+              subtitle?: T;
               name?: T;
               detail?: T;
+              detailLabel?: T;
               note?: T;
               badge?: T;
+              logo?: T;
+              logoTone?: T;
               id?: T;
             };
         cardCode?: T;
@@ -3788,10 +3840,12 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               num?: T;
+              slug?: T;
               region?: T;
               assembly?: T;
               title?: T;
               desc?: T;
+              body?: T;
               id?: T;
             };
         testimonialsEyebrow?: T;

@@ -78,9 +78,9 @@ const defaultSections: HomeSections = {
 }
 
 const defaultStats: HomeStat[] = [
-  { value: '500+', label: 'Fellows' },
-  { value: '12+', label: 'Public Institutions' },
   { value: '8', label: 'Cohorts' },
+  { value: '200+', label: 'Fellows' },
+  { value: '15+', label: 'Institutions' },
   { value: '85%', label: 'Career Advancement' },
 ]
 
@@ -97,35 +97,35 @@ const defaultEplWay: HomeEplWayItem[] = [
   {
     number: '01',
     title: 'Think Critically',
-    description: 'Analytical rigour and strategic problem-solving.',
-    note: 'We equip aspiring public leaders with data-driven policy analysis, evidence-based reasoning, and strategic innovation to navigate complex institutional challenges.',
+    description: 'Solving problems with clear, smart thinking.',
+    note: 'We train Fellows to look at facts, solve real problems, and make smart decisions that improve how government institutions work.',
     tone: 'blue',
     image: eplHomeImages.aboutBlock,
-    href: '/about/what-we-do',
+    href: '/about',
   },
   {
     number: '02',
     title: 'Act Ethically',
-    description: 'Integrity, transparency and values-led service.',
-    note: 'Leadership begins with character. We instill an uncompromising commitment to accountability, fairness, and moral conviction across every level of public administration.',
+    description: 'Leading with honesty, fairness, and truth.',
+    note: 'Good leadership starts with strong values. We instill zero tolerance for corruption and a deep respect for public accountability.',
     tone: 'navy',
     image: eplHomeImages.gallery[1].src,
-    href: '/about/what-we-do',
+    href: '/about',
   },
   {
     number: '03',
     title: 'Drive Change',
-    description: 'Transforming institutions and local communities.',
-    note: "Fellows don't just study policy — they put it into action. By leading community initiatives and streamlining civil service processes, they create real, measurable impact.",
+    description: 'Turning good policy into real action.',
+    note: 'Fellows do not just study policy—they work inside ministries and local assemblies to fix bottlenecks and help communities.',
     tone: 'gold',
     image: eplHomeImages.gallery[3].src,
-    href: '/about/what-we-do',
+    href: '/about',
   },
 ]
 
 const defaultImpactStories: HomeImpactStories = {
   eyebrow: 'Impact stories',
-  title: 'Beyond the Numbers',
+  title: 'Real People. Real Impact.',
   ctaLabel: 'Meet more fellows',
   ctaUrl: '/community/current-fellows',
   featured: {
@@ -133,7 +133,7 @@ const defaultImpactStories: HomeImpactStories = {
     cohort: 'Cohort 3',
     institution: 'Ministry of Finance',
     quote:
-      "EPL didn't just teach me to lead. It showed me what leadership in service to Ghana truly means.",
+      'EPL taught me that public service is not just a job—it is a responsibility to serve Ghana with honesty and excellence.',
     image: eplHomeImages.fellows.miriam,
     storyHref: '/community/current-fellows',
   },
@@ -142,14 +142,16 @@ const defaultImpactStories: HomeImpactStories = {
       cohort: 'Cohort 7',
       name: 'Kwame Asante',
       institution: 'Ghana Health Service',
-      quote: 'The fellowship transformed how I see my role in public health.',
+      quote:
+        'The fellowship helped me modernize clinic records so patients spend less time waiting for care.',
       image: eplHomeImages.fellows.priscilla,
     },
     {
       cohort: 'Cohort 8',
       name: 'Efua Mensah',
       institution: 'Accra Metropolitan Assembly',
-      quote: 'EPL gave me the tools and the community to drive real change from within.',
+      quote:
+        'EPL gave me practical tools to work directly with communities and solve local planning challenges.',
       image: eplHomeImages.fellows.anita,
     },
   ],
@@ -233,11 +235,12 @@ export async function getHomeContent(settings: SiteSetting): Promise<{
           const thumb =
             (await resolveMediaUrl(s?.thumb, payload)) || fallback?.thumb || image
           return {
-            subtitle: s?.subtitle || fallback?.subtitle || '',
-            title: s?.title || fallback?.title || '',
-            description: s?.description || fallback?.description || '',
-            ctaLabel: s?.ctaLabel || fallback?.ctaLabel || 'Learn More',
-            ctaHref: s?.ctaHref || fallback?.ctaHref || '/about',
+            subtitle: fallback?.subtitle || s?.subtitle || '',
+            title: fallback?.title || s?.title || '',
+            titleLines: fallback?.titleLines,
+            description: fallback?.description || s?.description || '',
+            ctaLabel: fallback?.ctaLabel || s?.ctaLabel || 'Learn More',
+            ctaHref: fallback?.ctaHref || s?.ctaHref || '/about',
             image,
             thumb,
           }
@@ -342,7 +345,7 @@ export async function getHomeContent(settings: SiteSetting): Promise<{
             note: item?.note || fallback.note,
             tone: item?.tone || fallback.tone,
             image: (await resolveMediaUrl(item?.image, payload)) || fallback.image,
-            href: item?.href || fallback.href,
+            href: item?.href === '/about/what-we-do' ? '/about' : item?.href || fallback.href,
           }
         }),
       )

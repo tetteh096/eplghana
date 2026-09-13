@@ -4,7 +4,7 @@ import { eplimContent } from '@/config/eplimContent'
 
 const d = eplimContent
 
-/** Editable content for the EPL in Maritime (EPLIM) detail page layout. */
+/** Editable content for the Elevated MINDS detail page layout. */
 export const eplimDetailFields: Field[] = [
   {
     type: 'collapsible',

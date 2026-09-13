@@ -1,3 +1,4 @@
+import { TeamMemberPhoto } from '@/components/charitics/TeamMemberPhoto'
 import type { TeamMember } from '@/config/teamPageContent'
 
 type Social = {
@@ -46,7 +47,7 @@ export function ChariticsTeamCard({ isActive = false, member, onOpen }: Charitic
         onClick={() => onOpen?.(member)}
         type="button"
       >
-        <img alt={member.name} src={member.photo} />
+        <TeamMemberPhoto alt={member.name} src={member.photo} />
         <span className="epl-team-card-view">View profile</span>
       </button>
 

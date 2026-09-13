@@ -20,9 +20,9 @@ const defaultCoreValues = eplCoreValuesWithIcons.map((v) => ({
 }))
 
 const defaultStats = [
-  { value: '500+', label: 'Fellows' },
-  { value: '12+', label: 'Public Institutions' },
   { value: '8', label: 'Cohorts' },
+  { value: '200+', label: 'Fellows' },
+  { value: '15+', label: 'Institutions' },
   { value: '85%', label: 'Career Advancement' },
 ]
 
@@ -30,22 +30,22 @@ const defaultEplWay = [
   {
     number: '01',
     title: 'Think Critically',
-    description: 'Analytical rigour and strategic problem-solving.',
-    note: 'We equip aspiring public leaders with data-driven policy analysis, evidence-based reasoning, and strategic innovation to navigate complex institutional challenges.',
+    description: 'Solving problems with clear, smart thinking.',
+    note: 'We train Fellows to look at facts, solve real problems, and make smart decisions that improve how government institutions work.',
     tone: 'blue',
   },
   {
     number: '02',
     title: 'Act Ethically',
-    description: 'Integrity, transparency and values-led service.',
-    note: 'Leadership begins with character. We instill an uncompromising commitment to accountability, fairness, and moral conviction across every level of public administration.',
+    description: 'Leading with honesty, fairness, and truth.',
+    note: 'Good leadership starts with strong values. We instill zero tolerance for corruption and a deep respect for public accountability.',
     tone: 'navy',
   },
   {
     number: '03',
     title: 'Drive Change',
-    description: 'Transforming institutions and local communities.',
-    note: "Fellows don't just study policy — they put it into action. By leading community initiatives and streamlining civil service processes, they create real, measurable impact.",
+    description: 'Turning good policy into real action.',
+    note: 'Fellows do not just study policy—they work inside ministries and local assemblies to fix bottlenecks and help communities.',
     tone: 'gold',
   },
 ]
@@ -537,7 +537,7 @@ export const Pages: CollectionConfig = {
                 {
                   name: 'href',
                   type: 'text',
-                  defaultValue: '/about/what-we-do',
+                  defaultValue: '/about',
                 },
               ],
             },
@@ -555,7 +555,7 @@ export const Pages: CollectionConfig = {
             {
               name: 'impactStoriesTitle',
               type: 'text',
-              defaultValue: 'Beyond the Numbers',
+              defaultValue: 'Real People. Real Impact.',
             },
             {
               name: 'impactStoriesCtaLabel',
@@ -1209,7 +1209,7 @@ export const Pages: CollectionConfig = {
               name: 'heroLead',
               type: 'textarea',
               defaultValue:
-                'Discover our active Fellows currently driving public administration across ministries and learn about our 500+ strong alumni body (EPLAN).',
+                'Discover our active Fellows currently driving public administration across ministries and learn about our 200+ strong alumni body (EPLAN).',
             },
             { name: 'heroImage', type: 'upload', relationTo: 'media', label: 'Hero image (primary)' },
             {
@@ -1224,8 +1224,9 @@ export const Pages: CollectionConfig = {
               labels: { singular: 'Stat', plural: 'Hero stats' },
               defaultValue: [
                 { value: '8', label: 'Cohorts' },
-                { value: '500+', label: 'Fellows' },
-                { value: '12+', label: 'Institutions' },
+                { value: '200+', label: 'Fellows' },
+                { value: '15+', label: 'Institutions' },
+                { value: '85%', label: 'Career Advancement' },
               ],
               fields: [
                 { name: 'value', type: 'text', required: true },
@@ -1331,16 +1332,16 @@ export const Pages: CollectionConfig = {
               name: 'eplanIntro',
               type: 'textarea',
               defaultValue:
-                'Graduation from the fellowship marks the transition into EPLAN, a lifelong community of 500+ public sector reformers collaborating across ministries to co-author policy, mentor incoming cohorts, and champion good governance.',
+                'Graduation from the fellowship marks the transition into EPLAN, a lifelong community of 200+ public sector reformers collaborating across ministries to co-author policy, mentor incoming cohorts, and champion good governance.',
             },
             {
               name: 'eplanStats',
               type: 'array',
               labels: { singular: 'Stat', plural: 'EPLAN stats' },
               defaultValue: [
-                { value: '500+', label: 'Members' },
+                { value: '200+', label: 'Members' },
                 { value: '8', label: 'Cohorts' },
-                { value: '85%', label: 'Retained' },
+                { value: '85%', label: 'Career Advancement' },
               ],
               fields: [
                 { name: 'value', type: 'text', required: true },

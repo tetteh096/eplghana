@@ -166,7 +166,7 @@ export function ChariticsNewsEventsPage({ content }: ChariticsNewsEventsPageProp
         <div className="ul-container">
           <div className="epl-fellows-cta-inner epl-ne-cta__inner">
             <div className="epl-fellows-cta-copy">
-              <span className="ul-section-sub-title">Partner With Us</span>
+              <span className="ul-section-sub-title">Get Connected</span>
               <h2 className="ul-section-title">{cta.title}</h2>
               <Link className="ul-btn" href={cta.ctaHref}>
                 <i className="flaticon-fast-forward-double-right-arrows-symbol"></i> {cta.ctaLabel}

@@ -19,13 +19,14 @@ export const currentFellowsPageContent = {
     eyebrow: 'The EPL Ghana Community',
     title: 'Current Cohort & Network',
     lead:
-      'Discover our active Fellows currently driving public administration across ministries and learn about our 500+ strong alumni body (EPLAN).',
+      'Discover our active Fellows currently driving public administration across ministries and learn about our 200+ strong alumni body (EPLAN).',
     image: 'https://eplghana.org/wp-content/uploads/2025/10/CSOE-45-scaled.jpg',
     secondaryImage: 'https://eplghana.org/wp-content/uploads/2025/10/CSOE-48-1024x683.jpg',
     stats: [
       { value: '8', label: 'Cohorts' },
-      { value: '500+', label: 'Fellows' },
-      { value: '12+', label: 'Institutions' },
+      { value: '200+', label: 'Fellows' },
+      { value: '15+', label: 'Institutions' },
+      { value: '85%', label: 'Career Advancement' },
     ],
   },
   directory: {
@@ -77,11 +78,11 @@ export const currentFellowsPageContent = {
     eyebrow: 'Lifelong Leadership',
     title: 'Emerging Public Leaders Alumni Network (EPLAN)',
     intro:
-      'Graduation from the fellowship marks the transition into EPLAN, a lifelong community of 500+ public sector reformers collaborating across ministries to co-author policy, mentor incoming cohorts, and champion good governance.',
+      'Graduation from the fellowship marks the transition into EPLAN, a lifelong community of 200+ public sector reformers collaborating across ministries to co-author policy, mentor incoming cohorts, and champion good governance.',
     stats: [
-      { value: '500+', label: 'Members' },
+      { value: '200+', label: 'Members' },
       { value: '8', label: 'Cohorts' },
-      { value: '85%', label: 'Retained' },
+      { value: '85%', label: 'Career Advancement' },
     ],
     ctaLabel: 'Explore EPLAN Hub',
     ctaHref: '/community/eplan',

@@ -1,4 +1,6 @@
 import type { CollectionConfig } from 'payload'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 import { anyone } from '@/access/anyone'
 import { canEditContent } from '@/access/canEditContent'
@@ -9,6 +11,38 @@ import {
   galleryAlbumStoragePrefix,
   resolveGalleryAlbumSlug,
 } from '@/utilities/galleryMediaFolder'
+
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
+const mediaStaticDir = path.resolve(dirname, '../../media')
+
+function cloudStorageEnabled(): boolean {
+  const hasBucket = Boolean(
+    process.env.R2_BUCKET?.trim() ||
+      process.env.S3_BUCKET?.trim() ||
+      process.env.R2_API?.trim() ||
+      process.env.S3_API?.trim(),
+  )
+  if (!hasBucket) return false
+  if (process.env.NODE_ENV === 'production') return true
+  if (process.env.R2_DISABLE_DEV === 'true' || process.env.S3_DISABLE_DEV === 'true') return false
+  // Dev: use R2 whenever configured so uploads/serve stay consistent.
+  return true
+}
+
+/** Strip spaces and unsafe characters so local + R2 keys stay URL-safe. */
+function sanitizeUploadName(name: string): string {
+  const trimmed = name.trim()
+  const dot = trimmed.lastIndexOf('.')
+  const base = (dot > 0 ? trimmed.slice(0, dot) : trimmed)
+    .normalize('NFKD')
+    .replace(/[^\w.\-]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 80)
+  const ext = dot > 0 ? trimmed.slice(dot).toLowerCase().replace(/[^\w.]/g, '') : ''
+  return `${base || 'upload'}${ext}`
+}
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -32,6 +66,7 @@ export const Media: CollectionConfig = {
   },
   custom: publicTotpReadBypass,
   upload: {
+    staticDir: mediaStaticDir,
     mimeTypes: [
       'image/jpeg',
       'image/png',
@@ -82,6 +117,13 @@ export const Media: CollectionConfig = {
     },
   ],
   hooks: {
+    beforeOperation: [
+      ({ req, operation }) => {
+        if ((operation === 'create' || operation === 'update') && req.file?.name) {
+          req.file.name = sanitizeUploadName(req.file.name)
+        }
+      },
+    ],
     beforeChange: [
       async ({ data, req, operation }) => {
         if (!data) return data
@@ -90,14 +132,16 @@ export const Media: CollectionConfig = {
           const slug = await resolveGalleryAlbumSlug(req.payload, data.galleryAlbum)
           if (slug) {
             data.folder = GALLERY_MEDIA_FOLDER
-            if (operation === 'create') {
+            if (operation === 'create' && cloudStorageEnabled()) {
               data.prefix = galleryAlbumStoragePrefix(slug)
             }
           }
-        } else if (operation === 'create' && data.folder && data.folder !== GALLERY_MEDIA_FOLDER) {
-          data.prefix = data.folder
-        } else if (operation === 'create' && data.folder === GALLERY_MEDIA_FOLDER && !data.galleryAlbum) {
-          data.prefix = GALLERY_MEDIA_FOLDER
+        } else if (operation === 'create' && cloudStorageEnabled()) {
+          if (data.folder && data.folder !== GALLERY_MEDIA_FOLDER) {
+            data.prefix = data.folder
+          } else if (data.folder === GALLERY_MEDIA_FOLDER && !data.galleryAlbum) {
+            data.prefix = GALLERY_MEDIA_FOLDER
+          }
         }
 
         return data

@@ -87,7 +87,7 @@ export const eplanPageFields: Field[] = [
         label: 'EPLAN Executive Team',
         admin: {
           description:
-            'Add up to five EPLAN executives. This section appears between Vision/Mission and Beyond the Fellowship.',
+            'Add up to six EPLAN executives. This section appears between Vision/Mission and Beyond the Fellowship.',
         },
         fields: [
           { name: 'executivesEyebrow', type: 'text', defaultValue: d.executives.eyebrow },
@@ -96,15 +96,21 @@ export const eplanPageFields: Field[] = [
           {
             name: 'executivesItems',
             type: 'array',
-            maxRows: 5,
+            maxRows: 6,
             labels: { singular: 'Executive', plural: 'Executives' },
-            admin: { description: 'Drag profiles to control their display order.' },
+            admin: {
+              description:
+                'Roles: President, Vice President, Secretary, Communications and Public Relation Personnel, Treasurer, Organizer. Drag to reorder.',
+            },
             fields: [
               { name: 'name', type: 'text', required: true },
               { name: 'role', type: 'text', required: true },
               { name: 'bio', type: 'textarea' },
               { name: 'photo', type: 'upload', relationTo: 'media', required: true },
               { name: 'linkedin', type: 'text', label: 'LinkedIn URL' },
+              { name: 'twitter', type: 'text', label: 'X / Twitter URL' },
+              { name: 'facebook', type: 'text', label: 'Facebook URL' },
+              { name: 'instagram', type: 'text', label: 'Instagram URL' },
             ],
           },
         ],
@@ -149,6 +155,11 @@ export const eplanPageFields: Field[] = [
               { name: 'tag', type: 'text', required: true },
               { name: 'title', type: 'text', required: true },
               { name: 'description', type: 'textarea', required: true },
+              {
+                name: 'href',
+                type: 'text',
+                admin: { description: 'Link to blog/news detail, e.g. /news/my-story-slug' },
+              },
               { name: 'image', type: 'upload', relationTo: 'media', label: 'Card image' },
             ],
           },

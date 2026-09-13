@@ -28,27 +28,9 @@ export async function getDonatePageContent(): Promise<DonatePageContent> {
         }))
       : d.why.reasons
 
-  const momoOptions: DonateMomoOption[] =
-    Array.isArray(cms.momoOptions) && cms.momoOptions.length
-      ? cms.momoOptions.map((o: any) => ({
-          name: txt(o?.name, ''),
-          detail: txt(o?.detail, ''),
-          note: o?.note?.trim() || undefined,
-          badge: txt(o?.badge, ''),
-        }))
-      : d.ways.momo.options
+  const momoOptions: DonateMomoOption[] = d.ways.momo.options
 
-  const tiers: DonateTier[] =
-    Array.isArray(cms.tierItems) && cms.tierItems.length
-      ? cms.tierItems.map((t: any) => ({
-          label: txt(t?.label, ''),
-          amountDisplay: txt(t?.amountDisplay, ''),
-          amountGhs: txt(t?.amountGhs, ''),
-          amountUsd: txt(t?.amountUsd, ''),
-          description: txt(t?.description, ''),
-          isCustom: Boolean(t?.isCustom),
-        }))
-      : d.tiers.items
+  const tiers: DonateTier[] = d.tiers.items
 
   const channels =
     Array.isArray(cms.pledgeChannels) && cms.pledgeChannels.length
@@ -60,7 +42,8 @@ export async function getDonatePageContent(): Promise<DonatePageContent> {
       eyebrow: txt(cms.heroEyebrow, d.hero.eyebrow),
       title: txt(cms.heroTitle, d.hero.title),
       lead: txt(cms.heroLead, d.hero.lead),
-      image: img(cms.heroImage, d.hero.image) as (typeof d.hero.image),
+      // Option A cohort hero — prefer curated default over stale CMS upload
+      image: d.hero.image,
       primaryCtaLabel: txt(cms.heroPrimaryCtaLabel, d.hero.primaryCtaLabel),
       primaryCtaHref: txt(cms.heroPrimaryCtaUrl, d.hero.primaryCtaHref),
       secondaryCtaLabel: txt(cms.heroSecondaryCtaLabel, d.hero.secondaryCtaLabel),
@@ -72,24 +55,30 @@ export async function getDonatePageContent(): Promise<DonatePageContent> {
       reasons,
     },
     ways: {
-      eyebrow: txt(cms.waysEyebrow, d.ways.eyebrow),
-      title: txt(cms.waysTitle, d.ways.title),
+      eyebrow: d.ways.eyebrow,
+      title: d.ways.title,
+      intro: d.ways.intro,
+      transferLabel: d.ways.transferLabel,
       bank: {
         code: txt(cms.bankCode, d.ways.bank.code),
         title: txt(cms.bankTitle, d.ways.bank.title),
         description: txt(cms.bankDescription, d.ways.bank.description),
         accountName: txt(cms.bankAccountName, d.ways.bank.accountName),
-        accountNumberGhs: txt(cms.bankAccountGhs, d.ways.bank.accountNumberGhs),
-        accountNumberUsd: txt(cms.bankAccountUsd, d.ways.bank.accountNumberUsd),
+        // Keep verified account coordinates from source of truth (not stale CMS).
+        accountNumberGhs: d.ways.bank.accountNumberGhs,
+        accountNumberUsd: d.ways.bank.accountNumberUsd,
         branch: txt(cms.bankBranch, d.ways.bank.branch),
-        swift: txt(cms.bankSwift, d.ways.bank.swift),
+        bankName: d.ways.bank.bankName,
+        swift: d.ways.bank.swift,
+        sortCode: d.ways.bank.sortCode,
         note: txt(cms.bankNote, d.ways.bank.note),
       },
       momo: {
-        code: txt(cms.momoCode, d.ways.momo.code),
-        title: txt(cms.momoTitle, d.ways.momo.title),
-        description: txt(cms.momoDescription, d.ways.momo.description),
+        code: d.ways.momo.code,
+        title: d.ways.momo.title,
+        description: d.ways.momo.description,
         note: txt(cms.momoNote, d.ways.momo.note),
+        logo: d.ways.momo.logo,
         options: momoOptions,
       },
       card: {
@@ -101,14 +90,17 @@ export async function getDonatePageContent(): Promise<DonatePageContent> {
         currencies: txt(cms.cardCurrencies, d.ways.card.currencies),
         ctaLabel: txt(cms.cardCtaLabel, d.ways.card.ctaLabel),
         ctaHref: txt(cms.cardCtaUrl, d.ways.card.ctaHref),
+        securedBy: d.ways.card.securedBy,
+        brands: d.ways.card.brands,
       },
     },
     tiers: {
-      eyebrow: txt(cms.tiersEyebrow, d.tiers.eyebrow),
-      title: txt(cms.tiersTitle, d.tiers.title),
-      intro: txt(cms.tiersIntro, d.tiers.intro),
+      eyebrow: d.tiers.eyebrow,
+      title: d.tiers.title,
+      intro: d.tiers.intro,
       items: tiers,
     },
+    questions: d.questions,
     pledge: {
       eyebrow: txt(cms.pledgeEyebrow, d.pledge.eyebrow),
       title: txt(cms.pledgeTitle, d.pledge.title),

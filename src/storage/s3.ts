@@ -8,7 +8,7 @@ function publicMediaUrl(filename: string, prefix?: string): string | null {
   if (!base) return null
 
   const key = prefix ? `${prefix.replace(/\/$/, '')}/${filename}` : filename
-  return `${base}/${key}`
+  return `${base}/${key.split('/').map(encodeURIComponent).join('/')}`
 }
 
 function hasR2Config(): boolean {
@@ -23,9 +23,20 @@ function hasR2Config(): boolean {
 /**
  * Cloudflare R2 media storage (S3-compatible API via @payloadcms/storage-s3).
  * Set R2_* env vars. Legacy S3_* names still work.
+ *
+ * Development uses R2 whenever credentials are present so uploads and
+ * `/api/media/file/` serving stay in sync. Set R2_DISABLE_DEV=true to force
+ * local disk storage instead.
  */
 export function getS3Storage(): Plugin[] {
   if (!hasR2Config()) {
+    return []
+  }
+
+  if (
+    process.env.NODE_ENV === 'development' &&
+    (process.env.R2_DISABLE_DEV === 'true' || process.env.S3_DISABLE_DEV === 'true')
+  ) {
     return []
   }
 
@@ -34,14 +45,6 @@ export function getS3Storage(): Plugin[] {
     process.env.R2_CLIENT_UPLOADS === 'true' ||
     process.env.S3_CLIENT_UPLOADS === 'true' ||
     isProduction
-
-  if (
-    process.env.NODE_ENV === 'development' &&
-    process.env.R2_FORCE_DEV !== 'true' &&
-    process.env.S3_FORCE_DEV !== 'true'
-  ) {
-    return []
-  }
 
   let r2: ReturnType<typeof resolveR2Env>
   try {
@@ -72,8 +75,11 @@ export function getS3Storage(): Plugin[] {
               /\/$/,
               '',
             )
-            const path = prefix ? `${prefix}/${filename}` : filename
-            return `${base}/api/media/file/${path}`
+            const segments = (prefix ? `${prefix}/${filename}` : filename)
+              .split('/')
+              .filter(Boolean)
+              .map(encodeURIComponent)
+            return `${base}/api/media/file/${segments.join('/')}`
           },
         }
 

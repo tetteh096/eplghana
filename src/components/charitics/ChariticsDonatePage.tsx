@@ -94,9 +94,9 @@ function HeartIcon() {
 }
 
 export function ChariticsDonatePage({ content, paystackEnabled = false }: Props) {
-  const { hero, why, ways, tiers, pledge, modal } = content
+  const { hero, why, ways, tiers, questions, pledge, modal } = content
   const [activeModal, setActiveModal] = useState<DonateTier | null>(null)
-  const [modalMethod, setModalMethod] = useState<'card' | 'bank' | 'momo'>('bank')
+  const [modalMethod, setModalMethod] = useState<'card' | 'bank' | 'momo'>('card')
   const [modalAccountCurrency, setModalAccountCurrency] = useState<'GHS' | 'USD'>('GHS')
   const [pledgeAmount, setPledgeAmount] = useState('')
   const [preferredChannel, setPreferredChannel] = useState(pledge.channels[0] ?? '')
@@ -234,6 +234,20 @@ export function ChariticsDonatePage({ content, paystackEnabled = false }: Props)
             </div>
             <h1>{hero.title}</h1>
             <p>{hero.lead}</p>
+            {(hero.primaryCtaLabel || hero.secondaryCtaLabel) && (
+              <div className="figma-donate-hero__actions">
+                {hero.primaryCtaLabel ? (
+                  <a className="figma-donate-btn figma-donate-btn--gold" href={hero.primaryCtaHref}>
+                    {hero.primaryCtaLabel}
+                  </a>
+                ) : null}
+                {hero.secondaryCtaLabel ? (
+                  <a className="figma-donate-btn figma-donate-btn--ghost" href={hero.secondaryCtaHref}>
+                    {hero.secondaryCtaLabel}
+                  </a>
+                ) : null}
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -261,69 +275,111 @@ export function ChariticsDonatePage({ content, paystackEnabled = false }: Props)
 
       <MotionReveal
         as="section"
-        className="figma-donate-section figma-donate-section--muted epl-new-shell"
+        className="figma-donate-section figma-donate-section--ways epl-new-shell"
         id="ways-to-give"
       >
-        <div className="figma-donate-section-head">
-          <div className="figma-impact-kicker">
-            <span className="figma-impact-kicker__line" />
-            <span>{ways.eyebrow.toUpperCase()}</span>
-          </div>
+        <div className="figma-donate-section-head figma-donate-section-head--center">
+          <p className="figma-donate-eyebrow">{ways.eyebrow}</p>
           <h2>{ways.title}</h2>
+          {ways.intro ? <p className="figma-donate-section-head__lead">{ways.intro}</p> : null}
         </div>
 
-        <div className="figma-donate-ways-grid">
-          {[
-            {
-              code: '01 · Ghana Cedi Account',
-              title: 'GH Bank Details',
-              fields: [
-                ['Account Name', 'Emerging Public Leaders of Ghana'],
-                ['Name of Bank', 'GCB Bank'],
-                ['Account Number', '1681180006278'],
-                ['Branch', 'Airport City'],
-              ],
-            },
-            {
-              code: '02 · US Dollar Account',
-              title: 'Dollar Bank Details',
-              fields: [
-                ['Account Name', 'Emerging Public Leaders of Ghana'],
-                ['Name of Bank', 'GCB Bank'],
-                ['Account Number', '1681600002975'],
-                ['Branch', 'Airport City'],
-              ],
-            },
-            {
-              code: '03 · Mobile Money',
-              title: 'MoMo Details',
-              fields: [
-                ['Name', 'Emerging Public Leaders of Ghana'],
-                ['Number', '0547218843'],
-              ],
-            },
-          ].map((channel) => (
-            <article
-              className="figma-donate-way-card figma-donate-way-card--details"
-              data-card-number={channel.code.slice(0, 2)}
-              key={channel.title}
-            >
-              <div>
-                <span className="figma-donate-way-card__code">{channel.code}</span>
-                <h3>{channel.title}</h3>
-                <div className="figma-donate-details">
-                  {channel.fields.map(([label, value]) => (
-                    <div className="figma-donate-details__row" key={label}>
-                      <span className="figma-donate-details__label">{label}</span>
-                      <strong className={label === 'Account Number' || label === 'Number' ? 'figma-donate-details__mono' : undefined}>
-                        {value}
-                      </strong>
-                    </div>
-                  ))}
-                </div>
+        <div className="figma-donate-ways">
+          <article className="figma-donate-online">
+            <div className="figma-donate-online__copy">
+              <div className="figma-donate-online__meta">
+                <span className="figma-donate-online__badge">{ways.card.statusLabel}</span>
+                <span className="figma-donate-online__code">{ways.card.code}</span>
               </div>
-            </article>
-          ))}
+              <h3>{ways.card.title}</h3>
+              <p>{ways.card.description}</p>
+              <div className="figma-donate-online__brands" aria-label={ways.card.acceptedCards}>
+                {(ways.card.brands ?? []).map((brand) => (
+                  <img
+                    alt={brand.name}
+                    className="figma-donate-online__brand"
+                    decoding="async"
+                    height={22}
+                    key={brand.name}
+                    src={brand.src}
+                    width={48}
+                  />
+                ))}
+              </div>
+            </div>
+            <div className="figma-donate-online__action">
+              <a className="figma-donate-btn figma-donate-btn--teal" href={ways.card.ctaHref}>
+                <svg aria-hidden fill="none" height="18" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" width="18">
+                  <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                {ways.card.ctaLabel}
+              </a>
+              <p>
+                Secured by <strong>{ways.card.securedBy ?? 'Paystack'}</strong>
+              </p>
+            </div>
+          </article>
+
+          <p className="figma-donate-ways__divider">{ways.transferLabel}</p>
+
+          <div className="figma-donate-transfer-grid">
+            {ways.momo.options.map((opt) => (
+              <article className="figma-donate-transfer" key={`${opt.badge}-${opt.detail}`}>
+                <div className="figma-donate-transfer__brand">
+                  <div className={`figma-donate-transfer__logo figma-donate-transfer__logo--${opt.logoTone}`}>
+                    <img alt={opt.title} decoding="async" height={72} src={opt.logo} width={160} />
+                  </div>
+                  <div>
+                    <h3>{opt.title}</h3>
+                    <p>{opt.subtitle}</p>
+                  </div>
+                </div>
+                <div className="figma-donate-transfer__highlight">
+                  <span>{opt.detailLabel}</span>
+                  <strong>{opt.detail}</strong>
+                </div>
+                <div className="figma-donate-transfer__meta">
+                  <span>Merchant Name</span>
+                  <strong>{opt.name}</strong>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <article className="figma-donate-bank">
+            <div className="figma-donate-bank__head">
+              <div className="figma-donate-bank__icon" aria-hidden>
+                <svg fill="none" height="20" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" width="20">
+                  <path d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+              <div>
+                <h3>Bank Transfer</h3>
+                <p>
+                  {ways.bank.bankName} · {ways.bank.branch}
+                </p>
+              </div>
+            </div>
+            <div className="figma-donate-bank__table">
+              {[
+                ['Bank', ways.bank.bankName],
+                ['Account Name', ways.bank.accountName],
+                ['Account Number (GHS)', ways.bank.accountNumberGhs],
+                ['Account Number (USD)', ways.bank.accountNumberUsd],
+                ['Swift Code', ways.bank.swift],
+                ['Sort Code', ways.bank.sortCode],
+              ].map(([label, value], index) => (
+                <div
+                  className={`figma-donate-bank__row${index % 2 ? ' is-alt' : ''}`}
+                  key={label}
+                >
+                  <span>{label}</span>
+                  <strong>{value}</strong>
+                </div>
+              ))}
+            </div>
+            {ways.bank.note ? <p className="figma-donate-bank__note">{ways.bank.note}</p> : null}
+          </article>
         </div>
       </MotionReveal>
 
@@ -333,38 +389,52 @@ export function ChariticsDonatePage({ content, paystackEnabled = false }: Props)
         id="tiers"
         style={{ scrollMarginTop: '5rem' }}
       >
-        <div className="figma-donate-section-head">
-          <div className="figma-impact-kicker">
-            <span className="figma-impact-kicker__line" />
-            <span>{tiers.eyebrow.toUpperCase()}</span>
-          </div>
+        <div className="figma-donate-section-head figma-donate-section-head--center">
+          <p className="figma-donate-eyebrow figma-donate-eyebrow--blue">{tiers.eyebrow}</p>
           <h2>{tiers.title}</h2>
-          <p>{tiers.intro}</p>
         </div>
-        <MotionReveal stagger className="figma-donate-tiers-grid">
-          {tiers.items.map((tier) => (
+        <MotionReveal stagger className="figma-donate-impact-grid">
+          {tiers.items.filter((tier) => !tier.isCustom).map((tier) => (
             <MotionItem key={tier.label}>
               <button
-                className={`figma-donate-tier${activeModal?.label === tier.label ? ' is-active' : ''}`}
+                className={`figma-donate-impact${activeModal?.label === tier.label ? ' is-active' : ''}`}
                 onClick={() => openTierModal(tier)}
                 type="button"
               >
-                <div>
-                  <div className="figma-donate-tier__label">
-                    {tier.isCustom ? 'Any Amount' : 'USD'}
-                  </div>
-                  <div className="figma-donate-tier__amount">{tier.amountDisplay}</div>
-                  <p className="figma-donate-tier__desc">{tier.description}</p>
-                </div>
-                <div className="figma-donate-tier__footer">
-                  <span>{tier.isCustom ? 'Custom Gift' : `Give ${tier.label}`}</span>
-                  <ArrowRightIcon />
-                </div>
+                <div className="figma-donate-impact__amount">{tier.amountDisplay}</div>
+                <p>{tier.description}</p>
               </button>
             </MotionItem>
           ))}
         </MotionReveal>
+        {tiers.items.some((tier) => tier.isCustom) ? (
+          <div className="figma-donate-impact-custom">
+            <button
+              className="figma-donate-btn figma-donate-btn--ghost-dark"
+              onClick={() => openTierModal(tiers.items.find((tier) => tier.isCustom)!)}
+              type="button"
+            >
+              Give a custom amount
+            </button>
+          </div>
+        ) : null}
       </MotionReveal>
+
+      <section className="figma-donate-questions-band">
+        <div className="epl-new-shell">
+          <h2>{questions.title}</h2>
+          <p>{questions.text}</p>
+          <div className="figma-donate-questions-band__actions">
+            <a className="figma-donate-btn figma-donate-btn--light" href={questions.primaryHref}>
+              {questions.primaryLabel}
+              <ArrowRightIcon />
+            </a>
+            <a className="figma-donate-btn figma-donate-btn--ghost" href={questions.secondaryHref}>
+              {questions.secondaryLabel}
+            </a>
+          </div>
+        </div>
+      </section>
 
       <MotionReveal
         as="section"
@@ -588,9 +658,15 @@ export function ChariticsDonatePage({ content, paystackEnabled = false }: Props)
                     </strong>
                   </div>
                   <div className="figma-donate-details__row">
-                    <span className="figma-donate-details__label">Bank / SWIFT</span>
+                    <span className="figma-donate-details__label">Bank</span>
                     <strong>
-                      {ways.bank.title} · SWIFT: {ways.bank.swift}
+                      {ways.bank.bankName} · {ways.bank.branch}
+                    </strong>
+                  </div>
+                  <div className="figma-donate-details__row">
+                    <span className="figma-donate-details__label">SWIFT / Sort</span>
+                    <strong className="figma-donate-details__mono">
+                      {ways.bank.swift} · {ways.bank.sortCode}
                     </strong>
                   </div>
                 </div>
@@ -674,11 +750,17 @@ export function ChariticsDonatePage({ content, paystackEnabled = false }: Props)
               {modalMethod === 'momo' ? (
                 <div className="figma-donate-momo-list">
                   {ways.momo.options.map((opt) => (
-                    <div className="figma-donate-momo-item" key={opt.name}>
+                    <div className="figma-donate-momo-item" key={`${opt.badge}-${opt.detail}`}>
                       <div className="figma-donate-momo-item__head">
-                        <span className="figma-donate-momo-item__name">{opt.name}</span>
+                        <div className={`figma-donate-transfer__logo figma-donate-transfer__logo--${opt.logoTone}`}>
+                          <img alt={opt.title} decoding="async" height={40} src={opt.logo} width={40} />
+                        </div>
+                        <span className="figma-donate-momo-item__name">{opt.title}</span>
                       </div>
-                      <div className="figma-donate-momo-item__detail">{opt.detail}</div>
+                      <div className="figma-donate-momo-item__detail">
+                        {opt.detailLabel}: {opt.detail}
+                      </div>
+                      <div className="figma-donate-momo-item__sub">{opt.name}</div>
                     </div>
                   ))}
                 </div>

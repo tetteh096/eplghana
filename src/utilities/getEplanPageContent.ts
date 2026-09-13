@@ -47,10 +47,10 @@ function mapCmsPage(cms: Record<string, any>, d: typeof alumniPageContent): Epla
       ? cms.aboutParagraphs.map((p: any) => p?.text?.trim()).filter(Boolean)
       : d.eplanAbout.paragraphs
 
-  const heroHighlights =
-    Array.isArray(cms.heroHighlights) && cms.heroHighlights.length
-      ? cms.heroHighlights.map((h: any) => ({ value: h?.value ?? '', label: h?.label ?? '' }))
-      : d.hero.highlights
+  const heroHighlights = d.hero.highlights.map((stat) => ({
+    value: stat.value,
+    label: stat.label,
+  }))
 
   const impactStats =
     Array.isArray(cms.impactStats) && cms.impactStats.length
@@ -123,14 +123,25 @@ function mapCmsPage(cms: Record<string, any>, d: typeof alumniPageContent): Epla
 
   const executives =
     Array.isArray(cms.executivesItems) && cms.executivesItems.length
-      ? cms.executivesItems.slice(0, 5).map((member: any, index: number) => ({
-          id: member?.id ?? `eplan-executive-${index}`,
-          name: txt(member?.name, ''),
-          role: txt(member?.role, ''),
-          bio: txt(member?.bio, ''),
-          photo: img(member?.photo, ''),
-          linkedin: txt(member?.linkedin, ''),
-        }))
+      ? cms.executivesItems.slice(0, 6).map((member: any, index: number) => {
+          const role = txt(member?.role, d.executives.items[index]?.role ?? '')
+          const rawName = txt(member?.name, d.executives.items[index]?.name ?? '')
+          const name =
+            !rawName || rawName.toLowerCase() === role.toLowerCase()
+              ? 'Profile coming soon'
+              : rawName
+          return {
+            id: member?.id ?? `eplan-executive-${index}`,
+            name,
+            role,
+            bio: txt(member?.bio, d.executives.items[index]?.bio ?? ''),
+            photo: img(member?.photo, d.executives.items[index]?.photo ?? ''),
+            linkedin: txt(member?.linkedin, '') || undefined,
+            twitter: txt(member?.twitter, '') || undefined,
+            facebook: txt(member?.facebook, '') || undefined,
+            instagram: txt(member?.instagram, '') || undefined,
+          }
+        })
       : d.executives.items
 
   return {
@@ -142,7 +153,7 @@ function mapCmsPage(cms: Record<string, any>, d: typeof alumniPageContent): Epla
       image: img(cms.heroImage, d.hero.image),
       secondaryImage: img(cms.heroSecondaryImage, d.hero.secondaryImage),
       badge: {
-        value: txt(cms.heroBadgeValue, d.hero.badge.value),
+        value: d.hero.badge.value,
         label: txt(cms.heroBadgeLabel, d.hero.badge.label),
       },
       highlights: heroHighlights,
@@ -178,12 +189,19 @@ function mapCmsPage(cms: Record<string, any>, d: typeof alumniPageContent): Epla
       intro: txt(cms.spotlightIntro, d.spotlight.intro),
       items:
         Array.isArray(cms.spotlightItems) && cms.spotlightItems.length
-          ? cms.spotlightItems.map((item: any, index: number) => ({
-              tag: item?.tag ?? '',
-              title: item?.title ?? '',
-              description: item?.description ?? '',
-              image: img(item?.image, d.spotlight.items[index]?.image ?? ''),
-            }))
+          ? cms.spotlightItems.map((item: any, index: number) => {
+              const fallback = d.spotlight.items[index]
+              return {
+                tag: item?.tag ?? fallback?.tag ?? '',
+                title: item?.title ?? fallback?.title ?? '',
+                description: item?.description ?? fallback?.description ?? '',
+                image: img(item?.image, fallback?.image ?? ''),
+                href:
+                  (typeof item?.href === 'string' && item.href.trim()) ||
+                  fallback?.href ||
+                  '/news',
+              }
+            })
           : d.spotlight.items,
       supportCta: d.spotlight.supportCta,
     },
@@ -194,7 +212,10 @@ function mapCmsPage(cms: Record<string, any>, d: typeof alumniPageContent): Epla
       image: img(cms.aboutImage, d.eplanAbout.image),
     },
     vision: {
-      eyebrow: txt(cms.visionEyebrow, d.vision.eyebrow),
+      eyebrow: txt(cms.visionEyebrow, d.vision.eyebrow)
+        .replace(/\s*driving\s*/i, ' ')
+        .replace(/\s+/g, ' ')
+        .trim() || d.vision.eyebrow,
       title: txt(cms.visionTitle, d.vision.title),
       text: txt(cms.visionText, d.vision.text),
     },
@@ -343,6 +364,7 @@ export async function getEplanPageContent(): Promise<EplanPageContent> {
           title: txt(item?.title, fallback?.title ?? ''),
           description: txt(item?.description, fallback?.description ?? ''),
           image,
+          href: txt(item?.href, fallback?.href ?? '/news'),
         }
       }),
     )

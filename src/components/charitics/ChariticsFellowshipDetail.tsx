@@ -55,7 +55,7 @@ export function ChariticsFellowshipDetail({ content }: ChariticsFellowshipDetail
         <div className="figma-about-hero__overlay figma-about-hero__overlay--blue" />
         <motion.div
           animate="show"
-          className="figma-about-hero__content figma-about-hero__content--left"
+          className="figma-about-hero__content"
           initial={reduceMotion ? false : 'hidden'}
           variants={{
             hidden: { opacity: 0, y: 24 },
@@ -282,38 +282,16 @@ export function ChariticsFellowshipDetail({ content }: ChariticsFellowshipDetail
 
       <MotionReveal
         as="section"
-        className="figma-section epl-textured-band"
-        style={{ paddingBlock: '100px' }}
+        className="figma-section figma-fellowship-apply-cta"
       >
         <div className="epl-new-shell">
-          <div
-            className="figma-section-head"
-            style={{ textAlign: 'center', maxWidth: '740px', margin: '0 auto' }}
-          >
+          <div className="figma-fellowship-apply-cta__inner">
             <div className="figma-kicker figma-kicker--gold" style={{ justifyContent: 'center' }}>
               <span className="figma-kicker__line" />
               <span>{applyCta.eyebrow}</span>
             </div>
-            <h2
-              style={{
-                fontSize: 'clamp(36px, 4vw, 54px)',
-                fontWeight: 800,
-                color: '#ffffff',
-                margin: '14px 0 16px',
-              }}
-            >
-              {applyCta.title}
-            </h2>
-            <p
-              style={{
-                margin: '0 auto 32px',
-                color: 'rgba(255,255,255,0.92)',
-                fontSize: '18px',
-                lineHeight: 1.65,
-              }}
-            >
-              {applyCta.description}
-            </p>
+            <h2 className="figma-fellowship-apply-cta__title">{applyCta.title}</h2>
+            <p className="figma-fellowship-apply-cta__text">{applyCta.description}</p>
             <div>
               <Link className="epl-new-btn epl-new-btn--gold" href={applyCta.ctaHref}>
                 {applyCta.ctaLabel} <span>↗</span>

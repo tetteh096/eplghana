@@ -1,4 +1,5 @@
 import { eplimContent } from '@/config/eplimContent'
+import { ELEVATED_MINDS_SLUG, ELEVATED_MINDS_SLUG_ALIASES } from '@/config/elevatedMinds'
 import { resolveProjectImage } from '@/config/eplMedia'
 import type { Project } from '@/payload-types'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
@@ -18,24 +19,21 @@ export type EplimProjectContent = {
   partnerCta: typeof eplimContent.partnerCta
 }
 
-const txt = (v: unknown, d: string) => (typeof v === 'string' && v.trim() ? v : d)
 const img = (v: unknown, d: string) => getMediaUrl(v as any) || d
 
 /**
- * EPLIM detail content from Projects → eplimDetail, layered over config defaults.
+ * Elevated MINDS detail content.
+ * Copy is driven by config so stale CMS maritime text cannot override;
+ * CMS media still layers on when available.
  */
-export async function getEplimProjectContent(slug = 'epl-in-maritime'): Promise<EplimProjectContent> {
+export async function getEplimProjectContent(
+  slug = ELEVATED_MINDS_SLUG,
+): Promise<EplimProjectContent> {
   const d = eplimContent
   const cms: Record<string, any> = {}
   let heroPrimary = d.hero.images[0]
-  // Prefer the canonical CMS slug first so alias routes (eplim / maritime)
-  // still load the published epl-in-maritime document.
   const slugCandidates = Array.from(
-    new Set(
-      ['epl-in-maritime', slug, 'eplim', 'maritime'].filter(
-        (value): value is string => Boolean(value),
-      ),
-    ),
+    new Set([ELEVATED_MINDS_SLUG, slug, ...ELEVATED_MINDS_SLUG_ALIASES].filter(Boolean)),
   )
 
   const payload = await tryGetPayload()
@@ -60,56 +58,30 @@ export async function getEplimProjectContent(slug = 'epl-in-maritime'): Promise<
       }
       heroPrimary =
         resolveProjectImage(
-          project?.slug ?? 'epl-in-maritime',
+          project?.slug ?? ELEVATED_MINDS_SLUG,
           getMediaUrl(project?.featuredImage),
         ) ?? d.hero.images[0]
 
-      const focusItems =
-        Array.isArray(cms.focusItems) && cms.focusItems.length
-          ? cms.focusItems.map((item: any) => ({
-              title: item?.title ?? '',
-              description: item?.description ?? '',
-            }))
-          : d.whyItMatters.items
-
       const heroSecondary = img(cms.heroSecondaryImage, d.hero.images[1])
 
-      if (project || Object.keys(cms).length) {
-        return {
-          hero: {
-            eyebrow: txt(cms.heroEyebrow, d.hero.eyebrow),
-            title: txt(cms.heroTitle, d.hero.title),
-            lead: txt(cms.heroLead, d.hero.lead),
-            description: txt(cms.heroDescription, d.hero.description),
-            images: [heroPrimary, heroSecondary],
-            partners: d.hero.partners,
-            ctaLabel: txt(cms.heroCtaLabel, d.hero.ctaLabel),
-            ctaHref: txt(cms.heroCtaUrl, d.hero.ctaHref),
-          },
-          aboutEyebrow: txt(cms.aboutEyebrow, d.aboutEyebrow),
-          aboutTitle: txt(cms.aboutTitle, d.aboutTitle),
-          aboutImage: img(cms.aboutImage, d.aboutImage),
-          capacityBuilding: {
-            eyebrow: txt(cms.capacityEyebrow, d.capacityBuilding.eyebrow),
-            title: txt(cms.capacityTitle, d.capacityBuilding.title),
-            description: txt(cms.capacityDescription, d.capacityBuilding.description),
-            image: img(cms.capacityImage, d.capacityBuilding.image),
-          },
-          whyItMatters: {
-            eyebrow: txt(cms.focusEyebrow, d.whyItMatters.eyebrow),
-            title: txt(cms.focusTitle, d.whyItMatters.title),
-            items: focusItems,
-          },
-          impact: {
-            eyebrow: txt(cms.impactEyebrow, d.impact.eyebrow),
-            title: txt(cms.impactTitle, d.impact.title),
-            description: txt(cms.impactDescription, d.impact.description),
-            image: img(cms.impactImage, d.impact.image),
-            ctaLabel: txt(cms.impactCtaLabel, d.impact.ctaLabel),
-            ctaHref: txt(cms.impactCtaUrl, d.impact.ctaHref),
-          },
-          partnerCta: d.partnerCta,
-        }
+      return {
+        hero: {
+          ...d.hero,
+          images: [heroPrimary, heroSecondary],
+        },
+        aboutEyebrow: d.aboutEyebrow,
+        aboutTitle: d.aboutTitle,
+        aboutImage: img(cms.aboutImage, d.aboutImage),
+        capacityBuilding: {
+          ...d.capacityBuilding,
+          image: img(cms.capacityImage, d.capacityBuilding.image),
+        },
+        whyItMatters: d.whyItMatters,
+        impact: {
+          ...d.impact,
+          image: img(cms.impactImage, d.impact.image),
+        },
+        partnerCta: d.partnerCta,
       }
     } catch (err) {
       if (process.env.NODE_ENV === 'development') {

@@ -46,9 +46,9 @@ export const mainNavigation: NavItem[] = [
         description: 'Ethical action in civic environments',
       },
       {
-        href: '/projects/epl-in-maritime',
-        label: 'EPL in Maritime (EPLIM)',
-        description: "Developing leaders for Ghana's maritime future",
+        href: '/projects/elevated-minds',
+        label: 'Elevated MINDS',
+        description: 'School-based career development for JHS and SHS students',
       },
       {
         href: '/projects',
@@ -65,7 +65,7 @@ export const mainNavigation: NavItem[] = [
       { href: '/impact#community-stories', label: 'Community Stories', description: 'Transformation across districts' },
       { href: '/impact#testimonials', label: 'Testimonials', description: 'Voices from mentors, supervisors & partners' },
       { href: '/impact#annual-reports', label: 'Annual Reports', description: 'Our accountability in numbers' },
-      { href: '/impact#research', label: 'Research & Publications', description: 'Knowledge we generate' },
+      { href: '/research', label: 'Research & Publications', description: 'Knowledge we generate' },
     ],
   },
   {

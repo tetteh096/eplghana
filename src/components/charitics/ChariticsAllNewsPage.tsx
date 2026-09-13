@@ -117,7 +117,7 @@ export function ChariticsAllNewsPage({ posts = [] }: ChariticsAllNewsPageProps) 
   return (
     <div className="figma-all-news-page">
       {/* Hero Banner */}
-      <section className="figma-about-hero">
+      <section className="figma-about-hero figma-all-news-hero">
         <div
           className="figma-about-hero__bg"
           style={{ backgroundImage: `url(${eplHomeImages.aboutMain})` }}

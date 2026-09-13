@@ -30,6 +30,9 @@ export type EplanExecutive = {
   bio?: string
   photo: string
   linkedin?: string
+  twitter?: string
+  facebook?: string
+  instagram?: string
 }
 
 export function alumniToTeamMember(alumni: AlumniSpotlight): TeamMember {
@@ -44,6 +47,21 @@ export function alumniToTeamMember(alumni: AlumniSpotlight): TeamMember {
   }
 }
 
+export function executiveToTeamMember(member: EplanExecutive): TeamMember {
+  return {
+    id: member.id,
+    name: member.name,
+    role: member.role,
+    bio: member.bio?.trim() || '',
+    photo: member.photo,
+    linkedin: member.linkedin,
+    twitter: member.twitter,
+    facebook: member.facebook,
+    instagram: member.instagram,
+    group: 'team',
+  }
+}
+
 export const alumniPageContent = {
   hero: {
     eyebrow: 'Alumni Community',
@@ -54,13 +72,13 @@ export const alumniPageContent = {
     image: `${EPL_MEDIA}/2025/07/CSG-32-scaled.jpg`,
     secondaryImage: `${EPL_MEDIA}/2025/07/CSG-32-scaled.jpg`,
     badge: {
-      value: '500+',
+      value: '200+',
       label: 'Active alumni',
     },
     highlights: [
-      { value: '500+', label: 'Active Alumni' },
-      { value: '8', label: 'Graduated Cohorts' },
-      { value: '85%', label: 'Promoted / Retained' },
+      { value: '200+', label: 'Active Alumni' },
+      { value: '7', label: 'Graduated Cohorts' },
+      { value: '85%', label: 'Career Advancement' },
       { value: '15+', label: 'Public Institutions' },
     ],
     primaryCta: { label: 'Browse Alumni Directory', href: '/community/current-fellows' },
@@ -115,6 +133,7 @@ export const alumniPageContent = {
         description:
           'Flagship reunion bringing alumni together in strategic dialogue on public sector innovation, peer accountability, and policy milestones.',
         image: `${EPL_MEDIA}/2025/10/CSG-1-scaled.jpg`,
+        href: '/news/annual-end-of-year-fellows-gathering',
       },
       {
         tag: 'Success Story',
@@ -122,6 +141,7 @@ export const alumniPageContent = {
         description:
           'EPLAN alumni stationed at regional health directorates modernized digital record-keeping, reducing patient wait times across 8 local clinics.',
         image: `${EPL_MEDIA}/2025/10/CSOE-45-scaled.jpg`,
+        href: '/news/pioneering-municipal-health-data-systems',
       },
       {
         tag: 'Policy Impact',
@@ -129,6 +149,7 @@ export const alumniPageContent = {
         description:
           'Alumni across the Ministry of Finance and Ministry of Local Government published recommendations for digitized municipal revenue oversight.',
         image: `${EPL_MEDIA}/2025/07/CSG-32-scaled.jpg`,
+        href: '/news/cross-ministerial-civil-service-working-group',
       },
     ],
     supportCta: { label: 'Support EPLAN', href: '/donate#ways-to-give' },
@@ -145,7 +166,7 @@ export const alumniPageContent = {
     image: `${EPL_MEDIA}/2025/10/CSG-16-scaled.jpg`,
   },
   vision: {
-    eyebrow: 'Our Driving Vision',
+    eyebrow: 'Our Vision',
     title: 'Catalysts for systemic change',
     text:
       'To be a network of ethical public servants committed to excellence; who act as catalysts to drive systemic change in Africa’s public sector.',
@@ -162,39 +183,46 @@ export const alumniPageContent = {
       'The executive team stewards the network, strengthens alumni connections, and advances EPLAN’s shared commitment to ethical public leadership.',
     items: [
       {
-        id: 'executive-placeholder-1',
-        name: 'Executive Member 01',
-        role: 'EPLAN Executive',
-        bio: 'Executive profile details will be updated from the EPLAN page in Payload.',
+        id: 'executive-president',
+        name: 'Profile coming soon',
+        role: 'President',
+        bio: 'Profile details and photo will be updated from the EPLAN page in Payload.',
         photo: eplHomeImages.fellows.miriam,
       },
       {
-        id: 'executive-placeholder-2',
-        name: 'Executive Member 02',
-        role: 'EPLAN Executive',
-        bio: 'Executive profile details will be updated from the EPLAN page in Payload.',
+        id: 'executive-vice-president',
+        name: 'Profile coming soon',
+        role: 'Vice President',
+        bio: 'Profile details and photo will be updated from the EPLAN page in Payload.',
         photo: eplHomeImages.fellows.priscilla,
       },
       {
-        id: 'executive-placeholder-3',
-        name: 'Executive Member 03',
-        role: 'EPLAN Executive',
-        bio: 'Executive profile details will be updated from the EPLAN page in Payload.',
+        id: 'executive-secretary',
+        name: 'Profile coming soon',
+        role: 'Secretary',
+        bio: 'Profile details and photo will be updated from the EPLAN page in Payload.',
         photo: eplHomeImages.fellows.anita,
       },
       {
-        id: 'executive-placeholder-4',
-        name: 'Executive Member 04',
-        role: 'EPLAN Executive',
-        bio: 'Executive profile details will be updated from the EPLAN page in Payload.',
+        id: 'executive-communications',
+        name: 'Profile coming soon',
+        role: 'Communications Lead',
+        bio: 'Profile details and photo will be updated from the EPLAN page in Payload.',
         photo: eplHomeImages.gallery[4].src,
       },
       {
-        id: 'executive-placeholder-5',
-        name: 'Executive Member 05',
-        role: 'EPLAN Executive',
-        bio: 'Executive profile details will be updated from the EPLAN page in Payload.',
+        id: 'executive-treasurer',
+        name: 'Profile coming soon',
+        role: 'Treasurer',
+        bio: 'Profile details and photo will be updated from the EPLAN page in Payload.',
         photo: eplHomeImages.gallery[5].src,
+      },
+      {
+        id: 'executive-organizer',
+        name: 'Profile coming soon',
+        role: 'Organizer',
+        bio: 'Profile details and photo will be updated from the EPLAN page in Payload.',
+        photo: eplHomeImages.gallery[1].src,
       },
     ] as EplanExecutive[],
   },

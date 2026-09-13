@@ -59,34 +59,34 @@ const REDESIGN_INTRO = {
   eyebrow: 'About EPL Ghana',
   title: 'Who We Are',
   lead:
-    "A non-profit organisation committed to developing Ghana's next generation of ethical, critical-thinking public servants.",
+    'A Ghanaian non-profit organization preparing ethical, critical-thinking young leaders to strengthen the civil service and serve the public good.',
 }
 
 const REDESIGN_STORY = {
   title: 'A Movement for Stronger Public Service',
   body:
-    'Launched in 2018, EPL Ghana was founded on the conviction that public institutions are only as strong as the people within them. Through our 12-month Emerging Public Leaders Fellowship, we place talented young Ghanaians inside public sector institutions for immersive training, executive mentorship, and hands-on service, working toward an ambitious goal of nurturing over 275 dedicated Fellows by 2030 to drive lasting national transformation.',
+    'Launched in 2018, EPL Ghana was founded on the conviction that public institutions are only as strong as the people within them. Through our 12-month Emerging Public Leaders Fellowship, we place talented young Ghanaians inside public sector institutions for immersive training, executive mentorship, and hands-on service—working toward an ambitious goal of nurturing over 275 dedicated Fellows by 2030 to drive lasting national transformation.',
 }
 
 const REDESIGN_MISSION: TabContent = {
   eyebrow: 'Mission',
   title: 'What We Do',
-  body: "To develop ethical, critical-thinking and change-driven public sector leaders who strengthen Ghana's institutions and serve the public good.",
+  body: "To develop ethical, critical-thinking, and change-driven public sector leaders who strengthen Ghana's institutions and serve the public good.",
   image: aboutPageMission.image,
 }
 
 const REDESIGN_VISION: TabContent = {
   eyebrow: 'Vision',
   title: 'Where We Are Going',
-  body: 'A Ghana where public institutions are led by principled, capable and innovative leaders committed to national development and public welfare.',
+  body: 'A Ghana where public institutions are led by honest, capable, and innovative leaders committed to national development and citizen welfare.',
   image: aboutPageVision.image,
 }
 
 const REDESIGN_PARTNER = {
   eyebrow: 'Ecosystem',
-  title: 'Our Partners & Sponsors',
+  title: 'Our Partners & Supporters',
   lead:
-    "We work with government agencies, development partners and the private sector to build Ghana's public leadership capacity.",
+    'We collaborate with government ministries, international development agencies, and civil society to build public leadership capacity.',
 }
 
 export const aboutCoreValuesFallback: AboutCoreValue[] = [
@@ -95,57 +95,58 @@ export const aboutCoreValuesFallback: AboutCoreValue[] = [
     title: 'Partnership',
     color: 'blue',
     meaning:
-      'We believe in the core values of collaboration. By fostering strong partnerships across sectors and communities, we create meaningful connections that drive collective impact and sustainable change in public service.',
+      'We work hand-in-hand with government agencies, development partners, and communities to achieve lasting national progress.',
   },
   {
     num: '02',
     title: 'Integrity',
     color: 'navy',
     meaning:
-      'Operating with transparency, honesty and ethical consistency in everything we do, modelling the very values we seek to develop in our Fellows.',
+      'We operate with honesty, fairness, and moral courage, modeling the exact character we expect in our Fellows.',
   },
   {
     num: '03',
     title: 'Value-Based Leadership',
     color: 'blue',
     meaning:
-      'Developing leaders guided not only by competence, but by a deep commitment to public good, ethical service and institutional responsibility.',
+      'We develop leaders guided not just by technical skill, but by a deep commitment to service, fairness, and public good.',
   },
   {
     num: '04',
     title: 'Excellence',
     color: 'navy',
     meaning:
-      'Maintaining the highest standards in programme design, Fellow development and organisational practice — excellence is not a goal, it is our baseline.',
+      'We set high standards in training, work delivery, and Fellow support. Excellence is our baseline, not an afterthought.',
   },
   {
     num: '05',
     title: 'Transparency',
     color: 'blue',
     meaning:
-      'We embrace openness and clear communication in our operations and relationships. Transparency builds trust and reinforces our credibility as a public service organisation.',
+      'We communicate openly and keep our doors open. Clear accountability builds trust with partners, Fellows, and the public.',
   },
   {
     num: '06',
     title: 'Sustainability',
     color: 'navy',
     meaning:
-      'Building systems, relationships and practices designed to endure long after any single programme, cohort or partnership.',
+      'We build systems, partnerships, and leadership skills designed to last and benefit Ghana for generations to come.',
   },
 ]
 
 const ALLOWED_COLORS = new Set(['blue', 'gold', 'navy'])
 
 function mapCoreValues(raw: unknown): AboutCoreValue[] {
+  // Homepage-approved Option A copy is the source of truth for About values.
   if (!Array.isArray(raw) || raw.length === 0) return aboutCoreValuesFallback
 
-  return raw.map((item: any, idx: number) => {
-    const fallback = aboutCoreValuesFallback[idx] ?? aboutCoreValuesFallback[0]
+  return aboutCoreValuesFallback.map((fallback, idx) => {
+    const item: any = raw[idx]
     const colorRaw = typeof item?.color === 'string' ? item.color.trim().toLowerCase() : ''
     return {
-      num: txt(item?.num, fallback.num),
-      title: txt(item?.title, fallback.title),
-      meaning: txt(item?.meaning, fallback.meaning),
+      num: fallback.num,
+      title: fallback.title,
+      meaning: fallback.meaning,
       color: ALLOWED_COLORS.has(colorRaw) ? colorRaw : fallback.color,
     }
   })

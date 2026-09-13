@@ -6,6 +6,7 @@ import { ChariticsFellowshipDetail } from '@/components/charitics/ChariticsFello
 import { ChariticsPageMain } from '@/components/charitics/ChariticsPageMain'
 import { ChariticsPeaceDetail } from '@/components/charitics/ChariticsPeaceDetail'
 import { ChariticsWotrDetail } from '@/components/charitics/ChariticsWotrDetail'
+import { isElevatedMindsSlug } from '@/config/elevatedMinds'
 import { getProjectVisualClass } from '@/config/projectsPageContent'
 import { getStaticProject } from '@/config/staticProjects'
 import { getEplimProjectContent } from '@/utilities/getEplimProjectContent'
@@ -123,9 +124,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   }
 
   if (
-    slug === 'eplim' ||
-    slug === 'maritime' ||
-    slug === 'epl-in-maritime' ||
+    isElevatedMindsSlug(slug) ||
     (cmsProject as { detailLayout?: string } | undefined)?.detailLayout === 'eplim'
   ) {
     const eplimContent = await getEplimProjectContent(slug)

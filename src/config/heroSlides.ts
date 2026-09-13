@@ -8,36 +8,42 @@ export type HeroImageSlide = {
   subtitle: string
   thumb: string
   title: string
+  /** Three-line homepage hero treatment; middle line is accented. */
+  titleLines?: [string, string, string]
 }
 
+/** Homepage hero: each option is a rotating slide (copy + image). */
 export const heroImageSlides: HeroImageSlide[] = [
   {
-    subtitle: 'Public Service Fellowship',
-    title: "Transform Ghana's Public Sector From Within",
+    subtitle: 'Emerging Public Leaders of Ghana',
+    title: 'Public service is strengthened by people.',
+    titleLines: ['Public service is', 'strengthened', 'by people.'],
     description:
-      'A one-year fellowship embedding talented graduates in government institutions to drive innovation, integrity, and lasting impact.',
-    ctaLabel: 'Apply Now',
+      'We train ethical, smart, and action-driven young leaders to improve government institutions and serve Ghana.',
+    ctaLabel: 'Get Involved',
     ctaHref: '/get-involved',
     image: eplHomeImages.heroHome,
     thumb: `${EPL_MEDIA}/2025/07/CSG-1024x683.jpg`,
   },
   {
-    subtitle: 'Women On The Rise',
-    title: 'Breaking Barriers to Leadership in Public Service',
+    subtitle: "Developing Ghana's Future Leaders",
+    title: 'Building ethical leaders for a better Ghana.',
+    titleLines: ['Building ethical leaders', 'for a better', 'Ghana.'],
     description:
-      'A transformative initiative helping women overcome systemic barriers and rise to higher leadership across Ghana’s public institutions.',
-    ctaLabel: 'Learn More',
-    ctaHref: '/projects/women-on-the-rise',
+      'We prepare talented youth to enter the civil service, solve real problems, and make public institutions work for everyone.',
+    ctaLabel: 'Get Involved',
+    ctaHref: '/get-involved',
     image: eplHomeImages.projects['women-on-the-rise'],
     thumb: `${EPL_MEDIA}/2025/11/LEMA25-0447-1024x628.jpg`,
   },
   {
-    subtitle: 'Value-Based Leadership',
-    title: 'Strengthening Institutions for National Development',
+    subtitle: 'Strengthening Public Service',
+    title: 'Good governance starts with great people.',
+    titleLines: ['Good governance starts', 'with great', 'people.'],
     description:
-      'We develop ethical, skilled leaders who champion transparency, excellence, and sustainable change from within the civil service.',
-    ctaLabel: 'About EPL Ghana',
-    ctaHref: '/about',
+      'We place skilled, principled young professionals inside government to make public services faster, fairer, and more reliable.',
+    ctaLabel: 'Get Involved',
+    ctaHref: '/get-involved',
     image: `${EPL_MEDIA}/2023/12/MG_0422-scaled.jpg`,
     thumb: `${EPL_MEDIA}/2023/12/MG_0422-768x512.jpg`,
   },

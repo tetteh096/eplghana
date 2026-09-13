@@ -11,6 +11,7 @@ import { MotionItem, MotionReveal } from '@/components/charitics/MotionReveal'
 import { EditorialCountdown } from '@/components/home/EditorialCountdown'
 import { eplHomeImages } from '@/config/eplMedia'
 import type { HeroImageSlide } from '@/config/heroSlides'
+import { heroImageSlides } from '@/config/heroSlides'
 import type { Event, SiteSetting, Testimonial } from '@/payload-types'
 import { formatDate } from '@/utilities/formatDate'
 import type {
@@ -57,93 +58,187 @@ export function ChariticsHome({
   // Only curated photos rotate through the hero — a CMS-uploaded flyer/poster
   // in settings.heroImage must never get mixed into the slideshow.
   const heroImages = heroSlides?.length ? heroSlides.map((slide) => slide.image) : [heroImage]
+  const homeHeroSlides =
+    heroSlides?.length
+      ? heroSlides.map((slide, index) => {
+          const fallback = heroImageSlides[index] ?? heroImageSlides[0]
+          return {
+            ...slide,
+            subtitle: fallback.subtitle,
+            title: fallback.title,
+            titleLines: fallback.titleLines,
+            description: fallback.description,
+            ctaLabel: fallback.ctaLabel,
+            ctaHref: fallback.ctaHref,
+            image: slide.image || fallback.image,
+            thumb: slide.thumb || fallback.thumb,
+          }
+        })
+      : heroImageSlides.map((slide, index) =>
+          index === 0 ? { ...slide, image: heroImage, thumb: heroImage } : slide,
+        )
   const projectCards = resolveHomeProjects(projects)
   const stats: HomeStat[] = [
     { value: '8', label: 'Cohorts' },
-    { value: '500+', label: 'Fellows' },
-    { value: '12+', label: 'Institutions' },
+    { value: '200+', label: 'Fellows' },
+    { value: '15+', label: 'Institutions' },
+    { value: '85%', label: 'Career Advancement' },
   ]
-  const wayCards =
+  const wayCards = (
     eplWay?.length
       ? eplWay
       : ([
           {
             number: '01',
             title: 'Think Critically',
-            description: 'Analytical rigour and strategic problem-solving.',
-            note: 'We equip aspiring public leaders with data-driven policy analysis, evidence-based reasoning, and strategic innovation to navigate complex institutional challenges.',
+            description: 'Solving problems with clear, smart thinking.',
+            note: 'We train Fellows to look at facts, solve real problems, and make smart decisions that improve how government institutions work.',
             image: aboutMission?.image ?? eplHomeImages.aboutBlock,
             tone: 'blue',
-            href: '/about/what-we-do',
+            href: '/about',
           },
           {
             number: '02',
             title: 'Act Ethically',
-            description: 'Integrity, transparency and values-led service.',
-            note: 'Leadership begins with character. We instill an uncompromising commitment to accountability, fairness, and moral conviction across every level of public administration.',
+            description: 'Leading with honesty, fairness, and truth.',
+            note: 'Good leadership starts with strong values. We instill zero tolerance for corruption and a deep respect for public accountability.',
             image: eplHomeImages.gallery[1].src,
             tone: 'navy',
-            href: '/about/what-we-do',
+            href: '/about',
           },
           {
             number: '03',
             title: 'Drive Change',
-            description: 'Transforming institutions and local communities.',
-            note: "Fellows don't just study policy — they put it into action. By leading community initiatives and streamlining civil service processes, they create real, measurable impact.",
+            description: 'Turning good policy into real action.',
+            note: 'Fellows do not just study policy—they work inside ministries and local assemblies to fix bottlenecks and help communities.',
             image: eplHomeImages.gallery[3].src,
             tone: 'gold',
-            href: '/about/what-we-do',
+            href: '/about',
           },
         ] satisfies HomeEplWayItem[])
-  const stories = impactStories ?? {
-    eyebrow: 'Impact Stories',
-    title: 'Beyond the Numbers',
-    ctaUrl: '/community/current-fellows',
+  ).map((item, index) => {
+    const copy = [
+      {
+        description: 'Solving problems with clear, smart thinking.',
+        note: 'We train Fellows to look at facts, solve real problems, and make smart decisions that improve how government institutions work.',
+      },
+      {
+        description: 'Leading with honesty, fairness, and truth.',
+        note: 'Good leadership starts with strong values. We instill zero tolerance for corruption and a deep respect for public accountability.',
+      },
+      {
+        description: 'Turning good policy into real action.',
+        note: 'Fellows do not just study policy—they work inside ministries and local assemblies to fix bottlenecks and help communities.',
+      },
+    ][index]
+
+    return {
+      ...item,
+      href: '/about',
+      description: copy?.description ?? item.description,
+      note: copy?.note ?? item.note,
+    }
+  })
+
+  const stories = {
+    ...(impactStories ?? {
+      eyebrow: 'Impact Stories',
+      title: 'Real People. Real Impact.',
+      ctaUrl: '/community/current-fellows',
+      featured: {
+        name: 'Abena Osei-Bonsu',
+        cohort: 'Cohort 3',
+        institution: 'Ministry of Finance',
+        quote:
+          'EPL taught me that public service is not just a job—it is a responsibility to serve Ghana with honesty and excellence.',
+        image: eplHomeImages.fellows.miriam,
+        storyHref: '/community/current-fellows',
+      },
+      secondary: [
+        {
+          cohort: 'Cohort 7',
+          name: 'Kwame Asante',
+          institution: 'Ghana Health Service',
+          quote:
+            'The fellowship helped me modernize clinic records so patients spend less time waiting for care.',
+          image: eplHomeImages.fellows.priscilla,
+        },
+        {
+          cohort: 'Cohort 8',
+          name: 'Efua Mensah',
+          institution: 'Accra Metropolitan Assembly',
+          quote:
+            'EPL gave me practical tools to work directly with communities and solve local planning challenges.',
+          image: eplHomeImages.fellows.anita,
+        },
+      ],
+    }),
+    title: 'Real People. Real Impact.',
     featured: {
-      name: 'Abena Osei-Bonsu',
-      cohort: 'Cohort 3',
-      institution: 'Ministry of Finance',
+      ...(impactStories?.featured ?? {
+        name: 'Abena Osei-Bonsu',
+        cohort: 'Cohort 3',
+        institution: 'Ministry of Finance',
+        image: eplHomeImages.fellows.miriam,
+        storyHref: '/community/current-fellows',
+      }),
       quote:
-        "EPL didn't just teach me to lead. It showed me what leadership in service to Ghana truly means.",
-      image: eplHomeImages.fellows.miriam,
-      storyHref: '/community/current-fellows',
+        'EPL taught me that public service is not just a job—it is a responsibility to serve Ghana with honesty and excellence.',
     },
-    secondary: [
-      {
-        cohort: 'Cohort 7',
-        name: 'Kwame Asante',
-        institution: 'Ghana Health Service',
-        quote: 'The fellowship transformed how I see my role in public health.',
-        image: eplHomeImages.fellows.priscilla,
-      },
-      {
-        cohort: 'Cohort 8',
-        name: 'Efua Mensah',
-        institution: 'Accra Metropolitan Assembly',
-        quote: 'EPL gave me the tools and the community to drive real change from within.',
-        image: eplHomeImages.fellows.anita,
-      },
-    ],
+    secondary: (impactStories?.secondary?.length
+      ? impactStories.secondary
+      : [
+          {
+            cohort: 'Cohort 7',
+            name: 'Kwame Asante',
+            institution: 'Ghana Health Service',
+            quote:
+              'The fellowship helped me modernize clinic records so patients spend less time waiting for care.',
+            image: eplHomeImages.fellows.priscilla,
+          },
+          {
+            cohort: 'Cohort 8',
+            name: 'Efua Mensah',
+            institution: 'Accra Metropolitan Assembly',
+            quote:
+              'EPL gave me practical tools to work directly with communities and solve local planning challenges.',
+            image: eplHomeImages.fellows.anita,
+          },
+        ]
+    ).map((story, index) => {
+      const quotes = [
+        'The fellowship helped me modernize clinic records so patients spend less time waiting for care.',
+        'EPL gave me practical tools to work directly with communities and solve local planning challenges.',
+      ]
+      return { ...story, quote: quotes[index] ?? story.quote }
+    }),
   }
   const featuredStory = stories.featured
   const cmsEvent = events.find(
     (item) => item.eventDate && new Date(item.eventDate).getTime() > Date.now(),
   )
-  const event = cmsEvent ?? {
+  const eventFallback = {
     id: 'annual-leadership-forum-2026',
     slug: 'annual-leadership-forum-2026',
-    title: 'EPL Annual Leadership Forum 2026',
+    title: 'EPL Annual Public Leadership Forum 2026',
     excerpt:
-      "A full-day gathering of Ghana's emerging and established public leaders — featuring keynote addresses, panel discussions, networking and the formal welcome of Cohort 9.",
+      'A one-day gathering bringing together Fellows, government leaders, and partners to discuss how ethical leadership improves public institutions.',
     eventDate: '2026-09-15T09:00:00.000Z',
     venue: 'Accra International Conference Centre, Accra',
-    featuredImage: null,
+    featuredImage: null as null,
   }
+  const event = cmsEvent
+    ? {
+        ...cmsEvent,
+        title: eventFallback.title,
+        excerpt: eventFallback.excerpt,
+      }
+    : eventFallback
   void testimonials
 
   return (
     <main className="epl-new-home">
-      <ChariticsHomeHero image={heroImage} images={heroImages} />
+      <ChariticsHomeHero image={heroImage} images={heroImages} slides={homeHeroSlides} />
 
       <MotionReveal as="section" className="epl-way-section">
         <div className="epl-new-shell">
@@ -156,7 +251,11 @@ export function ChariticsHome({
             </p>
           </div>
           <MotionReveal className="epl-way-grid" stagger>
-            {wayCards.map((item) => (
+            {wayCards.map((item) => {
+              const [titleFirst, ...titleRest] = item.title.split(' ')
+              const titleSecond = titleRest.join(' ')
+
+              return (
               <MotionItem className="epl-motion-cell" key={item.number}>
                 <Link className={`epl-way-card epl-way-card--${item.tone}`} href={item.href}>
                   <img
@@ -168,7 +267,12 @@ export function ChariticsHome({
                   <span className="epl-way-card__wash" />
                   <div className="epl-way-card__content">
                     <span>{item.number}</span>
-                    <h3>{item.title}</h3>
+                    <h3>
+                      <span className="epl-way-card__title-up">{titleFirst}</span>
+                      {titleSecond ? (
+                        <span className="epl-way-card__title-down">{titleSecond}</span>
+                      ) : null}
+                    </h3>
                     <p>{item.description}</p>
                     <p className="epl-way-card__note">{item.note}</p>
                     <b aria-hidden>
@@ -185,7 +289,8 @@ export function ChariticsHome({
                   </div>
                 </Link>
               </MotionItem>
-            ))}
+              )
+            })}
           </MotionReveal>
         </div>
       </MotionReveal>
@@ -197,12 +302,17 @@ export function ChariticsHome({
       <MotionReveal as="section" className="epl-impact-stories">
         <div className="epl-new-shell">
           <MotionReveal className="epl-impact-stories__head">
-            <div className="epl-impact-stories__eyebrow">
-              <span aria-hidden className="epl-impact-stories__eyebrow-line" />
-              <span>{stories.eyebrow ?? 'Impact Stories'}</span>
-              <span aria-hidden className="epl-impact-stories__eyebrow-line" />
+            <div>
+              <div className="epl-impact-stories__eyebrow">
+                <span aria-hidden className="epl-impact-stories__eyebrow-line" />
+                <span>{stories.eyebrow ?? 'Impact Stories'}</span>
+                <span aria-hidden className="epl-impact-stories__eyebrow-line" />
+              </div>
+              <h2>{stories.title}</h2>
             </div>
-            <h2>{stories.title}</h2>
+            <Link className="epl-new-text-action" href="/news">
+              Read all stories <span>→</span>
+            </Link>
           </MotionReveal>
 
           {featuredStory ? (
@@ -267,9 +377,6 @@ export function ChariticsHome({
             <span className="epl-new-kicker">Updates & events</span>
             <h2>Latest Updates from EPL Ghana</h2>
           </div>
-          <Link className="epl-new-text-action" href="/news">
-            Read all stories <span>→</span>
-          </Link>
         </div>
         <MotionReveal as="article" className="epl-latest-event">
           <div className="epl-latest-event__image">
