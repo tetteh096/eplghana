@@ -132,7 +132,7 @@ export function ChariticsAlumniPage({ content }: ChariticsAlumniPageProps) {
             <span>{vision.eyebrow.toUpperCase()}</span>
             <span className="figma-impact-kicker__line" />
           </div>
-          <h2 className="figma-eplan-vision__statement">&ldquo;{vision.text}&rdquo;</h2>
+          <h2 className="figma-eplan-vision__statement">{vision.text}</h2>
         </div>
       </section>
 
