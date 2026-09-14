@@ -322,8 +322,7 @@ export async function getImpactPageContent(): Promise<ImpactPageContent> {
     (await resolveMediaUrl(cms.heroImage, payload)) ||
     getMediaUrl(cms.heroImage) ||
     ''
-  const heroImage =
-    cmsHero.startsWith('http://') || cmsHero.startsWith('https://') ? cmsHero : d.hero.image
+  const heroImage = cmsHero || d.hero.image
 
   const glanceStats =
     Array.isArray(cms.glanceStats) && cms.glanceStats.length
@@ -348,84 +347,18 @@ export async function getImpactPageContent(): Promise<ImpactPageContent> {
     try {
       const fromFellows = await loadSuccessStoriesFromFellows(payload, d.successStories.items)
       if (fromFellows?.length) successItems = fromFellows
-      else if (Array.isArray(cms.successStories) && cms.successStories.length) {
-        successItems = await Promise.all(
-          cms.successStories.map(async (item: any, i: number) => {
-            const fb = d.successStories.items[i] ?? d.successStories.items[0]
-            const image =
-              (await resolveMediaUrl(item?.image, payload)) ||
-              getMediaUrl(item?.image) ||
-              fb.image
-            return {
-              name: txt(item?.name, fb.name),
-              role: txt(item?.role, fb.role),
-              cohort: txt(item?.cohort, fb.cohort),
-              image,
-              desc: txt(item?.desc, fb.desc),
-            }
-          }),
-        )
-      }
 
       const fromInterventions = await loadCommunityStoriesFromCollection(
         payload,
         communityItems,
       )
       if (fromInterventions?.length) communityItems = fromInterventions
-      else if (Array.isArray(cms.communityStories) && cms.communityStories.length) {
-        communityItems = withStoryLinks(
-          cms.communityStories.map((item: any, i: number) => {
-            const fb = d.communityStories.items[i] ?? d.communityStories.items[0]
-            return {
-              num: txt(item?.num, fb.num),
-              slug: txt(item?.slug, fb.slug),
-              region: txt(item?.region, fb.region),
-              assembly: txt(item?.assembly, fb.assembly),
-              title: txt(item?.title, fb.title),
-              desc: txt(item?.desc, fb.desc),
-              body: txt(item?.body, fb.body),
-              image: getMediaUrl(item?.image) || fb.image || '',
-            }
-          }),
-        )
-      }
 
       const fromPublications = await loadPublicationsFromCollection(payload)
       if (fromPublications?.reports.length) reports = fromPublications.reports
       if (fromPublications?.research.length) research = fromPublications.research
     } catch {
       // Keep config defaults when the DB is unavailable.
-    }
-  } else if (Array.isArray(cms.successStories) && cms.successStories.length) {
-    successItems = await Promise.all(
-      cms.successStories.map(async (item: any, i: number) => {
-        const fb = d.successStories.items[i] ?? d.successStories.items[0]
-        const image = getMediaUrl(item?.image) || fb.image
-        return {
-          name: txt(item?.name, fb.name),
-          role: txt(item?.role, fb.role),
-          cohort: txt(item?.cohort, fb.cohort),
-          image,
-          desc: txt(item?.desc, fb.desc),
-        }
-      }),
-    )
-    if (Array.isArray(cms.communityStories) && cms.communityStories.length) {
-      communityItems = withStoryLinks(
-        cms.communityStories.map((item: any, i: number) => {
-          const fb = d.communityStories.items[i] ?? d.communityStories.items[0]
-          return {
-            num: txt(item?.num, fb.num),
-            slug: txt(item?.slug, fb.slug),
-            region: txt(item?.region, fb.region),
-            assembly: txt(item?.assembly, fb.assembly),
-            title: txt(item?.title, fb.title),
-            desc: txt(item?.desc, fb.desc),
-            body: txt(item?.body, fb.body),
-            image: getMediaUrl(item?.image) || fb.image || '',
-          }
-        }),
-      )
     }
   }
 
@@ -475,37 +408,6 @@ export async function getImpactPageContent(): Promise<ImpactPageContent> {
     }))
   }
 
-  if (
-    !reports.length &&
-    Array.isArray(cms.annualReports) &&
-    cms.annualReports.length
-  ) {
-    reports = cms.annualReports.map((r: any, i: number) => {
-      const fb = d.publications.reports[i] ?? d.publications.reports[0]
-      return {
-        edition: txt(r?.edition, fb.edition),
-        title: txt(r?.title, fb.title),
-        summary: txt(r?.summary, fb.summary),
-      }
-    })
-  }
-
-  if (
-    !research.length &&
-    Array.isArray(cms.researchStudies) &&
-    cms.researchStudies.length
-  ) {
-    research = cms.researchStudies.map((r: any, i: number) => {
-      const fb = d.publications.research[i] ?? d.publications.research[0]
-      return {
-        tag: txt(r?.tag, fb.tag),
-        title: txt(r?.title, fb.title),
-        authorYear: txt(r?.authorYear, fb.authorYear),
-        summary: txt(r?.summary, fb.summary),
-      }
-    })
-  }
-
   if (!reports.length) reports = d.publications.reports
   if (!research.length) research = d.publications.research
 
@@ -531,7 +433,7 @@ export async function getImpactPageContent(): Promise<ImpactPageContent> {
       title: txt(cms.communityTitle, d.communityStories.title),
       intro: txt(cms.communityIntro, d.communityStories.intro),
       ctaLabel: txt(cms.communityCtaLabel, d.communityStories.ctaLabel),
-      ctaUrl: '/impact/stories',
+      ctaUrl: txt(cms.communityCtaUrl, d.communityStories.ctaUrl),
       items: communityItems,
     },
     testimonials: {
@@ -546,11 +448,11 @@ export async function getImpactPageContent(): Promise<ImpactPageContent> {
       intro: txt(cms.publicationsIntro, d.publications.intro),
       reportsHeading: txt(cms.reportsHeading, d.publications.reportsHeading),
       reportsCtaLabel: txt(cms.reportsCtaLabel, d.publications.reportsCtaLabel),
-      reportsCtaUrl: '/impact#annual-reports',
+      reportsCtaUrl: txt(cms.reportsCtaUrl, d.publications.reportsCtaUrl),
       reports,
       researchHeading: txt(cms.researchHeading, d.publications.researchHeading),
       researchCtaLabel: txt(cms.researchCtaLabel, d.publications.researchCtaLabel),
-      researchCtaUrl: '/research',
+      researchCtaUrl: txt(cms.researchCtaUrl, d.publications.researchCtaUrl),
       research,
     },
   }

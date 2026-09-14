@@ -4,7 +4,12 @@ import { eplimContent } from '@/config/eplimContent'
 
 const d = eplimContent
 
-/** Editable content for the Elevated MINDS detail page layout. */
+/**
+ * Editable content for the live Elevated MINDS detail page:
+ * Hero → Overview → Capacity building → Focus areas → Impact CTA.
+ * Overview body is split from Hero description (paragraphs separated by blank lines).
+ * Hero featured image comes from the project Featured Image field above.
+ */
 export const eplimDetailFields: Field[] = [
   {
     type: 'collapsible',
@@ -14,13 +19,14 @@ export const eplimDetailFields: Field[] = [
       { name: 'heroEyebrow', type: 'text', defaultValue: d.hero.eyebrow },
       { name: 'heroTitle', type: 'text', defaultValue: d.hero.title },
       { name: 'heroLead', type: 'textarea', defaultValue: d.hero.lead },
-      { name: 'heroDescription', type: 'textarea', defaultValue: d.hero.description },
       {
-        name: 'heroSecondaryImage',
-        type: 'upload',
-        relationTo: 'media',
-        label: 'Secondary / capacity image',
-        admin: { description: 'Primary hero uses the wide card image above.' },
+        name: 'heroDescription',
+        type: 'textarea',
+        defaultValue: d.hero.description,
+        admin: {
+          description:
+            'Also used as Overview body: separate paragraphs with a blank line.',
+        },
       },
       { name: 'heroCtaLabel', type: 'text', defaultValue: d.hero.ctaLabel },
       { name: 'heroCtaUrl', type: 'text', defaultValue: d.hero.ctaHref },
@@ -47,7 +53,7 @@ export const eplimDetailFields: Field[] = [
   },
   {
     type: 'collapsible',
-    label: 'Core focus areas',
+    label: 'Focus areas',
     fields: [
       { name: 'focusEyebrow', type: 'text', defaultValue: d.whyItMatters.eyebrow },
       { name: 'focusTitle', type: 'text', defaultValue: d.whyItMatters.title },
@@ -65,7 +71,7 @@ export const eplimDetailFields: Field[] = [
   },
   {
     type: 'collapsible',
-    label: 'Impact & join CTA',
+    label: 'Impact CTA',
     fields: [
       { name: 'impactEyebrow', type: 'text', defaultValue: d.impact.eyebrow },
       { name: 'impactTitle', type: 'text', defaultValue: d.impact.title },

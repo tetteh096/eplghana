@@ -32,7 +32,7 @@ export function ChariticsFellowshipDetail({ content }: ChariticsFellowshipDetail
   const [activeTab, setActiveTab] = useState(content.tabs[0]?.id ?? 'structure')
   const reduceMotion = useReducedMotion()
   const { hero, programmeStructure, eligibility, applicationProcess, applyCta } = content
-  const heroImage = hero.images[0]
+  const heroImage = hero.image
 
   const tabs = content.tabs.length
     ? content.tabs

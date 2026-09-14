@@ -4,7 +4,6 @@ import { ChariticsHome } from '@/components/charitics/ChariticsHome'
 import { SITE_DESCRIPTION, SITE_NAME, SITE_SHORT_NAME } from '@/config/site'
 import { getHomeContent } from '@/utilities/getHomeContent'
 import { getHomeProjects } from '@/utilities/getHomeProjects'
-import { getFeaturedTestimonials } from '@/utilities/getTestimonials'
 import { getSiteSettings, tryGetPayload } from '@/utilities/payloadSafe'
 
 export const metadata: Metadata = {
@@ -24,21 +23,18 @@ export default async function HomePage() {
   const baseSettings = await getSiteSettings(1)
   const {
     settings,
-    sections,
     heroSlides,
-    heroAvatars,
-    gallery,
-    aboutMission,
-    stats,
-    heroCurve,
-    eplWay,
+    eplWaySection,
+    projectsSection,
+    statsSection,
     impactStories,
+    eventsSection,
   } = await getHomeContent(baseSettings)
 
   const empty = { docs: [] as never[] }
   const nowISO = new Date().toISOString()
 
-  const [homeProjects, upcomingEvents, testimonials] = payload
+  const [homeProjects, upcomingEvents] = payload
     ? await Promise.all([
         getHomeProjects(),
         payload.find({
@@ -53,12 +49,10 @@ export default async function HomePage() {
             ],
           },
         }),
-        getFeaturedTestimonials(payload, 6),
       ])
-    : [await getHomeProjects(), empty, [] as never[]]
+    : [await getHomeProjects(), empty]
 
-  // No upcoming events? Show the most recent past events instead (newest first),
-  // and tell the component so it hides the countdown and relabels the section.
+  // No upcoming events? Show the most recent past events instead (newest first).
   let events = upcomingEvents.docs
   let eventsArePast = false
   if (payload && events.length === 0) {
@@ -82,20 +76,16 @@ export default async function HomePage() {
 
   return (
     <ChariticsHome
-      aboutMission={aboutMission}
-      eplWay={eplWay}
+      eplWaySection={eplWaySection}
       events={events}
       eventsArePast={eventsArePast}
-      gallery={gallery}
-      heroAvatars={heroAvatars}
-      heroCurve={heroCurve}
+      eventsSection={eventsSection}
       heroSlides={heroSlides}
       impactStories={impactStories}
       projects={homeProjects}
-      sections={sections}
+      projectsSection={projectsSection}
       settings={settings}
-      stats={stats}
-      testimonials={testimonials}
+      statsSection={statsSection}
     />
   )
 }

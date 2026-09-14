@@ -614,7 +614,7 @@ export function ChariticsDonatePage({ content, paystackEnabled = false }: Props)
                   [
                     ['card', 'Card', 'Visa / Master'],
                     ['bank', 'Bank', 'GHS / USD'],
-                    ['momo', 'MoMo', 'MTN / Telecel'],
+                    ['momo', 'MoMo', 'MTN MoMo'],
                   ] as const
                 ).map(([key, title, sub]) => (
                   <button

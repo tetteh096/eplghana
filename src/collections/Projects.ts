@@ -127,7 +127,7 @@ export const Projects: CollectionConfig = {
       admin: {
         condition: (data) => data?.detailLayout === 'fellowship',
         description:
-          'Full Public Service Fellowship detail page, hero, tabs, programme steps, eligibility, and CTAs.',
+          'Matches the live fellowship page: Hero, Programme Structure / Eligibility / Application Process tabs, and Apply CTA. Hero image uses the wide card image above.',
       },
       fields: fellowshipDetailFields,
     },
@@ -138,7 +138,7 @@ export const Projects: CollectionConfig = {
       admin: {
         condition: (data) => data?.detailLayout === 'peace',
         description:
-          'Full P.E.A.C.E detail page, hero, about, stats, outcomes, stories, gallery, and CTAs.',
+          'Matches the live P.E.A.C.E. page: Hero (eyebrow, title, lead, CTA; image = Featured wide card) and About + model highlight.',
       },
       fields: peaceDetailFields,
     },
@@ -149,7 +149,7 @@ export const Projects: CollectionConfig = {
       admin: {
         condition: (data) => data?.detailLayout === 'wotr',
         description:
-          'Full Women on the Rise detail page, hero, about, why it matters, stats, gallery, and CTAs.',
+          'Matches the live Women on the Rise page: Hero, Stats, About + pillars.',
       },
       fields: wotrDetailFields,
     },
@@ -160,7 +160,7 @@ export const Projects: CollectionConfig = {
       admin: {
         condition: (data) => data?.detailLayout === 'eplim',
         description:
-          'Full EPL in Maritime detail page — hero, overview, capacity building, focus areas, and impact CTA.',
+          'Matches the live Elevated MINDS page: hero, overview, capacity building, focus areas, and impact CTA.',
       },
       fields: eplimDetailFields,
     },

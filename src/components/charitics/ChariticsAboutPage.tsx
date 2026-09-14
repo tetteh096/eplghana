@@ -10,20 +10,15 @@ import { PartnerLogoMarquee } from '@/components/charitics/PartnerLogoMarquee'
 import { TeamMemberDrawer } from '@/components/charitics/TeamMemberDrawer'
 import { TeamMemberPhoto } from '@/components/charitics/TeamMemberPhoto'
 import { aboutPageRedesignImages } from '@/config/aboutPageContent'
-import type { FellowTestimonialSlide } from '@/config/fellowTestimonials'
 import type { TeamMember } from '@/config/teamPageContent'
-import type { SiteSetting } from '@/payload-types'
 import type { AboutContent } from '@/utilities/getAboutContent'
 import type { PartnerMarqueeItem } from '@/utilities/getPartnersContent'
 
 type ChariticsAboutPageProps = {
-  settings: SiteSetting
   content: AboutContent
   boardMembers: TeamMember[]
   staffMembers: TeamMember[]
   partners: PartnerMarqueeItem[]
-  teamIntro?: { eyebrow: string; title: string; description?: string }
-  testimonials?: FellowTestimonialSlide[]
 }
 
 const VALUE_COLORS = ['#4150A3', '#0f1630', '#4150A3', '#0f1630', '#4150A3', '#0f1630'] as const
@@ -36,7 +31,8 @@ export function ChariticsAboutPage({
   staffMembers,
   partners,
 }: ChariticsAboutPageProps) {
-  const { intro, story, mission, vision, partner, coreValues } = content
+  const { intro, story, mission, vision, partner, coreValues, coreValuesSection, teamSection } =
+    content
   const [activeTeamTab, setActiveTeamTab] = useState<'leadership' | 'team'>('leadership')
   const [flippedCards, setFlippedCards] = useState<Record<number, boolean>>({})
   const [mounted, setMounted] = useState(false)
@@ -63,7 +59,8 @@ export function ChariticsAboutPage({
   }, [])
 
   const displayedTeam = activeTeamTab === 'leadership' ? boardMembers : staffMembers
-  const activeTabLabel = activeTeamTab === 'leadership' ? 'Leadership' : 'Team'
+  const activeTabLabel =
+    activeTeamTab === 'leadership' ? teamSection.leadershipLabel : teamSection.staffLabel
   const selectedIndex = useMemo(
     () => displayedTeam.findIndex((member) => member.id === selectedId),
     [displayedTeam, selectedId],
@@ -125,7 +122,7 @@ export function ChariticsAboutPage({
   }, [displayedTeam, selectedId])
 
   const heroImage = intro.image || aboutPageRedesignImages.hero
-  const storyImage = intro.secondaryImage || aboutPageRedesignImages.story
+  const storyImage = story.image || aboutPageRedesignImages.story
 
   const toggleFlip = (idx: number) => {
     setFlippedCards((prev) => ({ ...prev, [idx]: !prev[idx] }))
@@ -186,10 +183,10 @@ export function ChariticsAboutPage({
             <div className="figma-story-copy">
               <div className="figma-kicker figma-kicker--blue">
                 <span className="figma-kicker__line" />
-                <span>OUR STORY</span>
+                <span>{story.eyebrow.toUpperCase()}</span>
               </div>
-              <h2>{story.growth.title}</h2>
-              <p>{story.growth.body}</p>
+              <h2>{story.title}</h2>
+              <p>{story.body}</p>
             </div>
             <div
               className="figma-story-media figma-story-media--redesign"
@@ -227,10 +224,10 @@ export function ChariticsAboutPage({
         <div className="figma-section-head figma-section-head--left">
           <div className="figma-kicker figma-kicker--blue">
             <span className="figma-kicker__line" />
-            <span>CORE VALUES</span>
+            <span>{coreValuesSection.eyebrow.toUpperCase()}</span>
           </div>
-          <h2>The principles that guide everything we do.</h2>
-          <p className="figma-subtitle">Click any value to reveal its meaning.</p>
+          <h2>{coreValuesSection.title}</h2>
+          <p className="figma-subtitle">{coreValuesSection.hint}</p>
         </div>
 
         <MotionReveal className="figma-values-grid figma-values-grid--redesign" stagger>
@@ -249,7 +246,10 @@ export function ChariticsAboutPage({
                   tabIndex={0}
                 >
                   <div className="figma-value-proto__inner">
-                    <div className="figma-value-proto__face figma-value-proto__face--front" style={{ background: accent }}>
+                    <div
+                      className="figma-value-proto__face figma-value-proto__face--front"
+                      style={{ background: accent }}
+                    >
                       <span className="figma-value-proto__num">{val.num}</span>
                       <h3 className="figma-value-proto__title">{val.title}</h3>
                       <span className="figma-value-proto__line" />
@@ -271,11 +271,8 @@ export function ChariticsAboutPage({
         <div className="epl-new-shell">
           <div className="figma-about-team__head">
             <div>
-              <h2>The People Behind EPL Ghana</h2>
-              <p className="figma-about-team__intro">
-                Meet the dedicated board members, directors, and coordinators guiding our mission
-                and supporting our Fellows every day.
-              </p>
+              <h2>{teamSection.title}</h2>
+              <p className="figma-about-team__intro">{teamSection.intro}</p>
             </div>
             <div className="figma-about-team__tabs">
               <button
@@ -286,7 +283,7 @@ export function ChariticsAboutPage({
                 }}
                 type="button"
               >
-                Leadership
+                {teamSection.leadershipLabel}
               </button>
               <button
                 className={`figma-about-team__tab${activeTeamTab === 'team' ? ' is-active' : ''}`}
@@ -296,7 +293,7 @@ export function ChariticsAboutPage({
                 }}
                 type="button"
               >
-                Team
+                {teamSection.staffLabel}
               </button>
             </div>
           </div>
@@ -366,8 +363,8 @@ export function ChariticsAboutPage({
           <PartnerLogoMarquee items={partners} />
 
           <div className="figma-about-partners__cta">
-            <Link className="figma-about-partners__btn" href="/community/partners">
-              Partner With Us <span aria-hidden>→</span>
+            <Link className="figma-about-partners__btn" href={partner.ctaHref}>
+              {partner.ctaLabel} <span aria-hidden>→</span>
             </Link>
           </div>
         </div>

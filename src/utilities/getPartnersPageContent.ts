@@ -18,8 +18,6 @@ export type PartnersPageContent = {
     ctaLabel: string
     ctaHref: string
     image: string
-    secondaryImage: string
-    stats: { value: string; label: string }[]
   }
   collaboration: {
     eyebrow: string
@@ -36,25 +34,17 @@ export type PartnersPageContent = {
     title: string
     intro: string
     learnMoreLabel: string
-    closeLabel: string
     highlightsLabel: string
     categories: PartnerCategory[]
   }
   network: {
-    eyebrow: string
     title: string
     intro: string
   }
   partners: {
-    eyebrow: string
-    title: string
-    intro: string
     items: PartnerEntry[]
   }
   partnerOrganizations: {
-    eyebrow: string
-    title: string
-    intro: string
     items: PartnerEntry[]
   }
   form: {
@@ -62,12 +52,6 @@ export type PartnersPageContent = {
     title: string
     description: string
     submitLabel: string
-  }
-  cta: {
-    title: string
-    description: string
-    ctaLabel: string
-    ctaHref: string
   }
 }
 
@@ -91,18 +75,13 @@ function mapPartnerDoc(doc: Partner): PartnerEntry {
 }
 
 /**
- * Our Partners page: static copy from Pages → partnersPage; partner cards from
- * the Partners collection (strategic + host groups) with config fallback.
+ * Partners page: static copy from Pages → partnersPage; marquee logos from
+ * the Partners collection (strategic + host) with config fallback.
  */
 export async function getPartnersPageContent(): Promise<PartnersPageContent> {
   const d = partnersPageContent
   const page = await getPage('/community/partners')
   const cms = ((page as Record<string, any> | null)?.partnersPage ?? {}) as Record<string, any>
-
-  const heroStats =
-    Array.isArray(cms.heroStats) && cms.heroStats.length
-      ? cms.heroStats.map((s: any) => ({ value: s?.value ?? '', label: s?.label ?? '' }))
-      : d.hero.stats
 
   const benefits: PartnerBenefit[] =
     Array.isArray(cms.collabBenefits) && cms.collabBenefits.length
@@ -159,8 +138,6 @@ export async function getPartnersPageContent(): Promise<PartnersPageContent> {
       ctaLabel: txt(cms.heroCtaLabel, d.hero.ctaLabel),
       ctaHref: txt(cms.heroCtaUrl, d.hero.ctaHref),
       image: img(cms.heroImage, d.hero.image),
-      secondaryImage: img(cms.heroSecondaryImage, d.hero.secondaryImage),
-      stats: heroStats,
     },
     collaboration: {
       eyebrow: txt(cms.collabEyebrow, d.collaboration.eyebrow),
@@ -168,8 +145,7 @@ export async function getPartnersPageContent(): Promise<PartnersPageContent> {
       lead: txt(cms.collabLead, d.collaboration.lead),
       benefits,
       highlightValue: txt(cms.collabHighlightValue, d.collaboration.highlightValue),
-      // Keep Advancement (not Retention) even if CMS still has the old label.
-      highlightTitle: d.collaboration.highlightTitle,
+      highlightTitle: txt(cms.collabHighlightTitle, d.collaboration.highlightTitle),
       highlightText: txt(cms.collabHighlightText, d.collaboration.highlightText),
       image: img(cms.collabImage, d.collaboration.image),
     },
@@ -178,25 +154,17 @@ export async function getPartnersPageContent(): Promise<PartnersPageContent> {
       title: txt(cms.ecosystemTitle, d.ecosystem.title),
       intro: txt(cms.ecosystemIntro, d.ecosystem.intro),
       learnMoreLabel: txt(cms.ecosystemLearnMoreLabel, d.ecosystem.learnMoreLabel),
-      closeLabel: txt(cms.ecosystemCloseLabel, d.ecosystem.closeLabel),
       highlightsLabel: txt(cms.ecosystemHighlightsLabel, d.ecosystem.highlightsLabel),
       categories,
     },
     network: {
-      eyebrow: txt(cms.networkEyebrow, d.network.eyebrow),
       title: txt(cms.networkTitle, d.network.title),
       intro: txt(cms.networkIntro, d.network.intro),
     },
     partners: {
-      eyebrow: txt(cms.strategicEyebrow, d.partners.eyebrow),
-      title: txt(cms.strategicTitle, d.partners.title),
-      intro: txt(cms.strategicIntro, d.partners.intro),
       items: strategicItems,
     },
     partnerOrganizations: {
-      eyebrow: txt(cms.hostEyebrow, d.partnerOrganizations.eyebrow),
-      title: txt(cms.hostTitle, d.partnerOrganizations.title),
-      intro: txt(cms.hostIntro, d.partnerOrganizations.intro),
       items: hostItems,
     },
     form: {
@@ -204,12 +172,6 @@ export async function getPartnersPageContent(): Promise<PartnersPageContent> {
       title: txt(cms.formTitle, d.form.title),
       description: txt(cms.formDescription, d.form.description),
       submitLabel: txt(cms.formSubmitLabel, d.form.submitLabel),
-    },
-    cta: {
-      title: txt(cms.ctaTitle, d.cta.title),
-      description: txt(cms.ctaDescription, d.cta.description),
-      ctaLabel: txt(cms.ctaLabel, d.cta.ctaLabel),
-      ctaHref: txt(cms.ctaUrl, d.cta.ctaHref),
     },
   }
 }

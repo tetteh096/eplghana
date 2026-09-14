@@ -160,8 +160,11 @@ export function ChariticsHomeHero({ image, images, slides: slidesProp }: Chariti
           <Link className="epl-new-hero__btn-primary" href={active.ctaHref || '/get-involved'}>
             {active.ctaLabel || 'Get Involved'}
           </Link>
-          <Link className="epl-new-hero__btn-secondary" href="/about">
-            Learn More <span aria-hidden>→</span>
+          <Link
+            className="epl-new-hero__btn-secondary"
+            href={active.secondaryCtaHref || '/about'}
+          >
+            {active.secondaryCtaLabel || 'Learn More'} <span aria-hidden>→</span>
           </Link>
         </div>
 

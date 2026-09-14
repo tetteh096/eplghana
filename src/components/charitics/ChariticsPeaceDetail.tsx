@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
+import type { ReactNode } from 'react'
 
 import { MotionReveal } from '@/components/charitics/MotionReveal'
 import type { PeaceProjectContent } from '@/utilities/getPeaceProjectContent'
@@ -22,29 +23,29 @@ const fadeUp = {
   },
 }
 
+/** Renders plain text with optional **bold** segments. */
+function withInlineBold(text: string): ReactNode[] {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g)
+  return parts.map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**') && part.length > 4) {
+      return <strong key={i}>{part.slice(2, -2)}</strong>
+    }
+    return part
+  })
+}
+
 function AboutParagraph({ paragraph, index }: { paragraph: string; index: number }) {
-  if (index === 0) {
-    return (
-      <p className="figma-wotr-about__paragraph figma-wotr-about__paragraph--lead">
-        The P.E.A.C.E Fellows Project is a 12-month initiative that engages and trains{' '}
-        <strong>100 public sector and security professionals</strong> via online symposiums in
-        early warning, conflict de-escalation, and situational leadership.
-      </p>
-    )
-  }
-
-  if (index === 1) {
-    return (
-      <p className="figma-wotr-about__paragraph">
-        From the broader cohort,{' '}
-        <strong>25 high-performing entry-level professionals</strong> (at least 50% women) working
-        in the Ministry of Defense, Ministry of Interior, Ministry of Local Government, and border
-        agencies are selected for practical in-person human security training.
-      </p>
-    )
-  }
-
-  return <p className="figma-wotr-about__paragraph">{paragraph}</p>
+  return (
+    <p
+      className={
+        index === 0
+          ? 'figma-wotr-about__paragraph figma-wotr-about__paragraph--lead'
+          : 'figma-wotr-about__paragraph'
+      }
+    >
+      {withInlineBold(paragraph)}
+    </p>
+  )
 }
 
 export function ChariticsPeaceDetail({ content }: ChariticsPeaceDetailProps) {
@@ -82,9 +83,7 @@ export function ChariticsPeaceDetail({ content }: ChariticsPeaceDetailProps) {
               {hero.title}
             </motion.h1>
             <motion.p className="figma-wotr-hero__lead" variants={fadeUp}>
-              <strong>Professionals Engaged Against Conflict &amp; Endangerment</strong>
-              {' — '}
-              {hero.lead.replace(/^Professionals Engaged Against Conflict & Endangerment — /i, '')}
+              {withInlineBold(hero.lead)}
             </motion.p>
             <motion.div variants={fadeUp}>
               <Link className="figma-wotr-hero__cta" href={hero.ctaHref}>

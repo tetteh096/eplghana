@@ -23,23 +23,28 @@ const fadeUp = {
   },
 }
 
-function AboutParagraph({ paragraph }: { paragraph: string }) {
-  const isIntro =
-    paragraph.includes('Co-Impact') && paragraph.includes('Office of the Head of Civil Service')
+const EMPHASIS_NAMES = ['Co-Impact', 'Office of the Head of Civil Service (OHCS)'] as const
 
-  if (isIntro) {
-    return (
-      <p className="figma-wotr-about__paragraph figma-wotr-about__paragraph--lead">
-        Launched in 2024 with support from <strong>Co-Impact</strong> in partnership with the{' '}
-        <strong>Office of the Head of Civil Service (OHCS)</strong>, Women on the Rise is a systemic
-        reform initiative.
-      </p>
-    )
-  }
+/** Render CMS paragraphs as-is; bold known partner names only when present in the text. */
+function AboutParagraph({ paragraph }: { paragraph: string }) {
+  const pattern = new RegExp(`(${EMPHASIS_NAMES.map(escapeRegExp).join('|')})`, 'g')
+  const parts = paragraph.split(pattern)
 
   return (
-    <p className="figma-wotr-about__paragraph">{paragraph}</p>
+    <p className="figma-wotr-about__paragraph">
+      {parts.map((part, i) =>
+        (EMPHASIS_NAMES as readonly string[]).includes(part) ? (
+          <strong key={i}>{part}</strong>
+        ) : (
+          <span key={i}>{part}</span>
+        ),
+      )}
+    </p>
   )
+}
+
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
 export function ChariticsWotrDetail({
@@ -49,7 +54,7 @@ export function ChariticsWotrDetail({
   const { hero, aboutEyebrow, aboutTitle, aboutImage, whyItMatters, impact } = content
   const reduceMotion = useReducedMotion()
   const primaryHero = hero.images[0]
-  const aboutParagraphs = hero.description.split('\n\n').filter(Boolean)
+  const aboutParagraphs = hero.description.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean)
 
   return (
     <div className="figma-wotr-page">

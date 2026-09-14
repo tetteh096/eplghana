@@ -67,14 +67,6 @@ export const eplimContent = {
     ctaLabel: 'Support Elevated MINDS',
     ctaHref: '/donate',
   },
-  partnerCta: {
-    title: 'Partner on Elevated MINDS',
-    description:
-      'Work with EPL Ghana to equip JHS and SHS students with the career readiness, mentorship and pathway guidance they need at critical transition points.',
-    ctaLabel: 'Contact Us',
-    ctaHref: '/contact',
-    image: `${EPL_MEDIA}/2025/10/CSOE-32-1-scaled.jpg`,
-  },
 }
 
 export { ELEVATED_MINDS_SUMMARY }

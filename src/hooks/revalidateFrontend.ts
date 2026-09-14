@@ -75,14 +75,17 @@ export const revalidatePublicSite: CollectionAfterChangeHook = ({ doc, collectio
       break
     case 'partners':
       safeRevalidatePath('/community/partners')
+      safeRevalidatePath('/about')
       break
     case 'team':
       safeRevalidatePath('/about/team')
+      safeRevalidatePath('/about')
       break
     case 'publications':
       safeRevalidatePath('/knowledge-products')
       safeRevalidatePath('/knowledge-products/annual-reports')
       safeRevalidatePath('/knowledge-products/newsletter')
+      safeRevalidatePath('/impact')
       break
     case 'testimonials':
       safeRevalidatePath('/')

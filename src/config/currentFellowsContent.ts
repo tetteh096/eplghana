@@ -21,7 +21,6 @@ export const currentFellowsPageContent = {
     lead:
       'Discover our active Fellows currently driving public administration across ministries and learn about our 200+ strong alumni body (EPLAN).',
     image: 'https://eplghana.org/wp-content/uploads/2025/10/CSOE-45-scaled.jpg',
-    secondaryImage: 'https://eplghana.org/wp-content/uploads/2025/10/CSOE-48-1024x683.jpg',
     stats: [
       { value: '8', label: 'Cohorts' },
       { value: '200+', label: 'Fellows' },
@@ -50,6 +49,7 @@ export const currentFellowsPageContent = {
     showLessLabel: 'Show Less',
     emptyStateText: 'No fellows match your search criteria.',
   },
+  /** Seed-only featured bios used by seedFellows; not rendered on the live page. */
   highlights: [
     {
       name: 'Rashida Sibawei',
@@ -68,12 +68,6 @@ export const currentFellowsPageContent = {
       photo: 'https://eplghana.org/wp-content/uploads/2025/10/CSP20-683x1024.jpeg',
     },
   ],
-  cohort: {
-    label: 'Cohort VII Fellows',
-    count: 42,
-    description:
-      'Cohort VII is embedded across ministries, commissions, and public agencies, driving integrity and innovation where it matters most.',
-  },
   eplanPromo: {
     eyebrow: 'Lifelong Leadership',
     title: 'Emerging Public Leaders Alumni Network (EPLAN)',
@@ -95,13 +89,6 @@ export const currentFellowsPageContent = {
     primaryHref: '/donate',
     secondaryLabel: 'Get in Touch',
     secondaryHref: '/contact',
-  },
-  cta: {
-    title: 'Create Your Journey',
-    body: 'Learn more about the Public Service Fellowship and join the next cohort of leaders transforming governance.',
-    ctaLabel: 'Learn More',
-    ctaHref: '/projects/public-service-fellowship',
-    image: 'https://eplghana.org/wp-content/uploads/2025/10/WhatsApp-Image-2025-10-27-at-10.19.41-AM-e1761750334208.jpeg',
   },
   fellows: [
   {

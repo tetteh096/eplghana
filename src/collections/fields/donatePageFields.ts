@@ -2,7 +2,10 @@ import type { Field } from 'payload'
 
 import { donatePageContent as d } from '@/config/donatePageContent'
 
-/** Donate / Support page copy and giving details. */
+/**
+ * CMS fields for the live Donate page (`/donate`).
+ * MoMo options: MTN only by default — duplicate the MTN row in CMS to add more networks.
+ */
 export const donatePageFields: Field[] = [
   {
     type: 'group',
@@ -11,7 +14,7 @@ export const donatePageFields: Field[] = [
     admin: {
       condition: (data) => data?.slug === '/donate',
       description:
-        'Hero, why support, bank / MoMo / card details, support tiers, and pledge form labels.',
+        'Edits the live Donate page: Hero, Why Give, Ways to Give (card / MoMo / bank), Impact tiers, Questions, and Pledge form.',
     },
     fields: [
       {
@@ -30,7 +33,7 @@ export const donatePageFields: Field[] = [
       },
       {
         type: 'collapsible',
-        label: 'Why support matters',
+        label: 'Why Give',
         fields: [
           { name: 'whyEyebrow', type: 'text', defaultValue: d.why.eyebrow },
           { name: 'whyTitle', type: 'text', defaultValue: d.why.title },
@@ -47,67 +50,78 @@ export const donatePageFields: Field[] = [
       },
       {
         type: 'collapsible',
-        label: 'Ways to give',
+        label: 'Ways to Give',
         fields: [
           { name: 'waysEyebrow', type: 'text', defaultValue: d.ways.eyebrow },
           { name: 'waysTitle', type: 'text', defaultValue: d.ways.title },
-          { name: 'bankCode', type: 'text', defaultValue: d.ways.bank.code },
-          { name: 'bankTitle', type: 'text', defaultValue: d.ways.bank.title },
-          { name: 'bankDescription', type: 'textarea', defaultValue: d.ways.bank.description },
-          { name: 'bankAccountName', type: 'text', defaultValue: d.ways.bank.accountName },
-          { name: 'bankAccountGhs', type: 'text', defaultValue: d.ways.bank.accountNumberGhs },
-          { name: 'bankAccountUsd', type: 'text', defaultValue: d.ways.bank.accountNumberUsd },
-          { name: 'bankName', type: 'text', defaultValue: d.ways.bank.bankName },
-          { name: 'bankBranch', type: 'text', defaultValue: d.ways.bank.branch },
-          { name: 'bankSwift', type: 'text', defaultValue: d.ways.bank.swift },
-          { name: 'bankSortCode', type: 'text', defaultValue: d.ways.bank.sortCode },
-          { name: 'bankNote', type: 'text', defaultValue: d.ways.bank.note },
-          { name: 'momoCode', type: 'text', defaultValue: d.ways.momo.code },
-          { name: 'momoTitle', type: 'text', defaultValue: d.ways.momo.title },
-          { name: 'momoDescription', type: 'textarea', defaultValue: d.ways.momo.description },
-          { name: 'momoNote', type: 'text', defaultValue: d.ways.momo.note },
-          { name: 'momoLogo', type: 'text', defaultValue: d.ways.momo.logo },
+          { name: 'waysIntro', type: 'textarea', defaultValue: d.ways.intro },
+          { name: 'transferLabel', type: 'text', defaultValue: d.ways.transferLabel },
           {
-            name: 'momoOptions',
-            type: 'array',
-            defaultValue: d.ways.momo.options,
+            type: 'collapsible',
+            label: 'Online / Card (Paystack)',
             fields: [
-              { name: 'title', type: 'text', required: true },
-              { name: 'subtitle', type: 'text' },
-              { name: 'name', type: 'text', required: true },
-              { name: 'detail', type: 'text', required: true },
-              { name: 'detailLabel', type: 'text' },
-              { name: 'note', type: 'text' },
-              { name: 'badge', type: 'text', required: true },
-              { name: 'logo', type: 'text' },
+              { name: 'cardStatusLabel', type: 'text', defaultValue: d.ways.card.statusLabel },
+              { name: 'cardCode', type: 'text', defaultValue: d.ways.card.code },
+              { name: 'cardTitle', type: 'text', defaultValue: d.ways.card.title },
+              { name: 'cardDescription', type: 'textarea', defaultValue: d.ways.card.description },
+              { name: 'cardCtaLabel', type: 'text', defaultValue: d.ways.card.ctaLabel },
+              { name: 'cardCtaUrl', type: 'text', defaultValue: d.ways.card.ctaHref },
+            ],
+          },
+          {
+            type: 'collapsible',
+            label: 'Mobile Money options',
+            admin: {
+              description:
+                'Default is MTN only. Duplicate the MTN row and edit title/detail/logo to add Telecel, AT Money, etc.',
+            },
+            fields: [
               {
-                name: 'logoTone',
-                type: 'select',
-                options: [
-                  { label: 'MoMo', value: 'momo' },
-                  { label: 'Telecel', value: 'telecel' },
-                  { label: 'AT Money', value: 'at' },
+                name: 'momoOptions',
+                type: 'array',
+                labels: { singular: 'MoMo option', plural: 'MoMo options' },
+                defaultValue: d.ways.momo.options,
+                fields: [
+                  { name: 'title', type: 'text', required: true },
+                  { name: 'subtitle', type: 'text' },
+                  { name: 'name', type: 'text', required: true, label: 'Merchant name' },
+                  { name: 'detail', type: 'text', required: true, label: 'ID / number' },
+                  { name: 'detailLabel', type: 'text', label: 'Detail label (e.g. Merchant ID)' },
+                  { name: 'badge', type: 'text', required: true },
+                  {
+                    name: 'logo',
+                    type: 'text',
+                    admin: {
+                      description: 'Public path, e.g. /brands/mtn-momo-mark.png',
+                    },
+                  },
                 ],
               },
             ],
           },
-          { name: 'cardCode', type: 'text', defaultValue: d.ways.card.code },
-          { name: 'cardTitle', type: 'text', defaultValue: d.ways.card.title },
-          { name: 'cardDescription', type: 'textarea', defaultValue: d.ways.card.description },
-          { name: 'cardStatusLabel', type: 'text', defaultValue: d.ways.card.statusLabel },
-          { name: 'cardAccepted', type: 'text', defaultValue: d.ways.card.acceptedCards },
-          { name: 'cardCurrencies', type: 'text', defaultValue: d.ways.card.currencies },
-          { name: 'cardCtaLabel', type: 'text', defaultValue: d.ways.card.ctaLabel },
-          { name: 'cardCtaUrl', type: 'text', defaultValue: d.ways.card.ctaHref },
+          {
+            type: 'collapsible',
+            label: 'Bank transfer (GCB)',
+            fields: [
+              { name: 'bankTitle', type: 'text', defaultValue: d.ways.bank.title },
+              { name: 'bankBranch', type: 'text', defaultValue: d.ways.bank.branch },
+              { name: 'bankAccountName', type: 'text', defaultValue: d.ways.bank.accountName },
+              { name: 'bankAccountGhs', type: 'text', defaultValue: d.ways.bank.accountNumberGhs },
+              { name: 'bankAccountUsd', type: 'text', defaultValue: d.ways.bank.accountNumberUsd },
+              { name: 'bankName', type: 'text', defaultValue: d.ways.bank.bankName },
+              { name: 'bankSwift', type: 'text', defaultValue: d.ways.bank.swift },
+              { name: 'bankSortCode', type: 'text', defaultValue: d.ways.bank.sortCode },
+              { name: 'bankNote', type: 'textarea', defaultValue: d.ways.bank.note },
+            ],
+          },
         ],
       },
       {
         type: 'collapsible',
-        label: 'Support tiers',
+        label: 'Your Impact (tiers)',
         fields: [
           { name: 'tiersEyebrow', type: 'text', defaultValue: d.tiers.eyebrow },
           { name: 'tiersTitle', type: 'text', defaultValue: d.tiers.title },
-          { name: 'tiersIntro', type: 'textarea', defaultValue: d.tiers.intro },
           {
             name: 'tierItems',
             type: 'array',
@@ -132,6 +146,26 @@ export const donatePageFields: Field[] = [
       },
       {
         type: 'collapsible',
+        label: 'Questions band',
+        fields: [
+          { name: 'questionsTitle', type: 'text', defaultValue: d.questions.title },
+          { name: 'questionsText', type: 'textarea', defaultValue: d.questions.text },
+          { name: 'questionsPrimaryLabel', type: 'text', defaultValue: d.questions.primaryLabel },
+          { name: 'questionsPrimaryUrl', type: 'text', defaultValue: d.questions.primaryHref },
+          {
+            name: 'questionsSecondaryLabel',
+            type: 'text',
+            defaultValue: d.questions.secondaryLabel,
+          },
+          {
+            name: 'questionsSecondaryUrl',
+            type: 'text',
+            defaultValue: d.questions.secondaryHref,
+          },
+        ],
+      },
+      {
+        type: 'collapsible',
         label: 'Pledge form',
         fields: [
           { name: 'pledgeEyebrow', type: 'text', defaultValue: d.pledge.eyebrow },
@@ -143,6 +177,9 @@ export const donatePageFields: Field[] = [
           {
             name: 'pledgeChannels',
             type: 'array',
+            admin: {
+              description: 'Preferred giving channel dropdown options (no Telecel / AT by default).',
+            },
             defaultValue: d.pledge.channels.map((label) => ({ label })),
             fields: [{ name: 'label', type: 'text', required: true }],
           },
