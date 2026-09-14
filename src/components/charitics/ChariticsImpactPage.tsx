@@ -86,6 +86,7 @@ export function ChariticsImpactPage({ content }: ChariticsImpactPageProps) {
       : testimonials.items.filter((t) => t.category === activeCategory)
 
   const featuredStories = successStories.items.slice(0, 3)
+  const featuredCommunities = communityStories.items.slice(0, 4)
 
   return (
     <div className="figma-impact-page">
@@ -177,7 +178,7 @@ export function ChariticsImpactPage({ content }: ChariticsImpactPageProps) {
         </div>
 
         <MotionReveal className="figma-impact-communities__grid" stagger>
-          {communityStories.items.map((item) => (
+          {featuredCommunities.map((item) => (
             <MotionItem key={item.slug || item.num}>
               <Link className="figma-impact-community-card" href={item.href}>
                 {item.image ? (

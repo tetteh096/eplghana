@@ -20,7 +20,8 @@ export type DonateMomoOption = {
   note?: string
   badge: string
   logo: string
-  logoTone: 'momo' | 'telecel' | 'at'
+  /** CSS tone class suffix; use `momo` for MTN-style cards (duplicate MTN in CMS for more options). */
+  logoTone: 'momo'
 }
 
 export const donatePageContent = {
@@ -29,7 +30,6 @@ export const donatePageContent = {
     title: 'Support Our Mission',
     lead:
       'EPL Ghana depends on contributions from generous partners like you. Your gift helps develop ethical public leaders who strengthen Ghana’s institutions and serve the public good.',
-    // Option A: Future Leaders — wide cohort in service (fellows landscape)
     image: eplHomeImages.heroHome,
     primaryCtaLabel: 'Give Now',
     primaryCtaHref: '#ways-to-give',
@@ -83,7 +83,7 @@ export const donatePageContent = {
     momo: {
       code: 'Mobile Money',
       title: 'Mobile Money',
-      description: 'Send via MTN MoMo, Telecel Cash, or AT Money.',
+      description: 'Send via MTN MoMo.',
       note: 'Confirm the recipient name before authorizing payment.',
       logo: '/brands/mtn-momo-mark.png',
       options: [
@@ -96,26 +96,6 @@ export const donatePageContent = {
           badge: 'MTN MoMo',
           logo: '/brands/mtn-momo-mark.png',
           logoTone: 'momo',
-        },
-        {
-          title: 'Telecel Cash',
-          subtitle: 'Send via Telecel Cash',
-          name: 'Emerging Public Leaders of Ghana',
-          detail: '881204',
-          detailLabel: 'Till Number',
-          badge: 'Telecel Cash',
-          logo: '/telecel.png',
-          logoTone: 'telecel',
-        },
-        {
-          title: 'AT Money',
-          subtitle: 'Send via AT Money',
-          name: 'Emerging Public Leaders of Ghana',
-          detail: '026 555 1234',
-          detailLabel: 'MoMo Number',
-          badge: 'AT Money',
-          logo: '/AT-Money-logo.webp',
-          logoTone: 'at',
         },
       ] satisfies DonateMomoOption[],
     },
@@ -202,8 +182,6 @@ export const donatePageContent = {
       'Bank Transfer (GCB GHS)',
       'Bank Transfer (GCB USD $)',
       'MTN MoMo',
-      'Telecel Cash',
-      'AT Money',
       'Cheque / In-Person',
       'International Wire',
     ],

@@ -3,6 +3,8 @@ import { eplHomeImages, EPL_MEDIA } from '@/config/eplMedia'
 export type HeroImageSlide = {
   ctaHref: string
   ctaLabel: string
+  secondaryCtaHref?: string
+  secondaryCtaLabel?: string
   description: string
   image: string
   subtitle: string
@@ -22,6 +24,8 @@ export const heroImageSlides: HeroImageSlide[] = [
       'We train ethical, smart, and action-driven young leaders to improve government institutions and serve Ghana.',
     ctaLabel: 'Get Involved',
     ctaHref: '/get-involved',
+    secondaryCtaLabel: 'Learn More',
+    secondaryCtaHref: '/about',
     image: eplHomeImages.heroHome,
     thumb: `${EPL_MEDIA}/2025/07/CSG-1024x683.jpg`,
   },
@@ -33,6 +37,8 @@ export const heroImageSlides: HeroImageSlide[] = [
       'We prepare talented youth to enter the civil service, solve real problems, and make public institutions work for everyone.',
     ctaLabel: 'Get Involved',
     ctaHref: '/get-involved',
+    secondaryCtaLabel: 'Learn More',
+    secondaryCtaHref: '/about',
     image: eplHomeImages.projects['women-on-the-rise'],
     thumb: `${EPL_MEDIA}/2025/11/LEMA25-0447-1024x628.jpg`,
   },
@@ -44,6 +50,8 @@ export const heroImageSlides: HeroImageSlide[] = [
       'We place skilled, principled young professionals inside government to make public services faster, fairer, and more reliable.',
     ctaLabel: 'Get Involved',
     ctaHref: '/get-involved',
+    secondaryCtaLabel: 'Learn More',
+    secondaryCtaHref: '/about',
     image: `${EPL_MEDIA}/2023/12/MG_0422-scaled.jpg`,
     thumb: `${EPL_MEDIA}/2023/12/MG_0422-768x512.jpg`,
   },

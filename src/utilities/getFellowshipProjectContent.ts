@@ -11,7 +11,6 @@ import { toPlain } from '@/utilities/toPlain'
 export type FellowshipStep = {
   title: string
   description: string
-  image: string
 }
 
 export type FellowshipProjectContent = {
@@ -19,50 +18,32 @@ export type FellowshipProjectContent = {
     eyebrow: string
     title: string
     description: string
-    images: [string, string]
-    badge: { value: string; label: string }
-    highlights: { value: string; label: string }[]
+    /** Background from project featured (wide) image */
+    image: string
     ctaLabel: string
     ctaHref: string
-    secondaryCtaLabel: string
-    secondaryCtaHref: string
-  }
-  impact: {
-    eyebrow: string
-    title: string
-    stats: { value: string; label: string }[]
-  }
-  whyJoin: {
-    eyebrow: string
-    title: string
-    items: { title: string; description: string; icon: string }[]
   }
   tabs: typeof publicServiceFellowshipContent.tabs
   programmeStructure: {
     sidebarEyebrow: string
     title: string
     intro: string
-    sidebarImage: string
-    steps: FellowshipStep[]
-  }
-  applicationProcess: {
-    eyebrow: string
-    title: string
-    intro: string
-    bannerImage: string
     steps: FellowshipStep[]
   }
   eligibility: {
     eyebrow: string
     title: string
-    intro: string
-    sidebarImage: string
     criteria: string[]
     documentsTitle: string
     documentsIntro: string
     documents: string[]
     documentsCtaLabel: string
-    inclusionNote: string
+  }
+  applicationProcess: {
+    eyebrow: string
+    title: string
+    intro: string
+    steps: FellowshipStep[]
   }
   applyCta: {
     eyebrow: string
@@ -70,45 +51,79 @@ export type FellowshipProjectContent = {
     description: string
     ctaLabel: string
     ctaHref: string
-    secondaryCtaLabel: string
-    secondaryCtaHref: string
-  }
-  partnerCta: {
-    title: string
-    ctaLabel: string
-    ctaHref: string
-    image: string
   }
 }
 
 export type { FellowshipTabId }
 
 const txt = (v: unknown, d: string) => (typeof v === 'string' && v.trim() ? v : d)
-const img = (v: unknown, d: string) => getMediaUrl(v as any) || d
 
 function mapSteps(
   cmsSteps: any[] | undefined,
-  defaults: FellowshipStep[],
-  fallbackImage: string,
+  defaults: { title: string; description: string }[],
 ): FellowshipStep[] {
-  if (!Array.isArray(cmsSteps) || cmsSteps.length === 0) return defaults
+  if (!Array.isArray(cmsSteps) || cmsSteps.length === 0) {
+    return defaults.map(({ title, description }) => ({ title, description }))
+  }
   return cmsSteps.map((step, index) => ({
-    title: step?.title ?? defaults[index]?.title ?? '',
-    description: step?.description ?? defaults[index]?.description ?? '',
-    image: img(step?.image, defaults[index]?.image ?? fallbackImage),
+    title: txt(step?.title, defaults[index]?.title ?? ''),
+    description: txt(step?.description, defaults[index]?.description ?? ''),
   }))
+}
+
+function fromDefaults(heroImage: string): FellowshipProjectContent {
+  const d = publicServiceFellowshipContent
+  return {
+    hero: {
+      eyebrow: d.hero.eyebrow,
+      title: d.hero.title,
+      description: d.hero.description,
+      image: heroImage,
+      ctaLabel: d.hero.ctaLabel,
+      ctaHref: d.hero.ctaHref,
+    },
+    tabs: d.tabs,
+    programmeStructure: {
+      sidebarEyebrow: d.programmeStructure.sidebarEyebrow,
+      title: d.programmeStructure.title,
+      intro: d.programmeStructure.intro,
+      steps: d.programmeStructure.steps.map(({ title, description }) => ({ title, description })),
+    },
+    eligibility: {
+      eyebrow: d.eligibility.eyebrow,
+      title: d.eligibility.title,
+      criteria: d.eligibility.criteria,
+      documentsTitle: d.eligibility.documentsTitle,
+      documentsIntro: d.eligibility.documentsIntro,
+      documents: d.eligibility.documents,
+      documentsCtaLabel: d.eligibility.documentsCtaLabel,
+    },
+    applicationProcess: {
+      eyebrow: d.applicationProcess.eyebrow,
+      title: d.applicationProcess.title,
+      intro: d.applicationProcess.intro,
+      steps: d.applicationProcess.steps.map(({ title, description }) => ({ title, description })),
+    },
+    applyCta: {
+      eyebrow: d.applyCta.eyebrow,
+      title: d.applyCta.title,
+      description: d.applyCta.description,
+      ctaLabel: d.applyCta.ctaLabel,
+      ctaHref: d.applyCta.ctaHref,
+    },
+  }
 }
 
 /**
  * Public Service Fellowship detail content from Projects → fellowshipDetail,
- * layered over config defaults. Primary hero image uses the project wide card image.
+ * layered over config defaults. Matches the live page sections only.
+ * Hero background uses the project wide card (featured) image.
  */
 export async function getFellowshipProjectContent(
   slug = 'public-service-fellowship',
 ): Promise<FellowshipProjectContent> {
   const d = publicServiceFellowshipContent
-  const cms: Record<string, any> = {}
-  let heroPrimary: string = d.hero.images[0]
+  const fallbackImage = d.hero.images[0]
 
   const payload = await tryGetPayload()
   if (payload) {
@@ -120,38 +135,11 @@ export async function getFellowshipProjectContent(
         where: { slug: { equals: slug } },
       })
       const raw = result.docs[0]
-      if (!raw) {
-        // Keep defaults when this slug isn't in CMS yet.
-      } else {
+      if (raw) {
         const project = toPlain(raw) as Project
-        if (project?.fellowshipDetail) {
-          Object.assign(cms, project.fellowshipDetail)
-        }
-        heroPrimary =
-          resolveProjectImage(slug, getMediaUrl(project?.featuredImage)) ?? d.hero.images[0]
-        const heroSecondary = img(cms.heroSecondaryImage, d.hero.images[1])
-
-        const highlights =
-          Array.isArray(cms.heroHighlights) && cms.heroHighlights.length
-            ? cms.heroHighlights.map((h: any) => ({
-                value: h?.value ?? '',
-                label: h?.label ?? '',
-              }))
-            : d.hero.highlights
-
-        const impactStats =
-          Array.isArray(cms.impactStats) && cms.impactStats.length
-            ? cms.impactStats.map((s: any) => ({ value: s?.value ?? '', label: s?.label ?? '' }))
-            : d.impact.stats
-
-        const whyJoinItems =
-          Array.isArray(cms.whyJoinItems) && cms.whyJoinItems.length
-            ? cms.whyJoinItems.map((item: any, idx: number) => ({
-                title: item?.title ?? '',
-                description: item?.description ?? '',
-                icon: item?.icon ?? d.whyJoin.items[idx]?.icon ?? 'flaticon-love',
-              }))
-            : d.whyJoin.items
+        const cms = (project?.fellowshipDetail ?? {}) as Record<string, any>
+        const heroImage =
+          resolveProjectImage(slug, getMediaUrl(project?.featuredImage)) ?? fallbackImage
 
         const criteria =
           Array.isArray(cms.eligibilityCriteria) && cms.eligibilityCriteria.length
@@ -168,53 +156,31 @@ export async function getFellowshipProjectContent(
             eyebrow: txt(cms.heroEyebrow, d.hero.eyebrow),
             title: txt(cms.heroTitle, d.hero.title),
             description: txt(cms.heroDescription, d.hero.description),
-            images: [heroPrimary, heroSecondary],
-            badge: {
-              value: txt(cms.badgeValue, d.hero.badge.value),
-              label: txt(cms.badgeLabel, d.hero.badge.label),
-            },
-            highlights,
+            image: heroImage,
             ctaLabel: txt(cms.heroCtaLabel, d.hero.ctaLabel),
             ctaHref: txt(cms.heroCtaUrl, d.hero.ctaHref),
-            secondaryCtaLabel: txt(cms.heroSecondaryCtaLabel, d.hero.secondaryCtaLabel),
-            secondaryCtaHref: txt(cms.heroSecondaryCtaUrl, d.hero.secondaryCtaHref),
-          },
-          impact: {
-            eyebrow: txt(cms.impactEyebrow, d.impact.eyebrow),
-            title: txt(cms.impactTitle, d.impact.title),
-            stats: impactStats,
-          },
-          whyJoin: {
-            eyebrow: txt(cms.whyJoinEyebrow, d.whyJoin.eyebrow),
-            title: txt(cms.whyJoinTitle, d.whyJoin.title),
-            items: whyJoinItems,
           },
           tabs: d.tabs,
           programmeStructure: {
             sidebarEyebrow: txt(cms.structureSidebarEyebrow, d.programmeStructure.sidebarEyebrow),
             title: txt(cms.structureTitle, d.programmeStructure.title),
             intro: txt(cms.structureIntro, d.programmeStructure.intro),
-            sidebarImage: img(cms.structureSidebarImage, d.programmeStructure.sidebarImage),
-            steps: mapSteps(cms.structureSteps, d.programmeStructure.steps, heroPrimary),
-          },
-          applicationProcess: {
-            eyebrow: txt(cms.processEyebrow, d.applicationProcess.eyebrow),
-            title: txt(cms.processTitle, d.applicationProcess.title),
-            intro: txt(cms.processIntro, d.applicationProcess.intro),
-            bannerImage: img(cms.processBannerImage, d.applicationProcess.bannerImage),
-            steps: mapSteps(cms.processSteps, d.applicationProcess.steps, heroPrimary),
+            steps: mapSteps(cms.structureSteps, d.programmeStructure.steps),
           },
           eligibility: {
             eyebrow: txt(cms.eligibilityEyebrow, d.eligibility.eyebrow),
             title: txt(cms.eligibilityTitle, d.eligibility.title),
-            intro: txt(cms.eligibilityIntro, d.eligibility.intro),
-            sidebarImage: img(cms.eligibilitySidebarImage, d.eligibility.sidebarImage),
             criteria,
             documentsTitle: txt(cms.documentsTitle, d.eligibility.documentsTitle),
             documentsIntro: txt(cms.documentsIntro, d.eligibility.documentsIntro),
             documents,
             documentsCtaLabel: txt(cms.documentsCtaLabel, d.eligibility.documentsCtaLabel),
-            inclusionNote: txt(cms.inclusionNote, d.eligibility.inclusionNote),
+          },
+          applicationProcess: {
+            eyebrow: txt(cms.processEyebrow, d.applicationProcess.eyebrow),
+            title: txt(cms.processTitle, d.applicationProcess.title),
+            intro: txt(cms.processIntro, d.applicationProcess.intro),
+            steps: mapSteps(cms.processSteps, d.applicationProcess.steps),
           },
           applyCta: {
             eyebrow: txt(cms.applyEyebrow, d.applyCta.eyebrow),
@@ -222,14 +188,6 @@ export async function getFellowshipProjectContent(
             description: txt(cms.applyDescription, d.applyCta.description),
             ctaLabel: txt(cms.applyCtaLabel, d.applyCta.ctaLabel),
             ctaHref: txt(cms.applyCtaUrl, d.applyCta.ctaHref),
-            secondaryCtaLabel: txt(cms.applySecondaryCtaLabel, d.applyCta.secondaryCtaLabel),
-            secondaryCtaHref: txt(cms.applySecondaryCtaUrl, d.applyCta.secondaryCtaHref),
-          },
-          partnerCta: {
-            title: txt(cms.partnerTitle, d.partnerCta.title),
-            ctaLabel: txt(cms.partnerCtaLabel, d.partnerCta.ctaLabel),
-            ctaHref: txt(cms.partnerCtaUrl, d.partnerCta.ctaHref),
-            image: img(cms.partnerImage, d.partnerCta.image),
           },
         }
       }
@@ -240,9 +198,5 @@ export async function getFellowshipProjectContent(
     }
   }
 
-  return {
-    ...d,
-    hero: { ...d.hero, images: [d.hero.images[0], d.hero.images[1]] },
-    programmeStructure: { ...d.programmeStructure },
-  }
+  return fromDefaults(fallbackImage)
 }

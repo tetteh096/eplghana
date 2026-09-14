@@ -15,11 +15,13 @@ type ChariticsProgrammeStackProps = {
 
 export function ChariticsProgrammeStack({
   eyebrow = 'Our Work',
+  title = 'Projects That Move\nPublic Service Forward',
   projects = [],
 }: ChariticsProgrammeStackProps) {
   const cards = resolveHomeProjects(projects.length ? projects : HOME_PROJECT_DEFAULTS)
   const featured = cards[0]
   const rest = cards.slice(1)
+  const titleLines = title.split(/\n/).map((line) => line.trim()).filter(Boolean)
 
   if (!featured) return null
 
@@ -32,9 +34,12 @@ export function ChariticsProgrammeStack({
             <span>{eyebrow}</span>
           </div>
           <h2 className="epl-home-projects__title">
-            Projects That Move
-            <br className="epl-home-projects__title-break" />
-            Public Service Forward
+            {titleLines.map((line, index) => (
+              <span key={`${line}-${index}`}>
+                {index > 0 ? <br className="epl-home-projects__title-break" /> : null}
+                {line}
+              </span>
+            ))}
           </h2>
         </MotionReveal>
 

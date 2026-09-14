@@ -111,7 +111,6 @@ const eplimDetail = {
   heroTitle: d.hero.title,
   heroLead: d.hero.lead,
   heroDescription: d.hero.description,
-  heroSecondaryImage: await importImage(d.hero.images[1], 'Elevated MINDS capacity'),
   heroCtaLabel: d.hero.ctaLabel,
   heroCtaUrl: d.hero.ctaHref,
   aboutEyebrow: d.aboutEyebrow,

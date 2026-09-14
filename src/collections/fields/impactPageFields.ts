@@ -4,7 +4,11 @@ import { impactPageContent } from '@/config/impactPageContent'
 
 const d = impactPageContent
 
-/** Editable Impact page copy (Pages → impactPage when slug is /impact). */
+/**
+ * CMS fields for the live Impact page (`/impact`).
+ * Matches ChariticsImpactPage: Hero → Glance → Success Stories → Community → Testimonials → Publications.
+ * Cards come from Fellows, Impact Interventions, and Publications collections.
+ */
 export const impactPageFields: Field[] = [
   {
     type: 'collapsible',
@@ -13,19 +17,24 @@ export const impactPageFields: Field[] = [
       { name: 'heroEyebrow', type: 'text', defaultValue: d.hero.eyebrow },
       { name: 'heroTitle', type: 'text', defaultValue: d.hero.title },
       { name: 'heroDescription', type: 'textarea', defaultValue: d.hero.description },
-      { name: 'heroImage', type: 'upload', relationTo: 'media', label: 'Hero image' },
+      {
+        name: 'heroImage',
+        type: 'upload',
+        relationTo: 'media',
+        label: 'Hero background image',
+      },
     ],
   },
   {
     type: 'collapsible',
-    label: 'Glance',
+    label: 'Impact at a Glance',
     fields: [
       { name: 'glanceEyebrow', type: 'text', defaultValue: d.glance.eyebrow },
-      { name: 'glanceTitle', type: 'text', defaultValue: d.glance.title },
       {
         name: 'glanceStats',
         type: 'array',
         labels: { singular: 'Stat', plural: 'Glance stats' },
+        maxRows: 4,
         defaultValue: d.glance.stats.map((s) => ({
           value: s.value,
           title: s.title,
@@ -33,8 +42,8 @@ export const impactPageFields: Field[] = [
         })),
         fields: [
           { name: 'value', type: 'text', required: true },
-          { name: 'title', type: 'text', required: true },
-          { name: 'desc', type: 'textarea', required: true },
+          { name: 'title', type: 'text', required: true, label: 'Label' },
+          { name: 'desc', type: 'textarea', required: true, label: 'Description' },
         ],
       },
     ],
@@ -44,38 +53,19 @@ export const impactPageFields: Field[] = [
     label: 'Success stories',
     admin: {
       description:
-        'Section headings here. Fellow cards are pulled from Fellows → tick “Featured on Impact page”. The list below is only a fallback when no fellows are featured.',
+        'Headings only. Cards come from Fellows → tick “Featured on Impact page” (and set Impact story).',
     },
     fields: [
       { name: 'successEyebrow', type: 'text', defaultValue: d.successStories.eyebrow },
       { name: 'successTitle', type: 'text', defaultValue: d.successStories.title },
-      {
-        name: 'successStories',
-        type: 'array',
-        labels: { singular: 'Story', plural: 'Success stories (fallback)' },
-        defaultValue: d.successStories.items.map((item) => ({
-          name: item.name,
-          role: item.role,
-          cohort: item.cohort,
-          image: undefined,
-          desc: item.desc,
-        })),
-        fields: [
-          { name: 'name', type: 'text', required: true },
-          { name: 'role', type: 'text', required: true },
-          { name: 'cohort', type: 'text', required: true },
-          { name: 'image', type: 'upload', relationTo: 'media' },
-          { name: 'desc', type: 'textarea', required: true },
-        ],
-      },
     ],
   },
   {
     type: 'collapsible',
-    label: 'Community',
+    label: 'Community / Grassroots',
     admin: {
       description:
-        'Section headings here. Intervention cards come from Impact Interventions (create & publish there). The list below is only a fallback when the collection is empty.',
+        'Headings and CTA. Cards come from the Impact Interventions collection (published).',
     },
     fields: [
       { name: 'communityEyebrow', type: 'text', defaultValue: d.communityStories.eyebrow },
@@ -87,37 +77,14 @@ export const impactPageFields: Field[] = [
       },
       { name: 'communityCtaLabel', type: 'text', defaultValue: d.communityStories.ctaLabel },
       { name: 'communityCtaUrl', type: 'text', defaultValue: d.communityStories.ctaUrl },
-      {
-        name: 'communityStories',
-        type: 'array',
-        labels: { singular: 'Story', plural: 'Community stories (fallback)' },
-        defaultValue: d.communityStories.items.map((item) => ({
-          num: item.num,
-          slug: item.slug,
-          region: item.region,
-          assembly: item.assembly,
-          title: item.title,
-          desc: item.desc,
-          body: item.body,
-        })),
-        fields: [
-          { name: 'num', type: 'text', required: true },
-          { name: 'slug', type: 'text' },
-          { name: 'region', type: 'text', required: true },
-          { name: 'assembly', type: 'text', required: true },
-          { name: 'title', type: 'text', required: true },
-          { name: 'desc', type: 'textarea', required: true },
-          { name: 'body', type: 'textarea' },
-        ],
-      },
     ],
   },
   {
     type: 'collapsible',
-    label: 'Testimonials',
+    label: 'Institutional voices (testimonials)',
     admin: {
       description:
-        'Section headings here. Quote cards are edited in this list (photo optional). Falls back to config defaults only when empty.',
+        'Quotes shown with All / Supervisors / Mentors / Partnered Institutions filters. Photo optional.',
     },
     fields: [
       { name: 'testimonialsEyebrow', type: 'text', defaultValue: d.testimonials.eyebrow },
@@ -160,10 +127,10 @@ export const impactPageFields: Field[] = [
   },
   {
     type: 'collapsible',
-    label: 'Publications',
+    label: 'Reports & publications',
     admin: {
       description:
-        'Section headings and fallback lists. Live report cards prefer the Publications collection (Annual / Impact Report and Research categories).',
+        'Headings and CTA labels only. Report/research cards come from the Publications collection.',
     },
     fields: [
       { name: 'publicationsEyebrow', type: 'text', defaultValue: d.publications.eyebrow },
@@ -175,41 +142,19 @@ export const impactPageFields: Field[] = [
       },
       { name: 'reportsHeading', type: 'text', defaultValue: d.publications.reportsHeading },
       { name: 'reportsCtaLabel', type: 'text', defaultValue: d.publications.reportsCtaLabel },
-      { name: 'reportsCtaUrl', type: 'text', defaultValue: d.publications.reportsCtaUrl },
       {
-        name: 'annualReports',
-        type: 'array',
-        labels: { singular: 'Report', plural: 'Annual reports' },
-        defaultValue: d.publications.reports.map((r) => ({
-          edition: r.edition,
-          title: r.title,
-          summary: r.summary,
-        })),
-        fields: [
-          { name: 'edition', type: 'text', required: true },
-          { name: 'title', type: 'text', required: true },
-          { name: 'summary', type: 'textarea', required: true },
-        ],
+        name: 'reportsCtaUrl',
+        type: 'text',
+        defaultValue: d.publications.reportsCtaUrl,
+        admin: { description: 'Fallback link when a report has no PDF file.' },
       },
       { name: 'researchHeading', type: 'text', defaultValue: d.publications.researchHeading },
       { name: 'researchCtaLabel', type: 'text', defaultValue: d.publications.researchCtaLabel },
-      { name: 'researchCtaUrl', type: 'text', defaultValue: d.publications.researchCtaUrl },
       {
-        name: 'researchStudies',
-        type: 'array',
-        labels: { singular: 'Study', plural: 'Research studies' },
-        defaultValue: d.publications.research.map((r) => ({
-          tag: r.tag,
-          title: r.title,
-          authorYear: r.authorYear,
-          summary: r.summary,
-        })),
-        fields: [
-          { name: 'tag', type: 'text', required: true },
-          { name: 'title', type: 'text', required: true },
-          { name: 'authorYear', type: 'text', required: true },
-          { name: 'summary', type: 'textarea', required: true },
-        ],
+        name: 'researchCtaUrl',
+        type: 'text',
+        defaultValue: d.publications.researchCtaUrl,
+        admin: { description: 'Fallback link when a study has no detail URL or file.' },
       },
     ],
   },

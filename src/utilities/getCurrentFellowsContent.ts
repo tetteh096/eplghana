@@ -10,36 +10,51 @@ import { getPage } from '@/utilities/getPage'
 import { tryGetPayload } from '@/utilities/payloadSafe'
 import { toPlain } from '@/utilities/toPlain'
 
-export type FellowHighlight = {
-  name: string
-  institution: string
-  title: string
-  body: string
-  photo: string
-}
+type StatItem = { value: string; label: string }
 
 export type CurrentFellowsPageContent = {
-  hero: (typeof currentFellowsPageContent)['hero']
-  directory: (typeof currentFellowsPageContent)['directory']
-  highlights: {
+  hero: {
     eyebrow: string
     title: string
-    items: FellowHighlight[]
+    lead: string
+    image: string
+    stats: StatItem[]
   }
-  cohort: {
-    label: string
-    count: number
-    description: string
+  directory: {
+    defaultCohort: string
+    cohortTabs: { label: string; value: string }[]
+    searchPlaceholder: string
+    sectorFilterLabel: string
+    defaultRoleLabel: string
+    initialVisibleCount: number
+    showMoreLabel: string
+    showLessLabel: string
+    emptyStateText: string
   }
-  eplanPromo: (typeof currentFellowsPageContent)['eplanPromo']
+  eplanPromo: {
+    eyebrow: string
+    title: string
+    intro: string
+    stats: StatItem[]
+    ctaLabel: string
+    ctaHref: string
+  }
   involve: (typeof currentFellowsPageContent)['involve']
-  cta: (typeof currentFellowsPageContent)['cta']
   fellows: CurrentFellow[]
 }
 
 const txt = (v: unknown, d: string) => (typeof v === 'string' && v.trim() ? v : d)
-const img = (v: unknown, d: string) => getMediaUrl(v as any) || d
 const num = (v: unknown, d: number) => (typeof v === 'number' && v > 0 ? v : d)
+
+function mapStats(raw: unknown, fallback: StatItem[]): StatItem[] {
+  if (!Array.isArray(raw) || !raw.length) return fallback.map((s) => ({ ...s }))
+  return raw
+    .map((s: any) => ({
+      value: txt(s?.value, ''),
+      label: txt(s?.label, ''),
+    }))
+    .filter((s) => s.value || s.label)
+}
 
 function fellowPhotoFallback(name: string, configPhoto?: string): string {
   if (configPhoto) return configPhoto
@@ -93,13 +108,12 @@ async function loadCohortTabs(
   return {
     tabs,
     defaultCohortId: defaultDoc ? String(defaultDoc.id) : tabs[0]?.value ?? '',
-    defaultDoc,
   }
 }
 
 /**
  * Current Fellows page: static copy from Pages → currentFellowsPage; directory
- * from the Fellows collection with config fallback.
+ * from Cohorts + Fellows collections with config fallback.
  */
 export async function getCurrentFellowsContent(): Promise<CurrentFellowsPageContent> {
   const d = currentFellowsPageContent
@@ -112,10 +126,8 @@ export async function getCurrentFellowsContent(): Promise<CurrentFellowsPageCont
     bio: '',
     featuredOnPage: false,
   }))
-  let highlights = d.highlights
   let cohortTabs = d.directory.cohortTabs
   let defaultCohort = d.directory.defaultCohort
-  let cohortBand = d.cohort
 
   const payload = await tryGetPayload()
   if (payload) {
@@ -123,13 +135,6 @@ export async function getCurrentFellowsContent(): Promise<CurrentFellowsPageCont
       const cohortData = await loadCohortTabs(payload, d.directory.cohortTabs)
       cohortTabs = cohortData.tabs
       defaultCohort = cohortData.defaultCohortId
-      if (cohortData.defaultDoc) {
-        cohortBand = {
-          label: cohortData.defaultDoc.title,
-          count: fellows.length,
-          description: cohortData.defaultDoc.description?.trim() || d.cohort.description,
-        }
-      }
 
       const result = await payload.find({
         collection: 'fellows',
@@ -144,42 +149,13 @@ export async function getCurrentFellowsContent(): Promise<CurrentFellowsPageCont
           const fallback = d.fellows.find((f) => f.name === doc.name)
           return mapFellowDoc(doc, fallback)
         })
-
-        const featured = fellows.filter((f) => f.featuredOnPage)
-        if (featured.length > 0) {
-          highlights = featured.map((f) => ({
-            name: f.name,
-            institution: f.institution,
-            title: f.highlightTitle || f.institution,
-            body: f.bio || '',
-            photo: f.photo,
-          }))
-        }
-
-        if (cohortData.defaultDoc) {
-          const defaultId = String(cohortData.defaultDoc.id)
-          cohortBand = {
-            ...cohortBand,
-            count: fellows.filter((f) => f.cohortId === defaultId).length || fellows.length,
-          }
-        }
       }
     } catch {
       // keep config fallback
     }
   }
 
-  const heroStats = d.hero.stats.map((s) => ({ value: s.value, label: s.label }))
-
-  const cohortTabsFinal =
-    cohortTabs.length > 0 ? cohortTabs : d.directory.cohortTabs
-
-  const eplanStats = d.eplanPromo.stats.map((s) => ({ value: s.value, label: s.label }))
-
-  const cohortCount =
-    typeof cms.cohortCount === 'number' && cms.cohortCount > 0
-      ? cms.cohortCount
-      : cohortBand.count
+  const cohortTabsFinal = cohortTabs.length > 0 ? cohortTabs : d.directory.cohortTabs
 
   const cmsHero =
     (await resolveMediaUrl(cms.heroImage, payload)) ||
@@ -194,8 +170,7 @@ export async function getCurrentFellowsContent(): Promise<CurrentFellowsPageCont
       title: txt(cms.heroTitle, d.hero.title),
       lead: txt(cms.heroLead, d.hero.lead),
       image: heroImage,
-      secondaryImage: img(cms.heroSecondaryImage, d.hero.secondaryImage),
-      stats: heroStats,
+      stats: mapStats(cms.heroStats, d.hero.stats),
     },
     directory: {
       defaultCohort,
@@ -208,21 +183,11 @@ export async function getCurrentFellowsContent(): Promise<CurrentFellowsPageCont
       showLessLabel: txt(cms.showLessLabel, d.directory.showLessLabel),
       emptyStateText: txt(cms.emptyStateText, d.directory.emptyStateText),
     },
-    highlights: {
-      eyebrow: txt(cms.highlightsEyebrow, 'Fellows Highlight'),
-      title: txt(cms.highlightsTitle, 'Leaders making impact'),
-      items: highlights,
-    },
-    cohort: {
-      label: txt(cms.cohortLabel, cohortBand.label),
-      count: cohortCount,
-      description: txt(cms.cohortDescription, cohortBand.description),
-    },
     eplanPromo: {
       eyebrow: txt(cms.eplanEyebrow, d.eplanPromo.eyebrow),
       title: txt(cms.eplanTitle, d.eplanPromo.title),
-      intro: d.eplanPromo.intro,
-      stats: eplanStats,
+      intro: txt(cms.eplanIntro, d.eplanPromo.intro),
+      stats: mapStats(cms.eplanStats, d.eplanPromo.stats),
       ctaLabel: txt(cms.eplanCtaLabel, d.eplanPromo.ctaLabel),
       ctaHref: txt(cms.eplanCtaUrl, d.eplanPromo.ctaHref),
     },
@@ -237,13 +202,6 @@ export async function getCurrentFellowsContent(): Promise<CurrentFellowsPageCont
       ),
       secondaryLabel: txt(cms.involveSecondaryLabel, d.involve.secondaryLabel),
       secondaryHref: txt(cms.involveSecondaryUrl, d.involve.secondaryHref),
-    },
-    cta: {
-      title: txt(cms.ctaTitle, d.cta.title),
-      body: txt(cms.ctaBody, d.cta.body),
-      ctaLabel: txt(cms.ctaLabel, d.cta.ctaLabel),
-      ctaHref: txt(cms.ctaUrl, d.cta.ctaHref),
-      image: img(cms.ctaImage, d.cta.image),
     },
     fellows,
   }

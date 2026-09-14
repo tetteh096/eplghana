@@ -9,6 +9,7 @@ type StatItem = {
 }
 
 type ChariticsHomeStatsProps = {
+  heading?: string
   stats: StatItem[]
 }
 
@@ -33,28 +34,34 @@ function parseStatValue(value: string) {
   }
 }
 
+function formatStat(target: number, decimals: number) {
+  return decimals > 0 ? target.toFixed(decimals) : String(Math.round(target))
+}
+
 function AnimatedStatValue({ value }: { value: string }) {
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true, margin: '-40px' })
   const reduceMotion = useReducedMotion()
   const { target, suffix, decimals } = parseStatValue(value)
-  const [display, setDisplay] = useState(() =>
-    decimals > 0 ? (0).toFixed(decimals) : '0',
-  )
+  // SSR / first paint show the real number (not 0). Animate when scrolled into view.
+  const [display, setDisplay] = useState(() => formatStat(target, decimals))
+  const hasAnimated = useRef(false)
 
   useEffect(() => {
-    if (!inView) return
+    if (!inView || hasAnimated.current) return
+    hasAnimated.current = true
 
     if (reduceMotion) {
-      setDisplay(decimals > 0 ? target.toFixed(decimals) : String(Math.round(target)))
+      setDisplay(formatStat(target, decimals))
       return
     }
 
+    setDisplay(formatStat(0, decimals))
     const controls = animate(0, target, {
       duration: COUNT_DURATION,
       ease: [0.16, 1, 0.3, 1],
       onUpdate: (latest) => {
-        setDisplay(decimals > 0 ? latest.toFixed(decimals) : String(Math.round(latest)))
+        setDisplay(formatStat(latest, decimals))
       },
     })
 
@@ -69,11 +76,14 @@ function AnimatedStatValue({ value }: { value: string }) {
   )
 }
 
-export function ChariticsHomeStats({ stats }: ChariticsHomeStatsProps) {
+export function ChariticsHomeStats({
+  heading = 'Impact Numbers',
+  stats,
+}: ChariticsHomeStatsProps) {
   return (
     <section aria-labelledby="epl-impact-numbers-heading" className="epl-new-stats-wrap">
       <h2 id="epl-impact-numbers-heading" className="epl-new-stats-heading">
-        Impact Numbers
+        {heading}
       </h2>
       <div className={`epl-new-stats${stats.length === 3 ? ' epl-new-stats--three' : ''}`}>
         {stats.map((stat) => (

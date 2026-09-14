@@ -7,9 +7,9 @@ import { womenOnTheRiseContent } from '../config/womenOnTheRiseContent'
 /**
  * Seeds Women on the Rise detail content into Projects → wotrDetail.
  *
- *   pnpm -C site payload run src/scripts/seedWotrDetail.ts
- *   pnpm -C site payload run src/scripts/seedWotrDetail.ts --force
- *   FORCE=1 pnpm -C site payload run src/scripts/seedWotrDetail.ts
+ *   pnpm payload run src/scripts/seedWotrDetail.ts
+ *   pnpm payload run src/scripts/seedWotrDetail.ts --force
+ *   FORCE=1 pnpm payload run src/scripts/seedWotrDetail.ts
  */
 console.log('[wotr-detail] starting; DB =', process.env.DATABASE_URL)
 const payload = await getPayload({ config })
@@ -72,8 +72,8 @@ if (!found.docs.length) {
 }
 
 const existing = found.docs[0]
-const detail = existing.wotrDetail as { heroSecondaryImage?: unknown } | undefined
-const alreadySeeded = Boolean(detail?.heroSecondaryImage)
+const detail = existing.wotrDetail as { aboutImage?: unknown; heroTitle?: unknown } | undefined
+const alreadySeeded = Boolean(detail?.aboutImage || detail?.heroTitle)
 if (alreadySeeded && !force) {
   console.log('[wotr-detail] already seeded, use --force to overwrite')
   process.exit(0)
@@ -83,86 +83,20 @@ const wotrDetail = {
   heroEyebrow: d.hero.eyebrow,
   heroTitle: d.hero.title,
   heroLead: d.hero.lead,
-  heroDescription: d.hero.description,
-  heroSecondaryImage: await importImage(d.hero.images[1], 'Women On The Rise programme'),
-  heroBadgeValue: 'Since 2024',
-  heroBadgeLabel: 'Gender-responsive public service',
-  heroPartners: d.hero.partners.map((name) => ({ name })),
-  heroHighlights: d.hero.highlights,
   heroCtaLabel: d.hero.ctaLabel,
   heroCtaUrl: d.hero.ctaHref,
-  heroSecondaryCtaLabel: d.hero.secondaryCtaLabel,
-  heroSecondaryCtaUrl: d.hero.secondaryCtaHref,
+  impactStats: d.impact.stats.map((stat) => ({
+    value: stat.value,
+    label: stat.label,
+  })),
   aboutEyebrow: d.aboutEyebrow,
   aboutTitle: d.aboutTitle,
+  heroDescription: d.hero.description,
   aboutImage: await importImage(d.aboutImage, 'Women On The Rise programme'),
-  whyItMattersEyebrow: d.whyItMatters.eyebrow,
-  whyItMattersTitle: d.whyItMatters.title,
   whyItMattersItems: d.whyItMatters.items.map((item) => ({
     title: item.title,
     description: item.description,
-    icon: item.icon,
   })),
-  impactEyebrow: 'Measurable change',
-  impactTitle: d.impact.title,
-  impactStats: await Promise.all(
-    d.impact.stats.map(async (stat) => ({
-      value: stat.value,
-      label: stat.label,
-      icon: await importImage(stat.icon, stat.label),
-    })),
-  ),
-  outcomesEyebrow: 'What we deliver',
-  outcomesTitle: d.outcomes.title,
-  outcomeItems: await Promise.all(
-    d.outcomes.items.map(async (item) => ({
-      title: item.title,
-      description: item.description,
-      image: await importImage(item.image, item.title),
-    })),
-  ),
-  keySuccessEyebrow: d.keySuccess.eyebrow,
-  keySuccessTitle: d.keySuccess.title,
-  keySuccessStories: await Promise.all(
-    d.keySuccess.stories.map(async (story) => ({
-      title: story.title,
-      paragraphs: story.paragraphs.map((text) => ({ text })),
-      imagePrimary: await importImage(story.images[0], story.title),
-      imageSecondary: story.images[1]
-        ? await importImage(story.images[1], `${story.title} accent`)
-        : null,
-    })),
-  ),
-  galleryEyebrow: 'RiwoCo in pictures',
-  galleryTitle: d.gallery.title,
-  galleryItems: await Promise.all(
-    d.gallery.items.map(async (item) => ({
-      image: await importImage(item.src, item.alt),
-      layout: item.layout,
-      alt: item.alt,
-    })),
-  ),
-  relatedArticlesEyebrow: d.relatedArticles.eyebrow,
-  relatedArticlesTitle: d.relatedArticles.title,
-  relatedArticlesItems: await Promise.all(
-    d.relatedArticles.items.map(async (item) => ({
-      title: item.title,
-      href: item.href,
-      image: item.image ? await importImage(item.image, item.title) : null,
-    })),
-  ),
-  involvedEyebrow: d.getInvolvedCta.eyebrow,
-  involvedTitle: d.getInvolvedCta.title,
-  involvedDescription: d.getInvolvedCta.description,
-  involvedCtaLabel: d.getInvolvedCta.ctaLabel,
-  involvedCtaUrl: d.getInvolvedCta.ctaHref,
-  involvedSecondaryCtaLabel: d.getInvolvedCta.secondaryCtaLabel,
-  involvedSecondaryCtaUrl: d.getInvolvedCta.secondaryCtaHref,
-  partnerTitle: d.partnerCta.title,
-  partnerDescription: d.partnerCta.description,
-  partnerCtaLabel: d.partnerCta.ctaLabel,
-  partnerCtaUrl: d.partnerCta.ctaHref,
-  partnerImage: await importImage(d.partnerCta.image, 'Partner with EPL Ghana'),
 }
 
 await payload.update({

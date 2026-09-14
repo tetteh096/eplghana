@@ -33,12 +33,6 @@ export const partnersPageContent = {
     ctaLabel: 'Start a Conversation',
     ctaHref: '#enquiry',
     image: `${EPL_MEDIA}/2025/11/LEMA25-0486-1024x682.jpg`,
-    secondaryImage: `${EPL_MEDIA}/2025/10/IMG_7245-scaled.jpg`,
-    stats: [
-      { value: '4', label: 'Strategic funders & collaborators' },
-      { value: '15+', label: 'Government host institutions' },
-      { value: '3', label: 'Flagship fellowship programmes' },
-    ],
   },
   collaboration: {
     eyebrow: 'Strategic Collaboration',
@@ -78,7 +72,6 @@ export const partnersPageContent = {
     title: 'Who Can Partner With Us',
     intro: 'Click any category to explore tailored ways we can work together.',
     learnMoreLabel: 'Learn More',
-    closeLabel: 'Close Details',
     highlightsLabel: 'Key Collaboration Areas',
     categories: [
       {
@@ -132,15 +125,10 @@ export const partnersPageContent = {
     ] satisfies PartnerCategory[],
   },
   network: {
-    eyebrow: 'Our Network',
     title: 'Our Partners & Supporters',
     intro: 'The organisations who make the EPL Ghana mission possible.',
   },
   partners: {
-    eyebrow: 'Strategic Partners',
-    title: 'Partners',
-    intro:
-      'Funders and collaborators who invest in fellowship programmes, gender equity, and peacebuilding across Ghana’s public sector.',
     items: [
       {
         id: 'mastercard-foundation',
@@ -179,10 +167,6 @@ export const partnersPageContent = {
     ] satisfies PartnerEntry[],
   },
   partnerOrganizations: {
-    eyebrow: 'Host Institutions',
-    title: 'Partner Organizations',
-    intro:
-      'Government ministries, agencies, and commissions where EPL fellows serve and where we deliver capacity-building and gender-responsive reforms.',
     items: [
       {
         id: 'ohcs',
@@ -261,12 +245,5 @@ export const partnersPageContent = {
     title: "Let's Work Together",
     description: 'Complete the form and our partnerships team will be in touch.',
     submitLabel: 'Send Enquiry',
-  },
-  cta: {
-    title: 'Interested in partnering with EPL Ghana?',
-    description:
-      'Whether you represent a development partner, government agency, or organisation committed to public service excellence, we would love to hear from you.',
-    ctaLabel: 'Contact Us',
-    ctaHref: '/contact#partnership',
   },
 }

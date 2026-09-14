@@ -22,14 +22,6 @@ type FellowItem = {
   bio?: string
 }
 
-function currentCommunityStat(stat: { value: string; label: string }) {
-  const label = stat.label.trim().toLowerCase()
-  if (label === 'cohorts') return { ...stat, value: '8' }
-  if (label.includes('institution')) return { ...stat, value: '15+' }
-  if (label === 'fellows') return { ...stat, value: '200+' }
-  return stat
-}
-
 function FellowDrawer({
   fellow,
   fellowIndex,
@@ -196,7 +188,7 @@ export function ChariticsCurrentFellowsPage({ content }: ChariticsCurrentFellows
             <p>{hero.lead}</p>
           </div>
           <div className="figma-community-hero__stats">
-            {hero.stats.map(currentCommunityStat).map((stat) => (
+            {hero.stats.map((stat) => (
               <div className="figma-community-hero__stat" key={stat.label}>
                 <div className="figma-community-hero__stat-value">{stat.value}</div>
                 <div className="figma-community-hero__stat-label">{stat.label}</div>
@@ -375,7 +367,7 @@ export function ChariticsCurrentFellowsPage({ content }: ChariticsCurrentFellows
           <h2>{eplanPromo.title}</h2>
           <p>{eplanPromo.intro}</p>
           <div className="figma-community-eplan__stats">
-            {eplanPromo.stats.map(currentCommunityStat).map((stat, index) => (
+            {eplanPromo.stats.map((stat, index) => (
               <div className="figma-community-eplan__stat" key={stat.label}>
                 <div
                   className={`figma-community-eplan__stat-value${index % 2 === 0 ? ' figma-community-eplan__stat-value--gold' : ''}`}

@@ -372,79 +372,26 @@ export interface Project {
    */
   visualImage?: (string | null) | Media;
   /**
-   * Full Public Service Fellowship detail page, hero, tabs, programme steps, eligibility, and CTAs.
+   * Matches the live fellowship page: Hero, Programme Structure / Eligibility / Application Process tabs, and Apply CTA. Hero image uses the wide card image above.
    */
   fellowshipDetail?: {
     heroEyebrow?: string | null;
     heroTitle?: string | null;
     heroDescription?: string | null;
-    /**
-     * Portrait image on the right. Primary uses the wide card image above.
-     */
-    heroSecondaryImage?: (string | null) | Media;
-    badgeValue?: string | null;
-    badgeLabel?: string | null;
-    heroHighlights?:
-      | {
-          value: string;
-          label: string;
-          id?: string | null;
-        }[]
-      | null;
     heroCtaLabel?: string | null;
     heroCtaUrl?: string | null;
-    heroSecondaryCtaLabel?: string | null;
-    heroSecondaryCtaUrl?: string | null;
-    impactEyebrow?: string | null;
-    impactTitle?: string | null;
-    impactStats?:
-      | {
-          value: string;
-          label: string;
-          id?: string | null;
-        }[]
-      | null;
-    whyJoinEyebrow?: string | null;
-    whyJoinTitle?: string | null;
-    whyJoinItems?:
-      | {
-          title: string;
-          description: string;
-          /**
-           * Flaticon class, e.g. flaticon-love
-           */
-          icon?: string | null;
-          id?: string | null;
-        }[]
-      | null;
     structureSidebarEyebrow?: string | null;
     structureTitle?: string | null;
     structureIntro?: string | null;
-    structureSidebarImage?: (string | null) | Media;
     structureSteps?:
       | {
           title: string;
           description: string;
-          image?: (string | null) | Media;
-          id?: string | null;
-        }[]
-      | null;
-    processEyebrow?: string | null;
-    processTitle?: string | null;
-    processIntro?: string | null;
-    processBannerImage?: (string | null) | Media;
-    processSteps?:
-      | {
-          title: string;
-          description: string;
-          image?: (string | null) | Media;
           id?: string | null;
         }[]
       | null;
     eligibilityEyebrow?: string | null;
     eligibilityTitle?: string | null;
-    eligibilityIntro?: string | null;
-    eligibilitySidebarImage?: (string | null) | Media;
     eligibilityCriteria?:
       | {
           text: string;
@@ -460,50 +407,45 @@ export interface Project {
         }[]
       | null;
     documentsCtaLabel?: string | null;
-    inclusionNote?: string | null;
+    processEyebrow?: string | null;
+    processTitle?: string | null;
+    processIntro?: string | null;
+    processSteps?:
+      | {
+          title: string;
+          description: string;
+          id?: string | null;
+        }[]
+      | null;
     applyEyebrow?: string | null;
     applyTitle?: string | null;
     applyDescription?: string | null;
     applyCtaLabel?: string | null;
     applyCtaUrl?: string | null;
-    applySecondaryCtaLabel?: string | null;
-    applySecondaryCtaUrl?: string | null;
-    partnerTitle?: string | null;
-    partnerCtaLabel?: string | null;
-    partnerCtaUrl?: string | null;
-    partnerImage?: (string | null) | Media;
   };
   /**
-   * Full P.E.A.C.E detail page, hero, about, stats, outcomes, stories, gallery, and CTAs.
+   * Matches the live P.E.A.C.E. page: Hero (eyebrow, title, lead, CTA; image = Featured wide card) and About + model highlight.
    */
   peaceDetail?: {
     heroEyebrow?: string | null;
     heroTitle?: string | null;
-    heroLead?: string | null;
-    heroDescription?: string | null;
     /**
-     * Primary hero uses the wide card image above.
+     * Supports **bold** with double asterisks.
      */
-    heroSecondaryImage?: (string | null) | Media;
-    heroBadgeValue?: string | null;
-    heroBadgeLabel?: string | null;
-    heroPartners?:
-      | {
-          name: string;
-          id?: string | null;
-        }[]
-      | null;
+    heroLead?: string | null;
     heroCtaLabel?: string | null;
     heroCtaUrl?: string | null;
     aboutEyebrow?: string | null;
     aboutTitle?: string | null;
+    /**
+     * Body paragraphs under About. Supports **bold** with double asterisks.
+     */
     aboutParagraphs?:
       | {
           text: string;
           id?: string | null;
         }[]
       | null;
-    aboutImage?: (string | null) | Media;
     modelHighlightEyebrow?: string | null;
     modelHighlightTitle?: string | null;
     modelHighlightBody?: string | null;
@@ -514,191 +456,49 @@ export interface Project {
           id?: string | null;
         }[]
       | null;
-    impactTitle?: string | null;
-    impactStats?:
-      | {
-          value: string;
-          label: string;
-          icon?: (string | null) | Media;
-          id?: string | null;
-        }[]
-      | null;
-    outcomesTitle?: string | null;
-    outcomeItems?:
-      | {
-          title: string;
-          description: string;
-          image?: (string | null) | Media;
-          id?: string | null;
-        }[]
-      | null;
-    keySuccessEyebrow?: string | null;
-    keySuccessTitle?: string | null;
-    keySuccessStories?:
-      | {
-          title: string;
-          paragraphs?:
-            | {
-                text: string;
-                id?: string | null;
-              }[]
-            | null;
-          imagePrimary?: (string | null) | Media;
-          imageSecondary?: (string | null) | Media;
-          id?: string | null;
-        }[]
-      | null;
-    galleryEyebrow?: string | null;
-    galleryTitle?: string | null;
-    galleryItems?:
-      | {
-          image: string | Media;
-          layout: 'hero' | 'tall' | 'stack-a' | 'stack-b' | 'wide' | 'banner';
-          alt: string;
-          id?: string | null;
-        }[]
-      | null;
-    relatedArticlesEyebrow?: string | null;
-    relatedArticlesTitle?: string | null;
-    relatedArticlesItems?:
-      | {
-          title: string;
-          href: string;
-          image?: (string | null) | Media;
-          id?: string | null;
-        }[]
-      | null;
-    partnerTitle?: string | null;
-    partnerDescription?: string | null;
-    partnerCtaLabel?: string | null;
-    partnerCtaUrl?: string | null;
-    partnerImage?: (string | null) | Media;
   };
   /**
-   * Full Women on the Rise detail page, hero, about, why it matters, stats, gallery, and CTAs.
+   * Matches the live Women on the Rise page: Hero, Stats, About + pillars.
    */
   wotrDetail?: {
     heroEyebrow?: string | null;
     heroTitle?: string | null;
     heroLead?: string | null;
-    heroDescription?: string | null;
-    /**
-     * Primary hero uses the wide card image above.
-     */
-    heroSecondaryImage?: (string | null) | Media;
-    heroBadgeValue?: string | null;
-    heroBadgeLabel?: string | null;
-    heroPartners?:
-      | {
-          name: string;
-          id?: string | null;
-        }[]
-      | null;
-    heroHighlights?:
-      | {
-          value: string;
-          label: string;
-          id?: string | null;
-        }[]
-      | null;
     heroCtaLabel?: string | null;
     heroCtaUrl?: string | null;
-    heroSecondaryCtaLabel?: string | null;
-    heroSecondaryCtaUrl?: string | null;
-    aboutEyebrow?: string | null;
-    aboutTitle?: string | null;
-    aboutImage?: (string | null) | Media;
-    whyItMattersEyebrow?: string | null;
-    whyItMattersTitle?: string | null;
-    whyItMattersItems?:
-      | {
-          title: string;
-          description: string;
-          icon?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-    impactEyebrow?: string | null;
-    impactTitle?: string | null;
     impactStats?:
       | {
           value: string;
           label: string;
-          icon?: (string | null) | Media;
           id?: string | null;
         }[]
       | null;
-    outcomesEyebrow?: string | null;
-    outcomesTitle?: string | null;
-    outcomeItems?:
+    aboutEyebrow?: string | null;
+    aboutTitle?: string | null;
+    /**
+     * Separate paragraphs with a blank line. Shown next to the about image.
+     */
+    heroDescription?: string | null;
+    aboutImage?: (string | null) | Media;
+    whyItMattersItems?:
       | {
           title: string;
           description: string;
-          image?: (string | null) | Media;
           id?: string | null;
         }[]
       | null;
-    keySuccessEyebrow?: string | null;
-    keySuccessTitle?: string | null;
-    keySuccessStories?:
-      | {
-          title: string;
-          paragraphs?:
-            | {
-                text: string;
-                id?: string | null;
-              }[]
-            | null;
-          imagePrimary?: (string | null) | Media;
-          imageSecondary?: (string | null) | Media;
-          id?: string | null;
-        }[]
-      | null;
-    galleryEyebrow?: string | null;
-    galleryTitle?: string | null;
-    galleryItems?:
-      | {
-          image: string | Media;
-          layout: 'hero' | 'tall' | 'stack-a' | 'stack-b' | 'wide' | 'banner';
-          alt: string;
-          id?: string | null;
-        }[]
-      | null;
-    relatedArticlesEyebrow?: string | null;
-    relatedArticlesTitle?: string | null;
-    relatedArticlesItems?:
-      | {
-          title: string;
-          href: string;
-          image?: (string | null) | Media;
-          id?: string | null;
-        }[]
-      | null;
-    involvedEyebrow?: string | null;
-    involvedTitle?: string | null;
-    involvedDescription?: string | null;
-    involvedCtaLabel?: string | null;
-    involvedCtaUrl?: string | null;
-    involvedSecondaryCtaLabel?: string | null;
-    involvedSecondaryCtaUrl?: string | null;
-    partnerTitle?: string | null;
-    partnerDescription?: string | null;
-    partnerCtaLabel?: string | null;
-    partnerCtaUrl?: string | null;
-    partnerImage?: (string | null) | Media;
   };
   /**
-   * Full EPL in Maritime detail page — hero, overview, capacity building, focus areas, and impact CTA.
+   * Matches the live Elevated MINDS page: hero, overview, capacity building, focus areas, and impact CTA.
    */
   eplimDetail?: {
     heroEyebrow?: string | null;
     heroTitle?: string | null;
     heroLead?: string | null;
-    heroDescription?: string | null;
     /**
-     * Primary hero uses the wide card image above.
+     * Also used as Overview body: separate paragraphs with a blank line.
      */
-    heroSecondaryImage?: (string | null) | Media;
+    heroDescription?: string | null;
     heroCtaLabel?: string | null;
     heroCtaUrl?: string | null;
     aboutEyebrow?: string | null;
@@ -1272,85 +1072,58 @@ export interface Page {
     };
   };
   /**
-   * Static content for the homepage. The Projects, Events and Blog sections fill in automatically from those collections, only their headings are set here.
+   * Edits the live homepage. Projects and Events cards come from those collections; set headings and copy here.
    */
   home?: {
-    heroSubtitle?: string | null;
-    heroTitle?: string | null;
-    heroDescription?: string | null;
-    heroImage?: (string | null) | Media;
-    heroCtaLabel?: string | null;
-    heroCtaUrl?: string | null;
-    heroStatValue?: string | null;
-    heroStatLabel?: string | null;
     /**
-     * The small round fellow photos beside the “Fellows trained” stat (up to 3). Falls back to default fellow photos if left empty.
-     */
-    heroAvatars?:
-      | {
-          image?: (string | null) | Media;
-          id?: string | null;
-        }[]
-      | null;
-    /**
-     * The rotating banner slides shown after the main one. Leave a slide image empty to keep its current photo.
+     * Rotating hero banner. Title lines 1–3 are the three headline rows (middle line is accented).
      */
     heroSlides?:
       | {
           subtitle?: string | null;
           title?: string | null;
+          titleLine1?: string | null;
+          titleLine2?: string | null;
+          titleLine3?: string | null;
           description?: string | null;
           ctaLabel?: string | null;
           ctaHref?: string | null;
+          secondaryCtaLabel?: string | null;
+          secondaryCtaHref?: string | null;
           /**
-           * Main slide photo (optional, falls back to the current one).
+           * Full-bleed background for this slide.
            */
           image?: (string | null) | Media;
-          /**
-           * Small thumbnail for the slide selector (optional).
-           */
-          thumb?: (string | null) | Media;
           id?: string | null;
         }[]
       | null;
-    aboutSubtitle?: string | null;
-    aboutTitle?: string | null;
-    aboutDescription?: string | null;
-    aboutImage?: (string | null) | Media;
-    aboutCtaLabel?: string | null;
-    aboutCtaUrl?: string | null;
-    aboutMissionTitle?: string | null;
-    /**
-     * Checklist beside the mission title in the about section.
-     */
-    aboutMissionBullets?:
+    eplWayEyebrow?: string | null;
+    eplWayTitle?: string | null;
+    eplWayIntro?: string | null;
+    eplWay?:
       | {
-          text: string;
-          id?: string | null;
-        }[]
-      | null;
-    /**
-     * Small photo beside the mission bullets on the homepage.
-     */
-    aboutMissionImage?: (string | null) | Media;
-    missionBannerQuote?: string | null;
-    /**
-     * Photos that crossfade behind the mission quote. Falls back to hero slides if empty.
-     */
-    missionBannerImages?:
-      | {
-          image: string | Media;
-          caption?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-    coreValues?:
-      | {
+          number: string;
           title: string;
           description: string;
+          /**
+           * Longer note shown on hover.
+           */
+          note?: string | null;
+          tone: 'blue' | 'navy' | 'gold';
+          /**
+           * Card photo.
+           */
+          image?: (string | null) | Media;
+          href?: string | null;
           id?: string | null;
         }[]
       | null;
+    projectsEyebrow?: string | null;
+    /**
+     * Use a line break for the two-line title on the homepage.
+     */
+    projectsTitle?: string | null;
+    statsHeading?: string | null;
     stats?:
       | {
           value: string;
@@ -1358,35 +1131,15 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
-    curveEyebrow?: string | null;
-    curveTitle?: string | null;
-    curveDescription?: string | null;
-    curveCtaLabel?: string | null;
-    curveCtaUrl?: string | null;
-    eplWay?:
-      | {
-          number: string;
-          title: string;
-          description: string;
-          /**
-           * Longer note revealed when a visitor hovers the card.
-           */
-          note?: string | null;
-          tone: 'blue' | 'navy' | 'gold';
-          /**
-           * Card photo. Leave empty to keep the current image.
-           */
-          image?: (string | null) | Media;
-          href?: string | null;
-          id?: string | null;
-        }[]
-      | null;
     impactStoriesEyebrow?: string | null;
     impactStoriesTitle?: string | null;
     impactStoriesCtaLabel?: string | null;
     impactStoriesCtaUrl?: string | null;
+    impactStoriesFeaturedLabel?: string | null;
+    impactStoriesFeaturedHeading?: string | null;
+    impactStoriesFeaturedCtaLabel?: string | null;
     /**
-     * Fellow impact stories. Mark one as featured for the large card; others appear as secondary cards. Leave empty to keep the current stories.
+     * Mark one as featured for the large card; others appear as secondary cards.
      */
     impactStories?:
       | {
@@ -1406,121 +1159,57 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
-    fellowshipTitle?: string | null;
-    fellowshipDescription?: string | null;
-    fellowshipCtaLabel?: string | null;
-    fellowshipCtaUrl?: string | null;
-    galleryHeading?: string | null;
+    eventsEyebrow?: string | null;
+    eventsTitle?: string | null;
     /**
-     * Photos in the home gallery strip. Add photos to replace the current set (leave empty to keep the current photos).
+     * Small badge on the event image.
      */
-    gallery?:
-      | {
-          image: string | Media;
-          alt?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-    /**
-     * Headings above the auto-filled Projects, Events and Blog sections.
-     */
-    sections?: {
-      projects?: {
-        eyebrow?: string | null;
-        title?: string | null;
-      };
-      events?: {
-        eyebrow?: string | null;
-        title?: string | null;
-      };
-      blog?: {
-        eyebrow?: string | null;
-        title?: string | null;
-        intro?: string | null;
-      };
-    };
+    eventsBadge?: string | null;
+    eventsKicker?: string | null;
+    eventsRegisterLabel?: string | null;
   };
   /**
-   * Content for the About page (seeded from the current site content).
+   * Edits the live About page. Team members come from the Team collection; partner logos from Partners.
    */
   about?: {
     introEyebrow?: string | null;
     introTitle?: string | null;
     introLead?: string | null;
     introImage?: (string | null) | Media;
-    introSecondaryImage?: (string | null) | Media;
-    approachTitle?: string | null;
-    approachBullets?:
-      | {
-          text: string;
-          id?: string | null;
-        }[]
-      | null;
-    growthHighlight?: string | null;
-    growthHighlightLabel?: string | null;
+    storyEyebrow?: string | null;
     growthTitle?: string | null;
     growthBody?: string | null;
-    investmentTitle?: string | null;
-    investmentBody?: string | null;
+    introSecondaryImage?: (string | null) | Media;
     mission?: {
       eyebrow?: string | null;
       title?: string | null;
       body?: string | null;
-      image?: (string | null) | Media;
     };
     vision?: {
       eyebrow?: string | null;
       title?: string | null;
       body?: string | null;
-      image?: (string | null) | Media;
     };
+    coreValuesEyebrow?: string | null;
+    coreValuesTitle?: string | null;
+    coreValuesHint?: string | null;
     coreValues?:
       | {
           num?: string | null;
           title: string;
           meaning: string;
-          /**
-           * Flip-card face colour. Defaults to blue if unset.
-           */
-          color?: ('blue' | 'gold' | 'navy') | null;
           id?: string | null;
         }[]
       | null;
-    impact?: {
-      image?: (string | null) | Media;
-      heading?: string | null;
-      intro?: string | null;
-      items?:
-        | {
-            title: string;
-            body: string;
-            id?: string | null;
-          }[]
-        | null;
-    };
-    partner?: {
-      eyebrow?: string | null;
-      title?: string | null;
-      lead?: string | null;
-      body?: string | null;
-      chooseLabel?: string | null;
-      items?:
-        | {
-            title: string;
-            body: string;
-            icon?: (string | null) | Media;
-            accent?: ('primary' | 'secondary' | 'deep' | 'bright') | null;
-            id?: string | null;
-          }[]
-        | null;
-    };
-    stats?:
-      | {
-          value: string;
-          label: string;
-          id?: string | null;
-        }[]
-      | null;
+    teamTitle?: string | null;
+    teamIntro?: string | null;
+    teamLeadershipLabel?: string | null;
+    teamStaffLabel?: string | null;
+    partnerEyebrow?: string | null;
+    partnerTitle?: string | null;
+    partnerLead?: string | null;
+    partnerCtaLabel?: string | null;
+    partnerCtaUrl?: string | null;
   };
   /**
    * Intro, approach, and CTA copy. Programme cards are managed in the Projects collection.
@@ -1613,17 +1302,19 @@ export interface Page {
     ctaUrl?: string | null;
   };
   /**
-   * Page copy and images. Alumni stories and featured graduates are managed in the Alumni collection; community photos below.
+   * Edits the live EPLAN page. Sections match the website: Hero, Vision, Mission, Executive Team, Beyond the Fellowship, and Network Spotlight.
    */
   eplanPage?: {
     heroEyebrow?: string | null;
     heroTitle?: string | null;
-    heroSubtitle?: string | null;
     heroLead?: string | null;
+    /**
+     * Full-bleed hero background. Click an image to select, then Save this page.
+     */
     heroImage?: (string | null) | Media;
-    heroSecondaryImage?: (string | null) | Media;
-    heroBadgeValue?: string | null;
-    heroBadgeLabel?: string | null;
+    /**
+     * Stat row directly under the hero (value + label).
+     */
     heroHighlights?:
       | {
           value: string;
@@ -1635,17 +1326,7 @@ export interface Page {
     heroPrimaryCtaUrl?: string | null;
     heroSecondaryCtaLabel?: string | null;
     heroSecondaryCtaUrl?: string | null;
-    aboutEyebrow?: string | null;
-    aboutTitle?: string | null;
-    aboutParagraphs?:
-      | {
-          text: string;
-          id?: string | null;
-        }[]
-      | null;
-    aboutImage?: (string | null) | Media;
     visionEyebrow?: string | null;
-    visionTitle?: string | null;
     visionText?: string | null;
     missionEyebrow?: string | null;
     missionText?: string | null;
@@ -1672,9 +1353,11 @@ export interface Page {
     sustainTitle?: string | null;
     sustainLead?: string | null;
     sustainNote?: string | null;
+    /**
+     * Image beside the Beyond the Fellowship copy.
+     */
     sustainImage?: (string | null) | Media;
     sustainImageAlt?: string | null;
-    sustainPillarsEyebrow?: string | null;
     sustainPillars?:
       | {
           num: string;
@@ -1699,126 +1382,8 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
-    impactEyebrow?: string | null;
-    impactTitle?: string | null;
-    impactStats?:
-      | {
-          value: string;
-          label: string;
-          id?: string | null;
-        }[]
-      | null;
-    conveningEyebrow?: string | null;
-    conveningTitle?: string | null;
-    conveningBody?: string | null;
-    conveningImage?: (string | null) | Media;
-    globalEyebrow?: string | null;
-    globalTitle?: string | null;
-    globalLead?: string | null;
-    globalBody?: string | null;
-    globalHighlights?:
-      | {
-          text: string;
-          id?: string | null;
-        }[]
-      | null;
-    globalImages?:
-      | {
-          image: string | Media;
-          alt: string;
-          caption?: string | null;
-          layout?: ('featured' | 'poster' | 'standard') | null;
-          id?: string | null;
-        }[]
-      | null;
-    journeyEyebrow?: string | null;
-    journeyTitle?: string | null;
-    journeyIntro?: string | null;
-    journeySteps?:
-      | {
-          step: string;
-          title: string;
-          description: string;
-          id?: string | null;
-        }[]
-      | null;
-    /**
-     * Story cards come from the Alumni collection (Show in Alumni Stories).
-     */
-    storiesEyebrow?: string | null;
-    storiesTitle?: string | null;
-    storiesIntro?: string | null;
-    /**
-     * Profile cards come from the Alumni collection (Show in Featured Graduates).
-     */
-    featuredEyebrow?: string | null;
-    featuredTitle?: string | null;
-    featuredIntro?: string | null;
-    pathwaysEyebrow?: string | null;
-    pathwaysTitle?: string | null;
-    pathwaysIntro?: string | null;
-    pathwaysItems?:
-      | {
-          title: string;
-          description: string;
-          icon: string;
-          id?: string | null;
-        }[]
-      | null;
-    milestoneEyebrow?: string | null;
-    milestoneTitle?: string | null;
-    milestoneBody?: string | null;
-    milestoneCtaLabel?: string | null;
-    milestoneCtaUrl?: string | null;
-    milestoneImage?: (string | null) | Media;
-    galleryEyebrow?: string | null;
-    galleryTitle?: string | null;
-    /**
-     * Displayed as a scrolling photo gallery on the page.
-     */
-    galleryImages?:
-      | {
-          image: string | Media;
-          alt: string;
-          id?: string | null;
-        }[]
-      | null;
-    newsEyebrow?: string | null;
-    newsTitle?: string | null;
-    newsIntro?: string | null;
-    newsReadMoreLabel?: string | null;
-    newsItems?:
-      | {
-          title: string;
-          excerpt: string;
-          image?: (string | null) | Media;
-          href: string;
-          id?: string | null;
-        }[]
-      | null;
-    networkEyebrow?: string | null;
-    networkTitle?: string | null;
-    networkIntro?: string | null;
-    networkBenefits?:
-      | {
-          title: string;
-          description: string;
-          icon: string;
-          id?: string | null;
-        }[]
-      | null;
-    networkGlobalLinkLabel?: string | null;
-    networkGlobalLinkUrl?: string | null;
-    quoteText?: string | null;
-    quoteAttribution?: string | null;
-    quoteRole?: string | null;
-    ctaTitle?: string | null;
-    ctaBody?: string | null;
-    ctaPrimaryLabel?: string | null;
-    ctaPrimaryUrl?: string | null;
-    ctaSecondaryLabel?: string | null;
-    ctaSecondaryUrl?: string | null;
-    ctaImage?: (string | null) | Media;
+    spotlightSupportCtaLabel?: string | null;
+    spotlightSupportCtaUrl?: string | null;
   };
   /**
    * Hero and section labels. Albums and photos are managed in Gallery Albums.
@@ -1848,32 +1413,23 @@ export interface Page {
     secondaryCtaUrl?: string | null;
   };
   /**
-   * Hero, directory controls, EPLAN promo, and Get Involved. Fellow photos and profiles are managed in the Fellows collection.
+   * Edits the live Current Fellows page. Sections match the website: Hero (with stats), Directory labels (cohort tabs from Cohorts; cards from Fellows), EPLAN promo, and Get Involved.
    */
   currentFellowsPage?: {
     heroEyebrow?: string | null;
     heroTitle?: string | null;
     heroLead?: string | null;
+    /**
+     * Full-bleed hero background. Click an image to select, then Save this page.
+     */
     heroImage?: (string | null) | Media;
-    heroSecondaryImage?: (string | null) | Media;
+    /**
+     * Four stats shown in the hero (value + label).
+     */
     heroStats?:
       | {
           value: string;
           label: string;
-          id?: string | null;
-        }[]
-      | null;
-    /**
-     * Set automatically from the cohort marked “Default tab on website” in Cohorts.
-     */
-    defaultCohort?: string | null;
-    /**
-     * Legacy fallback only. Tabs are loaded from the Cohorts collection when published.
-     */
-    cohortTabs?:
-      | {
-          label: string;
-          value: string;
           id?: string | null;
         }[]
       | null;
@@ -1884,17 +1440,6 @@ export interface Page {
     showMoreLabel?: string | null;
     showLessLabel?: string | null;
     emptyStateText?: string | null;
-    /**
-     * Section headings only; featured fellow cards come from the Fellows collection (Featured on page).
-     */
-    highlightsEyebrow?: string | null;
-    highlightsTitle?: string | null;
-    cohortLabel?: string | null;
-    /**
-     * Optional override for the fellow count in the heading. Leave empty to use the number of published fellows.
-     */
-    cohortCount?: number | null;
-    cohortDescription?: string | null;
     eplanEyebrow?: string | null;
     eplanTitle?: string | null;
     eplanIntro?: string | null;
@@ -1914,14 +1459,9 @@ export interface Page {
     involvePrimaryUrl?: string | null;
     involveSecondaryLabel?: string | null;
     involveSecondaryUrl?: string | null;
-    ctaTitle?: string | null;
-    ctaBody?: string | null;
-    ctaLabel?: string | null;
-    ctaUrl?: string | null;
-    ctaImage?: (string | null) | Media;
   };
   /**
-   * Hero, collaboration benefits, partner categories, network labels, and enquiry form. Logos and partner cards are managed in the Partners collection.
+   * Edits the live Partners page. Partner logos in the marquee come from the Partners collection.
    */
   partnersPage?: {
     heroEyebrow?: string | null;
@@ -1930,14 +1470,6 @@ export interface Page {
     heroCtaLabel?: string | null;
     heroCtaUrl?: string | null;
     heroImage?: (string | null) | Media;
-    heroSecondaryImage?: (string | null) | Media;
-    heroStats?:
-      | {
-          value: string;
-          label: string;
-          id?: string | null;
-        }[]
-      | null;
     collabEyebrow?: string | null;
     collabTitle?: string | null;
     collabLead?: string | null;
@@ -1949,7 +1481,13 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
+    /**
+     * e.g. 85%
+     */
     collabHighlightValue?: string | null;
+    /**
+     * e.g. Career Advancement
+     */
     collabHighlightTitle?: string | null;
     collabHighlightText?: string | null;
     collabImage?: (string | null) | Media;
@@ -1957,7 +1495,6 @@ export interface Page {
     ecosystemTitle?: string | null;
     ecosystemIntro?: string | null;
     ecosystemLearnMoreLabel?: string | null;
-    ecosystemCloseLabel?: string | null;
     ecosystemHighlightsLabel?: string | null;
     ecosystemCategories?:
       | {
@@ -1973,29 +1510,19 @@ export interface Page {
                 id?: string | null;
               }[]
             | null;
+          image?: (string | null) | Media;
           id?: string | null;
         }[]
       | null;
-    networkEyebrow?: string | null;
     networkTitle?: string | null;
     networkIntro?: string | null;
-    strategicEyebrow?: string | null;
-    strategicTitle?: string | null;
-    strategicIntro?: string | null;
-    hostEyebrow?: string | null;
-    hostTitle?: string | null;
-    hostIntro?: string | null;
     formEyebrow?: string | null;
     formTitle?: string | null;
     formDescription?: string | null;
     formSubmitLabel?: string | null;
-    ctaTitle?: string | null;
-    ctaDescription?: string | null;
-    ctaLabel?: string | null;
-    ctaUrl?: string | null;
   };
   /**
-   * Hero, why support, bank / MoMo / card details, support tiers, and pledge form labels.
+   * Edits the live Donate page: Hero, Why Give, Ways to Give (card / MoMo / bank), Impact tiers, Questions, and Pledge form.
    */
   donatePage?: {
     heroEyebrow?: string | null;
@@ -2017,22 +1544,14 @@ export interface Page {
       | null;
     waysEyebrow?: string | null;
     waysTitle?: string | null;
-    bankCode?: string | null;
-    bankTitle?: string | null;
-    bankDescription?: string | null;
-    bankAccountName?: string | null;
-    bankAccountGhs?: string | null;
-    bankAccountUsd?: string | null;
-    bankName?: string | null;
-    bankBranch?: string | null;
-    bankSwift?: string | null;
-    bankSortCode?: string | null;
-    bankNote?: string | null;
-    momoCode?: string | null;
-    momoTitle?: string | null;
-    momoDescription?: string | null;
-    momoNote?: string | null;
-    momoLogo?: string | null;
+    waysIntro?: string | null;
+    transferLabel?: string | null;
+    cardStatusLabel?: string | null;
+    cardCode?: string | null;
+    cardTitle?: string | null;
+    cardDescription?: string | null;
+    cardCtaLabel?: string | null;
+    cardCtaUrl?: string | null;
     momoOptions?:
       | {
           title: string;
@@ -2040,24 +1559,25 @@ export interface Page {
           name: string;
           detail: string;
           detailLabel?: string | null;
-          note?: string | null;
           badge: string;
+          /**
+           * Public path, e.g. /brands/mtn-momo-mark.png
+           */
           logo?: string | null;
-          logoTone?: ('momo' | 'telecel' | 'at') | null;
           id?: string | null;
         }[]
       | null;
-    cardCode?: string | null;
-    cardTitle?: string | null;
-    cardDescription?: string | null;
-    cardStatusLabel?: string | null;
-    cardAccepted?: string | null;
-    cardCurrencies?: string | null;
-    cardCtaLabel?: string | null;
-    cardCtaUrl?: string | null;
+    bankTitle?: string | null;
+    bankBranch?: string | null;
+    bankAccountName?: string | null;
+    bankAccountGhs?: string | null;
+    bankAccountUsd?: string | null;
+    bankName?: string | null;
+    bankSwift?: string | null;
+    bankSortCode?: string | null;
+    bankNote?: string | null;
     tiersEyebrow?: string | null;
     tiersTitle?: string | null;
-    tiersIntro?: string | null;
     tierItems?:
       | {
           label: string;
@@ -2069,12 +1589,21 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
+    questionsTitle?: string | null;
+    questionsText?: string | null;
+    questionsPrimaryLabel?: string | null;
+    questionsPrimaryUrl?: string | null;
+    questionsSecondaryLabel?: string | null;
+    questionsSecondaryUrl?: string | null;
     pledgeEyebrow?: string | null;
     pledgeTitle?: string | null;
     pledgeDescription?: string | null;
     pledgeSubmitLabel?: string | null;
     pledgeSuccessTitle?: string | null;
     pledgeSuccessText?: string | null;
+    /**
+     * Preferred giving channel dropdown options (no Telecel / AT by default).
+     */
     pledgeChannels?:
       | {
           label: string;
@@ -2083,7 +1612,7 @@ export interface Page {
       | null;
   };
   /**
-   * Hero, glance stats, success stories, community stories, testimonials, and publications copy.
+   * Edits the live Impact page. Fellows, Impact Interventions, and Publications supply the cards; set section copy here.
    */
   impactPage?: {
     heroEyebrow?: string | null;
@@ -2091,7 +1620,6 @@ export interface Page {
     heroDescription?: string | null;
     heroImage?: (string | null) | Media;
     glanceEyebrow?: string | null;
-    glanceTitle?: string | null;
     glanceStats?:
       | {
           value: string;
@@ -2102,33 +1630,11 @@ export interface Page {
       | null;
     successEyebrow?: string | null;
     successTitle?: string | null;
-    successStories?:
-      | {
-          name: string;
-          role: string;
-          cohort: string;
-          image?: (string | null) | Media;
-          desc: string;
-          id?: string | null;
-        }[]
-      | null;
     communityEyebrow?: string | null;
     communityTitle?: string | null;
     communityIntro?: string | null;
     communityCtaLabel?: string | null;
     communityCtaUrl?: string | null;
-    communityStories?:
-      | {
-          num: string;
-          slug?: string | null;
-          region: string;
-          assembly: string;
-          title: string;
-          desc: string;
-          body?: string | null;
-          id?: string | null;
-        }[]
-      | null;
     testimonialsEyebrow?: string | null;
     testimonialsTitle?: string | null;
     testimonialsIntro?: string | null;
@@ -2148,27 +1654,16 @@ export interface Page {
     publicationsIntro?: string | null;
     reportsHeading?: string | null;
     reportsCtaLabel?: string | null;
+    /**
+     * Fallback link when a report has no PDF file.
+     */
     reportsCtaUrl?: string | null;
-    annualReports?:
-      | {
-          edition: string;
-          title: string;
-          summary: string;
-          id?: string | null;
-        }[]
-      | null;
     researchHeading?: string | null;
     researchCtaLabel?: string | null;
+    /**
+     * Fallback link when a study has no detail URL or file.
+     */
     researchCtaUrl?: string | null;
-    researchStudies?:
-      | {
-          tag: string;
-          title: string;
-          authorYear: string;
-          summary: string;
-          id?: string | null;
-        }[]
-      | null;
   };
   /**
    * Intro, section headings, and CTA. Upload reports and PDFs in the Publications collection.
@@ -2424,67 +1919,20 @@ export interface ProjectsSelect<T extends boolean = true> {
         heroEyebrow?: T;
         heroTitle?: T;
         heroDescription?: T;
-        heroSecondaryImage?: T;
-        badgeValue?: T;
-        badgeLabel?: T;
-        heroHighlights?:
-          | T
-          | {
-              value?: T;
-              label?: T;
-              id?: T;
-            };
         heroCtaLabel?: T;
         heroCtaUrl?: T;
-        heroSecondaryCtaLabel?: T;
-        heroSecondaryCtaUrl?: T;
-        impactEyebrow?: T;
-        impactTitle?: T;
-        impactStats?:
-          | T
-          | {
-              value?: T;
-              label?: T;
-              id?: T;
-            };
-        whyJoinEyebrow?: T;
-        whyJoinTitle?: T;
-        whyJoinItems?:
-          | T
-          | {
-              title?: T;
-              description?: T;
-              icon?: T;
-              id?: T;
-            };
         structureSidebarEyebrow?: T;
         structureTitle?: T;
         structureIntro?: T;
-        structureSidebarImage?: T;
         structureSteps?:
           | T
           | {
               title?: T;
               description?: T;
-              image?: T;
-              id?: T;
-            };
-        processEyebrow?: T;
-        processTitle?: T;
-        processIntro?: T;
-        processBannerImage?: T;
-        processSteps?:
-          | T
-          | {
-              title?: T;
-              description?: T;
-              image?: T;
               id?: T;
             };
         eligibilityEyebrow?: T;
         eligibilityTitle?: T;
-        eligibilityIntro?: T;
-        eligibilitySidebarImage?: T;
         eligibilityCriteria?:
           | T
           | {
@@ -2500,18 +1948,21 @@ export interface ProjectsSelect<T extends boolean = true> {
               id?: T;
             };
         documentsCtaLabel?: T;
-        inclusionNote?: T;
+        processEyebrow?: T;
+        processTitle?: T;
+        processIntro?: T;
+        processSteps?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
         applyEyebrow?: T;
         applyTitle?: T;
         applyDescription?: T;
         applyCtaLabel?: T;
         applyCtaUrl?: T;
-        applySecondaryCtaLabel?: T;
-        applySecondaryCtaUrl?: T;
-        partnerTitle?: T;
-        partnerCtaLabel?: T;
-        partnerCtaUrl?: T;
-        partnerImage?: T;
       };
   peaceDetail?:
     | T
@@ -2519,16 +1970,6 @@ export interface ProjectsSelect<T extends boolean = true> {
         heroEyebrow?: T;
         heroTitle?: T;
         heroLead?: T;
-        heroDescription?: T;
-        heroSecondaryImage?: T;
-        heroBadgeValue?: T;
-        heroBadgeLabel?: T;
-        heroPartners?:
-          | T
-          | {
-              name?: T;
-              id?: T;
-            };
         heroCtaLabel?: T;
         heroCtaUrl?: T;
         aboutEyebrow?: T;
@@ -2539,7 +1980,6 @@ export interface ProjectsSelect<T extends boolean = true> {
               text?: T;
               id?: T;
             };
-        aboutImage?: T;
         modelHighlightEyebrow?: T;
         modelHighlightTitle?: T;
         modelHighlightBody?: T;
@@ -2550,65 +1990,6 @@ export interface ProjectsSelect<T extends boolean = true> {
               text?: T;
               id?: T;
             };
-        impactTitle?: T;
-        impactStats?:
-          | T
-          | {
-              value?: T;
-              label?: T;
-              icon?: T;
-              id?: T;
-            };
-        outcomesTitle?: T;
-        outcomeItems?:
-          | T
-          | {
-              title?: T;
-              description?: T;
-              image?: T;
-              id?: T;
-            };
-        keySuccessEyebrow?: T;
-        keySuccessTitle?: T;
-        keySuccessStories?:
-          | T
-          | {
-              title?: T;
-              paragraphs?:
-                | T
-                | {
-                    text?: T;
-                    id?: T;
-                  };
-              imagePrimary?: T;
-              imageSecondary?: T;
-              id?: T;
-            };
-        galleryEyebrow?: T;
-        galleryTitle?: T;
-        galleryItems?:
-          | T
-          | {
-              image?: T;
-              layout?: T;
-              alt?: T;
-              id?: T;
-            };
-        relatedArticlesEyebrow?: T;
-        relatedArticlesTitle?: T;
-        relatedArticlesItems?:
-          | T
-          | {
-              title?: T;
-              href?: T;
-              image?: T;
-              id?: T;
-            };
-        partnerTitle?: T;
-        partnerDescription?: T;
-        partnerCtaLabel?: T;
-        partnerCtaUrl?: T;
-        partnerImage?: T;
       };
   wotrDetail?:
     | T
@@ -2616,108 +1997,26 @@ export interface ProjectsSelect<T extends boolean = true> {
         heroEyebrow?: T;
         heroTitle?: T;
         heroLead?: T;
-        heroDescription?: T;
-        heroSecondaryImage?: T;
-        heroBadgeValue?: T;
-        heroBadgeLabel?: T;
-        heroPartners?:
-          | T
-          | {
-              name?: T;
-              id?: T;
-            };
-        heroHighlights?:
-          | T
-          | {
-              value?: T;
-              label?: T;
-              id?: T;
-            };
         heroCtaLabel?: T;
         heroCtaUrl?: T;
-        heroSecondaryCtaLabel?: T;
-        heroSecondaryCtaUrl?: T;
-        aboutEyebrow?: T;
-        aboutTitle?: T;
-        aboutImage?: T;
-        whyItMattersEyebrow?: T;
-        whyItMattersTitle?: T;
-        whyItMattersItems?:
-          | T
-          | {
-              title?: T;
-              description?: T;
-              icon?: T;
-              id?: T;
-            };
-        impactEyebrow?: T;
-        impactTitle?: T;
         impactStats?:
           | T
           | {
               value?: T;
               label?: T;
-              icon?: T;
               id?: T;
             };
-        outcomesEyebrow?: T;
-        outcomesTitle?: T;
-        outcomeItems?:
+        aboutEyebrow?: T;
+        aboutTitle?: T;
+        heroDescription?: T;
+        aboutImage?: T;
+        whyItMattersItems?:
           | T
           | {
               title?: T;
               description?: T;
-              image?: T;
               id?: T;
             };
-        keySuccessEyebrow?: T;
-        keySuccessTitle?: T;
-        keySuccessStories?:
-          | T
-          | {
-              title?: T;
-              paragraphs?:
-                | T
-                | {
-                    text?: T;
-                    id?: T;
-                  };
-              imagePrimary?: T;
-              imageSecondary?: T;
-              id?: T;
-            };
-        galleryEyebrow?: T;
-        galleryTitle?: T;
-        galleryItems?:
-          | T
-          | {
-              image?: T;
-              layout?: T;
-              alt?: T;
-              id?: T;
-            };
-        relatedArticlesEyebrow?: T;
-        relatedArticlesTitle?: T;
-        relatedArticlesItems?:
-          | T
-          | {
-              title?: T;
-              href?: T;
-              image?: T;
-              id?: T;
-            };
-        involvedEyebrow?: T;
-        involvedTitle?: T;
-        involvedDescription?: T;
-        involvedCtaLabel?: T;
-        involvedCtaUrl?: T;
-        involvedSecondaryCtaLabel?: T;
-        involvedSecondaryCtaUrl?: T;
-        partnerTitle?: T;
-        partnerDescription?: T;
-        partnerCtaLabel?: T;
-        partnerCtaUrl?: T;
-        partnerImage?: T;
       };
   eplimDetail?:
     | T
@@ -2726,7 +2025,6 @@ export interface ProjectsSelect<T extends boolean = true> {
         heroTitle?: T;
         heroLead?: T;
         heroDescription?: T;
-        heroSecondaryImage?: T;
         heroCtaLabel?: T;
         heroCtaUrl?: T;
         aboutEyebrow?: T;
@@ -3079,73 +2377,25 @@ export interface PagesSelect<T extends boolean = true> {
   home?:
     | T
     | {
-        heroSubtitle?: T;
-        heroTitle?: T;
-        heroDescription?: T;
-        heroImage?: T;
-        heroCtaLabel?: T;
-        heroCtaUrl?: T;
-        heroStatValue?: T;
-        heroStatLabel?: T;
-        heroAvatars?:
-          | T
-          | {
-              image?: T;
-              id?: T;
-            };
         heroSlides?:
           | T
           | {
               subtitle?: T;
               title?: T;
+              titleLine1?: T;
+              titleLine2?: T;
+              titleLine3?: T;
               description?: T;
               ctaLabel?: T;
               ctaHref?: T;
+              secondaryCtaLabel?: T;
+              secondaryCtaHref?: T;
               image?: T;
-              thumb?: T;
               id?: T;
             };
-        aboutSubtitle?: T;
-        aboutTitle?: T;
-        aboutDescription?: T;
-        aboutImage?: T;
-        aboutCtaLabel?: T;
-        aboutCtaUrl?: T;
-        aboutMissionTitle?: T;
-        aboutMissionBullets?:
-          | T
-          | {
-              text?: T;
-              id?: T;
-            };
-        aboutMissionImage?: T;
-        missionBannerQuote?: T;
-        missionBannerImages?:
-          | T
-          | {
-              image?: T;
-              caption?: T;
-              id?: T;
-            };
-        coreValues?:
-          | T
-          | {
-              title?: T;
-              description?: T;
-              id?: T;
-            };
-        stats?:
-          | T
-          | {
-              value?: T;
-              label?: T;
-              id?: T;
-            };
-        curveEyebrow?: T;
-        curveTitle?: T;
-        curveDescription?: T;
-        curveCtaLabel?: T;
-        curveCtaUrl?: T;
+        eplWayEyebrow?: T;
+        eplWayTitle?: T;
+        eplWayIntro?: T;
         eplWay?:
           | T
           | {
@@ -3158,10 +2408,23 @@ export interface PagesSelect<T extends boolean = true> {
               href?: T;
               id?: T;
             };
+        projectsEyebrow?: T;
+        projectsTitle?: T;
+        statsHeading?: T;
+        stats?:
+          | T
+          | {
+              value?: T;
+              label?: T;
+              id?: T;
+            };
         impactStoriesEyebrow?: T;
         impactStoriesTitle?: T;
         impactStoriesCtaLabel?: T;
         impactStoriesCtaUrl?: T;
+        impactStoriesFeaturedLabel?: T;
+        impactStoriesFeaturedHeading?: T;
+        impactStoriesFeaturedCtaLabel?: T;
         impactStories?:
           | T
           | {
@@ -3174,41 +2437,11 @@ export interface PagesSelect<T extends boolean = true> {
               storyHref?: T;
               id?: T;
             };
-        fellowshipTitle?: T;
-        fellowshipDescription?: T;
-        fellowshipCtaLabel?: T;
-        fellowshipCtaUrl?: T;
-        galleryHeading?: T;
-        gallery?:
-          | T
-          | {
-              image?: T;
-              alt?: T;
-              id?: T;
-            };
-        sections?:
-          | T
-          | {
-              projects?:
-                | T
-                | {
-                    eyebrow?: T;
-                    title?: T;
-                  };
-              events?:
-                | T
-                | {
-                    eyebrow?: T;
-                    title?: T;
-                  };
-              blog?:
-                | T
-                | {
-                    eyebrow?: T;
-                    title?: T;
-                    intro?: T;
-                  };
-            };
+        eventsEyebrow?: T;
+        eventsTitle?: T;
+        eventsBadge?: T;
+        eventsKicker?: T;
+        eventsRegisterLabel?: T;
       };
   about?:
     | T
@@ -3217,27 +2450,16 @@ export interface PagesSelect<T extends boolean = true> {
         introTitle?: T;
         introLead?: T;
         introImage?: T;
-        introSecondaryImage?: T;
-        approachTitle?: T;
-        approachBullets?:
-          | T
-          | {
-              text?: T;
-              id?: T;
-            };
-        growthHighlight?: T;
-        growthHighlightLabel?: T;
+        storyEyebrow?: T;
         growthTitle?: T;
         growthBody?: T;
-        investmentTitle?: T;
-        investmentBody?: T;
+        introSecondaryImage?: T;
         mission?:
           | T
           | {
               eyebrow?: T;
               title?: T;
               body?: T;
-              image?: T;
             };
         vision?:
           | T
@@ -3245,56 +2467,27 @@ export interface PagesSelect<T extends boolean = true> {
               eyebrow?: T;
               title?: T;
               body?: T;
-              image?: T;
             };
+        coreValuesEyebrow?: T;
+        coreValuesTitle?: T;
+        coreValuesHint?: T;
         coreValues?:
           | T
           | {
               num?: T;
               title?: T;
               meaning?: T;
-              color?: T;
               id?: T;
             };
-        impact?:
-          | T
-          | {
-              image?: T;
-              heading?: T;
-              intro?: T;
-              items?:
-                | T
-                | {
-                    title?: T;
-                    body?: T;
-                    id?: T;
-                  };
-            };
-        partner?:
-          | T
-          | {
-              eyebrow?: T;
-              title?: T;
-              lead?: T;
-              body?: T;
-              chooseLabel?: T;
-              items?:
-                | T
-                | {
-                    title?: T;
-                    body?: T;
-                    icon?: T;
-                    accent?: T;
-                    id?: T;
-                  };
-            };
-        stats?:
-          | T
-          | {
-              value?: T;
-              label?: T;
-              id?: T;
-            };
+        teamTitle?: T;
+        teamIntro?: T;
+        teamLeadershipLabel?: T;
+        teamStaffLabel?: T;
+        partnerEyebrow?: T;
+        partnerTitle?: T;
+        partnerLead?: T;
+        partnerCtaLabel?: T;
+        partnerCtaUrl?: T;
       };
   whatWeDo?:
     | T
@@ -3373,12 +2566,8 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         heroEyebrow?: T;
         heroTitle?: T;
-        heroSubtitle?: T;
         heroLead?: T;
         heroImage?: T;
-        heroSecondaryImage?: T;
-        heroBadgeValue?: T;
-        heroBadgeLabel?: T;
         heroHighlights?:
           | T
           | {
@@ -3390,17 +2579,7 @@ export interface PagesSelect<T extends boolean = true> {
         heroPrimaryCtaUrl?: T;
         heroSecondaryCtaLabel?: T;
         heroSecondaryCtaUrl?: T;
-        aboutEyebrow?: T;
-        aboutTitle?: T;
-        aboutParagraphs?:
-          | T
-          | {
-              text?: T;
-              id?: T;
-            };
-        aboutImage?: T;
         visionEyebrow?: T;
-        visionTitle?: T;
         visionText?: T;
         missionEyebrow?: T;
         missionText?: T;
@@ -3426,7 +2605,6 @@ export interface PagesSelect<T extends boolean = true> {
         sustainNote?: T;
         sustainImage?: T;
         sustainImageAlt?: T;
-        sustainPillarsEyebrow?: T;
         sustainPillars?:
           | T
           | {
@@ -3448,117 +2626,8 @@ export interface PagesSelect<T extends boolean = true> {
               image?: T;
               id?: T;
             };
-        impactEyebrow?: T;
-        impactTitle?: T;
-        impactStats?:
-          | T
-          | {
-              value?: T;
-              label?: T;
-              id?: T;
-            };
-        conveningEyebrow?: T;
-        conveningTitle?: T;
-        conveningBody?: T;
-        conveningImage?: T;
-        globalEyebrow?: T;
-        globalTitle?: T;
-        globalLead?: T;
-        globalBody?: T;
-        globalHighlights?:
-          | T
-          | {
-              text?: T;
-              id?: T;
-            };
-        globalImages?:
-          | T
-          | {
-              image?: T;
-              alt?: T;
-              caption?: T;
-              layout?: T;
-              id?: T;
-            };
-        journeyEyebrow?: T;
-        journeyTitle?: T;
-        journeyIntro?: T;
-        journeySteps?:
-          | T
-          | {
-              step?: T;
-              title?: T;
-              description?: T;
-              id?: T;
-            };
-        storiesEyebrow?: T;
-        storiesTitle?: T;
-        storiesIntro?: T;
-        featuredEyebrow?: T;
-        featuredTitle?: T;
-        featuredIntro?: T;
-        pathwaysEyebrow?: T;
-        pathwaysTitle?: T;
-        pathwaysIntro?: T;
-        pathwaysItems?:
-          | T
-          | {
-              title?: T;
-              description?: T;
-              icon?: T;
-              id?: T;
-            };
-        milestoneEyebrow?: T;
-        milestoneTitle?: T;
-        milestoneBody?: T;
-        milestoneCtaLabel?: T;
-        milestoneCtaUrl?: T;
-        milestoneImage?: T;
-        galleryEyebrow?: T;
-        galleryTitle?: T;
-        galleryImages?:
-          | T
-          | {
-              image?: T;
-              alt?: T;
-              id?: T;
-            };
-        newsEyebrow?: T;
-        newsTitle?: T;
-        newsIntro?: T;
-        newsReadMoreLabel?: T;
-        newsItems?:
-          | T
-          | {
-              title?: T;
-              excerpt?: T;
-              image?: T;
-              href?: T;
-              id?: T;
-            };
-        networkEyebrow?: T;
-        networkTitle?: T;
-        networkIntro?: T;
-        networkBenefits?:
-          | T
-          | {
-              title?: T;
-              description?: T;
-              icon?: T;
-              id?: T;
-            };
-        networkGlobalLinkLabel?: T;
-        networkGlobalLinkUrl?: T;
-        quoteText?: T;
-        quoteAttribution?: T;
-        quoteRole?: T;
-        ctaTitle?: T;
-        ctaBody?: T;
-        ctaPrimaryLabel?: T;
-        ctaPrimaryUrl?: T;
-        ctaSecondaryLabel?: T;
-        ctaSecondaryUrl?: T;
-        ctaImage?: T;
+        spotlightSupportCtaLabel?: T;
+        spotlightSupportCtaUrl?: T;
       };
   galleryPage?:
     | T
@@ -3592,20 +2661,11 @@ export interface PagesSelect<T extends boolean = true> {
         heroTitle?: T;
         heroLead?: T;
         heroImage?: T;
-        heroSecondaryImage?: T;
         heroStats?:
           | T
           | {
               value?: T;
               label?: T;
-              id?: T;
-            };
-        defaultCohort?: T;
-        cohortTabs?:
-          | T
-          | {
-              label?: T;
-              value?: T;
               id?: T;
             };
         searchPlaceholder?: T;
@@ -3615,11 +2675,6 @@ export interface PagesSelect<T extends boolean = true> {
         showMoreLabel?: T;
         showLessLabel?: T;
         emptyStateText?: T;
-        highlightsEyebrow?: T;
-        highlightsTitle?: T;
-        cohortLabel?: T;
-        cohortCount?: T;
-        cohortDescription?: T;
         eplanEyebrow?: T;
         eplanTitle?: T;
         eplanIntro?: T;
@@ -3639,11 +2694,6 @@ export interface PagesSelect<T extends boolean = true> {
         involvePrimaryUrl?: T;
         involveSecondaryLabel?: T;
         involveSecondaryUrl?: T;
-        ctaTitle?: T;
-        ctaBody?: T;
-        ctaLabel?: T;
-        ctaUrl?: T;
-        ctaImage?: T;
       };
   partnersPage?:
     | T
@@ -3654,14 +2704,6 @@ export interface PagesSelect<T extends boolean = true> {
         heroCtaLabel?: T;
         heroCtaUrl?: T;
         heroImage?: T;
-        heroSecondaryImage?: T;
-        heroStats?:
-          | T
-          | {
-              value?: T;
-              label?: T;
-              id?: T;
-            };
         collabEyebrow?: T;
         collabTitle?: T;
         collabLead?: T;
@@ -3681,7 +2723,6 @@ export interface PagesSelect<T extends boolean = true> {
         ecosystemTitle?: T;
         ecosystemIntro?: T;
         ecosystemLearnMoreLabel?: T;
-        ecosystemCloseLabel?: T;
         ecosystemHighlightsLabel?: T;
         ecosystemCategories?:
           | T
@@ -3695,25 +2736,15 @@ export interface PagesSelect<T extends boolean = true> {
                     text?: T;
                     id?: T;
                   };
+              image?: T;
               id?: T;
             };
-        networkEyebrow?: T;
         networkTitle?: T;
         networkIntro?: T;
-        strategicEyebrow?: T;
-        strategicTitle?: T;
-        strategicIntro?: T;
-        hostEyebrow?: T;
-        hostTitle?: T;
-        hostIntro?: T;
         formEyebrow?: T;
         formTitle?: T;
         formDescription?: T;
         formSubmitLabel?: T;
-        ctaTitle?: T;
-        ctaDescription?: T;
-        ctaLabel?: T;
-        ctaUrl?: T;
       };
   donatePage?:
     | T
@@ -3737,22 +2768,14 @@ export interface PagesSelect<T extends boolean = true> {
             };
         waysEyebrow?: T;
         waysTitle?: T;
-        bankCode?: T;
-        bankTitle?: T;
-        bankDescription?: T;
-        bankAccountName?: T;
-        bankAccountGhs?: T;
-        bankAccountUsd?: T;
-        bankName?: T;
-        bankBranch?: T;
-        bankSwift?: T;
-        bankSortCode?: T;
-        bankNote?: T;
-        momoCode?: T;
-        momoTitle?: T;
-        momoDescription?: T;
-        momoNote?: T;
-        momoLogo?: T;
+        waysIntro?: T;
+        transferLabel?: T;
+        cardStatusLabel?: T;
+        cardCode?: T;
+        cardTitle?: T;
+        cardDescription?: T;
+        cardCtaLabel?: T;
+        cardCtaUrl?: T;
         momoOptions?:
           | T
           | {
@@ -3761,23 +2784,21 @@ export interface PagesSelect<T extends boolean = true> {
               name?: T;
               detail?: T;
               detailLabel?: T;
-              note?: T;
               badge?: T;
               logo?: T;
-              logoTone?: T;
               id?: T;
             };
-        cardCode?: T;
-        cardTitle?: T;
-        cardDescription?: T;
-        cardStatusLabel?: T;
-        cardAccepted?: T;
-        cardCurrencies?: T;
-        cardCtaLabel?: T;
-        cardCtaUrl?: T;
+        bankTitle?: T;
+        bankBranch?: T;
+        bankAccountName?: T;
+        bankAccountGhs?: T;
+        bankAccountUsd?: T;
+        bankName?: T;
+        bankSwift?: T;
+        bankSortCode?: T;
+        bankNote?: T;
         tiersEyebrow?: T;
         tiersTitle?: T;
-        tiersIntro?: T;
         tierItems?:
           | T
           | {
@@ -3789,6 +2810,12 @@ export interface PagesSelect<T extends boolean = true> {
               isCustom?: T;
               id?: T;
             };
+        questionsTitle?: T;
+        questionsText?: T;
+        questionsPrimaryLabel?: T;
+        questionsPrimaryUrl?: T;
+        questionsSecondaryLabel?: T;
+        questionsSecondaryUrl?: T;
         pledgeEyebrow?: T;
         pledgeTitle?: T;
         pledgeDescription?: T;
@@ -3810,7 +2837,6 @@ export interface PagesSelect<T extends boolean = true> {
         heroDescription?: T;
         heroImage?: T;
         glanceEyebrow?: T;
-        glanceTitle?: T;
         glanceStats?:
           | T
           | {
@@ -3821,33 +2847,11 @@ export interface PagesSelect<T extends boolean = true> {
             };
         successEyebrow?: T;
         successTitle?: T;
-        successStories?:
-          | T
-          | {
-              name?: T;
-              role?: T;
-              cohort?: T;
-              image?: T;
-              desc?: T;
-              id?: T;
-            };
         communityEyebrow?: T;
         communityTitle?: T;
         communityIntro?: T;
         communityCtaLabel?: T;
         communityCtaUrl?: T;
-        communityStories?:
-          | T
-          | {
-              num?: T;
-              slug?: T;
-              region?: T;
-              assembly?: T;
-              title?: T;
-              desc?: T;
-              body?: T;
-              id?: T;
-            };
         testimonialsEyebrow?: T;
         testimonialsTitle?: T;
         testimonialsIntro?: T;
@@ -3868,26 +2872,9 @@ export interface PagesSelect<T extends boolean = true> {
         reportsHeading?: T;
         reportsCtaLabel?: T;
         reportsCtaUrl?: T;
-        annualReports?:
-          | T
-          | {
-              edition?: T;
-              title?: T;
-              summary?: T;
-              id?: T;
-            };
         researchHeading?: T;
         researchCtaLabel?: T;
         researchCtaUrl?: T;
-        researchStudies?:
-          | T
-          | {
-              tag?: T;
-              title?: T;
-              authorYear?: T;
-              summary?: T;
-              id?: T;
-            };
       };
   annualReportsPage?:
     | T

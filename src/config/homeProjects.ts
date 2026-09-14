@@ -44,21 +44,20 @@ export const HOME_PROJECT_DEFAULTS: HomeProjectCard[] = [
   },
 ]
 
-/** Merge CMS project copy onto the fixed four-card layout. Images always use EPL defaults. */
+/** Merge CMS project copy onto the fixed four-card layout. */
 export function resolveHomeProjects(projects: HomeProjectCard[] = []): HomeProjectCard[] {
   const bySlug = new Map(projects.map((project) => [project.slug, project]))
 
   return HOME_PROJECT_DEFAULTS.map((fallback) => {
     const cms = bySlug.get(fallback.slug)
-    // Home Our Work uses approved homepage copy for Elevated MINDS.
     if (!cms) return fallback
 
     return {
       slug: fallback.slug,
-      title: fallback.title,
-      category: fallback.category,
-      summary: fallback.summary,
-      image: fallback.image,
+      title: cms.title?.trim() || fallback.title,
+      category: cms.category?.trim() || fallback.category,
+      summary: cms.summary?.trim() || fallback.summary,
+      image: cms.image?.trim() || fallback.image,
     }
   })
 }

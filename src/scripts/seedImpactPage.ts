@@ -71,8 +71,8 @@ const found = await payload.find({
 let pageId: string | number
 if (found.docs.length) {
   pageId = found.docs[0].id
-  const existing = found.docs[0] as { impactPage?: { glanceTitle?: string | null } }
-  const alreadySeeded = Boolean(existing.impactPage?.glanceTitle)
+  const existing = found.docs[0] as { impactPage?: { glanceEyebrow?: string | null } }
+  const alreadySeeded = Boolean(existing.impactPage?.glanceEyebrow)
   if (alreadySeeded && !force) {
     console.log('[impact-page] already seeded, use --force or FORCE=1 to overwrite')
     process.exit(0)
@@ -102,7 +102,6 @@ const impactPage = {
   heroDescription: d.hero.description,
   heroImage: await importImage(d.hero.image, 'EPL Ghana impact'),
   glanceEyebrow: d.glance.eyebrow,
-  glanceTitle: d.glance.title,
   glanceStats: d.glance.stats.map((s) => ({
     value: s.value,
     title: s.title,
@@ -110,27 +109,11 @@ const impactPage = {
   })),
   successEyebrow: d.successStories.eyebrow,
   successTitle: d.successStories.title,
-  successStories: await Promise.all(
-    d.successStories.items.map(async (item) => ({
-      name: item.name,
-      role: item.role,
-      cohort: item.cohort,
-      image: await importImage(item.image, item.name),
-      desc: item.desc,
-    })),
-  ),
   communityEyebrow: d.communityStories.eyebrow,
   communityTitle: d.communityStories.title,
   communityIntro: d.communityStories.intro,
   communityCtaLabel: d.communityStories.ctaLabel,
   communityCtaUrl: d.communityStories.ctaUrl,
-  communityStories: d.communityStories.items.map((item) => ({
-    num: item.num,
-    region: item.region,
-    assembly: item.assembly,
-    title: item.title,
-    desc: item.desc,
-  })),
   testimonialsEyebrow: d.testimonials.eyebrow,
   testimonialsTitle: d.testimonials.title,
   testimonialsIntro: d.testimonials.intro,
@@ -147,20 +130,9 @@ const impactPage = {
   reportsHeading: d.publications.reportsHeading,
   reportsCtaLabel: d.publications.reportsCtaLabel,
   reportsCtaUrl: d.publications.reportsCtaUrl,
-  annualReports: d.publications.reports.map((r) => ({
-    edition: r.edition,
-    title: r.title,
-    summary: r.summary,
-  })),
   researchHeading: d.publications.researchHeading,
   researchCtaLabel: d.publications.researchCtaLabel,
   researchCtaUrl: d.publications.researchCtaUrl,
-  researchStudies: d.publications.research.map((r) => ({
-    tag: r.tag,
-    title: r.title,
-    authorYear: r.authorYear,
-    summary: r.summary,
-  })),
 }
 
 await payload.update({
