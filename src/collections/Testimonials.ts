@@ -29,6 +29,14 @@ export const Testimonials: CollectionConfig = {
       admin: { description: 'e.g. Fellow, Ministry of Finance' },
     },
     {
+      name: 'cohort',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+        description: 'e.g. Cohort 3. Shown next to the name on the homepage impact story cards.',
+      },
+    },
+    {
       name: 'quote',
       type: 'textarea',
       required: true,
@@ -47,6 +55,16 @@ export const Testimonials: CollectionConfig = {
       admin: {
         position: 'sidebar',
         description: 'Show on the homepage fellow testimonials section.',
+      },
+    },
+    {
+      name: 'storyHref',
+      type: 'text',
+      label: 'Read Story link',
+      admin: {
+        position: 'sidebar',
+        description:
+          'Where the "Read Their Story" button goes when this is the top featured story on the homepage. Leave blank to link to the general stories page.',
       },
     },
     {

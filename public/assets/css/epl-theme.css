@@ -8750,8 +8750,8 @@ a.epl-contact-method-card:hover .epl-contact-method-value {
   border: 0;
   border-radius: clamp(12px, 1vw, 16px);
   overflow: hidden;
-  aspect-ratio: 1 / 1;
-  background: linear-gradient(145deg, #0a3d6b 0%, #1e6bb8 100%);
+  aspect-ratio: 3 / 4;
+  background: #eef0f4;
   cursor: pointer;
 }
 
@@ -8759,6 +8759,7 @@ a.epl-contact-method-card:hover .epl-contact-method-value {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: top center;
   transition: transform 0.5s ease;
 }
 

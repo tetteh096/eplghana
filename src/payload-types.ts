@@ -672,6 +672,10 @@ export interface Testimonial {
    */
   role: string;
   /**
+   * e.g. Cohort 3. Shown next to the name on the homepage impact story cards.
+   */
+  cohort?: string | null;
+  /**
    * The testimonial text shown in the slider.
    */
   quote: string;
@@ -683,6 +687,10 @@ export interface Testimonial {
    * Show on the homepage fellow testimonials section.
    */
   featured?: boolean | null;
+  /**
+   * Where the "Read Their Story" button goes when this is the top featured story on the homepage. Leave blank to link to the general stories page.
+   */
+  storyHref?: string | null;
   /**
    * Lower numbers appear first.
    */
@@ -2109,9 +2117,11 @@ export interface PublicationsSelect<T extends boolean = true> {
 export interface TestimonialsSelect<T extends boolean = true> {
   name?: T;
   role?: T;
+  cohort?: T;
   quote?: T;
   photo?: T;
   featured?: T;
+  storyHref?: T;
   order?: T;
   status?: T;
   updatedAt?: T;

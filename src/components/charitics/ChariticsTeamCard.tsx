@@ -46,6 +46,17 @@ export function ChariticsTeamCard({ isActive = false, member, onOpen }: Charitic
         className="epl-team-card-photo"
         onClick={() => onOpen?.(member)}
         type="button"
+        style={{
+          position: 'relative',
+          display: 'block',
+          width: '100%',
+          aspectRatio: '3 / 4',
+          padding: 0,
+          border: 0,
+          background: '#eef0f4',
+          cursor: 'pointer',
+          overflow: 'hidden',
+        }}
       >
         <TeamMemberPhoto alt={member.name} src={member.photo} />
         <span className="epl-team-card-view">View profile</span>
