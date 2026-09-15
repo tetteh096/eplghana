@@ -3,6 +3,7 @@ import { type HeroImageSlide, heroImageSlides } from '@/config/heroSlides'
 import type { SiteSetting } from '@/payload-types'
 import { resolveMediaUrl } from '@/utilities/getMediaUrl'
 import { getPage } from '@/utilities/getPage'
+import { getFeaturedTestimonials } from '@/utilities/getTestimonials'
 import { tryGetPayload } from '@/utilities/payloadSafe'
 
 export type HomeStat = { value: string; label: string }
@@ -138,6 +139,23 @@ const defaultImpactStories: HomeImpactStories = {
 }
 
 const txt = (v: unknown, d: string) => (typeof v === 'string' && v.trim() ? v.trim() : d)
+
+async function impactStoriesFromTestimonials(
+  payload: Awaited<ReturnType<typeof tryGetPayload>>,
+): Promise<HomeImpactStory[]> {
+  if (!payload) return []
+  const featured = await getFeaturedTestimonials(payload, 3).catch(() => [])
+  return Promise.all(
+    featured.map(async (t) => ({
+      name: t.name,
+      cohort: t.cohort?.trim() || '',
+      institution: t.role ?? '',
+      quote: t.quote,
+      image: (await resolveMediaUrl(t.photo, payload)) || eplHomeImages.fellows.miriam,
+      storyHref: t.storyHref?.trim() || undefined,
+    })),
+  )
+}
 
 function titleLinesFromCms(
   s: Record<string, any>,
@@ -290,12 +308,23 @@ export async function getHomeContent(settings: SiteSetting): Promise<{
       secondary,
     }
   } else {
+    const ctaUrl = txt(home.impactStoriesCtaUrl, defaultImpactStories.ctaUrl)
+    const [testimonialFeatured, ...testimonialSecondary] = await impactStoriesFromTestimonials(
+      payload,
+    )
+
     impactStories = {
       ...defaultImpactStories,
+      ...(testimonialFeatured
+        ? {
+            featured: { ...testimonialFeatured, storyHref: testimonialFeatured.storyHref || ctaUrl },
+            secondary: testimonialSecondary,
+          }
+        : null),
       eyebrow: txt(home.impactStoriesEyebrow, defaultImpactStories.eyebrow),
       title: txt(home.impactStoriesTitle, defaultImpactStories.title),
       ctaLabel: txt(home.impactStoriesCtaLabel, defaultImpactStories.ctaLabel),
-      ctaUrl: txt(home.impactStoriesCtaUrl, defaultImpactStories.ctaUrl),
+      ctaUrl,
       featuredLabel: txt(home.impactStoriesFeaturedLabel, defaultImpactStories.featuredLabel),
       featuredHeading: txt(
         home.impactStoriesFeaturedHeading,

@@ -165,8 +165,6 @@ export const donatePageContent = {
     text: "We're happy to discuss how your contribution can make the greatest impact.",
     primaryLabel: 'Contact Us',
     primaryHref: '/contact',
-    secondaryLabel: 'Partner With Us',
-    secondaryHref: '/community/partners',
   },
   pledge: {
     eyebrow: 'Pledge Form',
