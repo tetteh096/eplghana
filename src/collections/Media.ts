@@ -119,7 +119,18 @@ export const Media: CollectionConfig = {
   hooks: {
     beforeOperation: [
       ({ req, operation }) => {
-        if ((operation === 'create' || operation === 'update') && req.file?.name) {
+        // Client uploads (R2_CLIENT_UPLOADS) send the file straight from the
+        // browser to R2 under req.file.name *before* this hook runs. Renaming
+        // it here would desync the DB/URL from the object actually stored in
+        // R2, producing a permanent 404. Only sanitize server-received files.
+        const isClientUpload = Boolean(
+          req.file && 'clientUploadContext' in req.file && req.file.clientUploadContext,
+        )
+        if (
+          (operation === 'create' || operation === 'update') &&
+          req.file?.name &&
+          !isClientUpload
+        ) {
           req.file.name = sanitizeUploadName(req.file.name)
         }
       },

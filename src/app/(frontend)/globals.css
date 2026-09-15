@@ -6131,6 +6131,10 @@
   letter-spacing: 0.01em;
   text-transform: none;
 }
+.figma-donate-hero__actions .figma-donate-btn {
+  padding: 0.65rem 1.35rem;
+  font-size: 0.8rem;
+}
 .figma-donate-ways__divider {
   margin: 0.15rem 0;
   color: #818181;

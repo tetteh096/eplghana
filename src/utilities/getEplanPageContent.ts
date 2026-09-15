@@ -35,10 +35,7 @@ export async function getEplanPageContent(): Promise<EplanPageContent> {
       ? cms.executivesItems.slice(0, 6).map((member: any, index: number) => {
           const role = txt(member?.role, d.executives.items[index]?.role ?? '')
           const rawName = txt(member?.name, d.executives.items[index]?.name ?? '')
-          const name =
-            !rawName || rawName.toLowerCase() === role.toLowerCase()
-              ? 'Profile coming soon'
-              : rawName
+          const name = rawName || 'Profile coming soon'
           return {
             id: member?.id ?? `eplan-executive-${index}`,
             name,
