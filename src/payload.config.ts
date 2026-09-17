@@ -39,6 +39,13 @@ import { revalidatePublicSite, revalidatePublicSiteGlobal } from './hooks/revali
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+// Origin must match exactly what the browser sends in its Origin header (no
+// trailing slash, no stray whitespace) or Payload's cookie-auth CSRF check
+// silently rejects otherwise-valid requests.
+const SERVER_URL = (process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000')
+  .trim()
+  .replace(/\/+$/, '')
+
 /** Public pages re-fetch CMS data on every request; bust cache on save as a safety net. */
 const COLLECTIONS_WITH_REVALIDATE = new Set([
   'pages',
@@ -223,8 +230,8 @@ export default buildConfig({
   secret: process.env.PAYLOAD_SECRET || '',
   // Restrict cross-origin API access and CSRF-trusted origins to our own site.
   // Defends the authenticated REST/GraphQL API against requests from other origins.
-  cors: [process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'],
-  csrf: [process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'],
+  cors: [SERVER_URL],
+  csrf: [SERVER_URL],
   // Email: Resend or SMTP via getEmailAdapter() — see src/email/transport.ts
   email: getEmailAdapter(),
   typescript: {
