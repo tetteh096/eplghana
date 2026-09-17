@@ -410,7 +410,7 @@ export function ChariticsDonatePage({ content, paystackEnabled = false }: Props)
         {tiers.items.some((tier) => tier.isCustom) ? (
           <div className="figma-donate-impact-custom">
             <button
-              className="figma-donate-btn figma-donate-btn--ghost-dark"
+              className="figma-donate-btn figma-donate-btn--blue"
               onClick={() => openTierModal(tiers.items.find((tier) => tier.isCustom)!)}
               type="button"
             >
@@ -428,9 +428,6 @@ export function ChariticsDonatePage({ content, paystackEnabled = false }: Props)
             <a className="figma-donate-btn figma-donate-btn--light" href={questions.primaryHref}>
               {questions.primaryLabel}
               <ArrowRightIcon />
-            </a>
-            <a className="figma-donate-btn figma-donate-btn--ghost" href={questions.secondaryHref}>
-              {questions.secondaryLabel}
             </a>
           </div>
         </div>

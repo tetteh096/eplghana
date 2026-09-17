@@ -20,6 +20,8 @@
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "migrate:media-r2": "cross-env NODE_OPTIONS=--no-deprecation payload run src/scripts/migrateMediaToR2.ts",
     "fix:media-urls": "cross-env NODE_OPTIONS=--no-deprecation payload run src/scripts/fixMediaUrls.ts",
+    "migrate:mongo": "node scripts/migrate-mongo.mjs",
+    "migrate:r2": "node scripts/migrate-r2.mjs",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start"
   },
   "dependencies": {
@@ -48,6 +50,7 @@
   },
   "devDependencies": {
     "@aws-sdk/client-s3": "^3.1071.0",
+    "@aws-sdk/lib-storage": "3.1071.0",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "24.12.3",
@@ -56,6 +59,7 @@
     "@types/react-dom": "19.2.3",
     "eslint": "^9.16.0",
     "eslint-config-next": "16.2.7",
+    "mongodb": "6.20.0",
     "postcss": "^8.4.38",
     "prettier": "^3.4.2",
     "tailwindcss": "^4.1.18",

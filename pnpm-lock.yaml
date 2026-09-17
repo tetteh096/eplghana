@@ -82,6 +82,9 @@ importers:
       '@aws-sdk/client-s3':
         specifier: ^3.1071.0
         version: 3.1071.0
+      '@aws-sdk/lib-storage':
+        specifier: 3.1071.0
+        version: 3.1071.0(@aws-sdk/client-s3@3.1071.0)
       '@tailwindcss/postcss':
         specifier: ^4.1.18
         version: 4.3.0
@@ -106,6 +109,9 @@ importers:
       eslint-config-next:
         specifier: 16.2.7
         version: 16.2.7(@typescript-eslint/parser@8.61.0(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3))(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3)
+      mongodb:
+        specifier: 6.20.0
+        version: 6.20.0
       postcss:
         specifier: '>=8.5.10'
         version: 8.5.15
@@ -200,11 +206,11 @@ packages:
     resolution: {integrity: sha512-0Iv5QttS6wcATlodYKgvQj6B9Db51rx7NU9fqu0PoLeS4BIgdYMc/QK4smwLwpm5RFrs02V/eLyEFp3FklvlNQ==}
     engines: {node: '>=20.0.0'}
 
-  '@aws-sdk/lib-storage@3.1067.0':
-    resolution: {integrity: sha512-GPM59Kv0RJBXEgR5rhx13S3eXK7pnhw8rYgzk/duWM8XYUfmYs6T6Le15T5eU5AXljBlcMYXsfyBxlZNJnnZJw==}
+  '@aws-sdk/lib-storage@3.1071.0':
+    resolution: {integrity: sha512-ctfq1H75M95RJ9ZPbbzSX3BMkqfoFBWvHmO5thwVT/img+HlJJnyLkOWbZ8P3hh/Huzm5hdGKPYh62c4KqgpOw==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
-      '@aws-sdk/client-s3': ^3.1067.0
+      '@aws-sdk/client-s3': ^3.1071.0
 
   '@aws-sdk/middleware-flexible-checksums@3.974.32':
     resolution: {integrity: sha512-KhuzFMzUbb3oEj43CdPDbEJ/RG/RkErkmXk3J/LE8OPFNvkCn8PYPMpjOLgzAzvxBacsSyytdWf+R50q0alJ4w==}
@@ -4106,7 +4112,7 @@ snapshots:
       '@smithy/types': 4.14.3
       tslib: 2.8.1
 
-  '@aws-sdk/lib-storage@3.1067.0(@aws-sdk/client-s3@3.1071.0)':
+  '@aws-sdk/lib-storage@3.1071.0(@aws-sdk/client-s3@3.1071.0)':
     dependencies:
       '@aws-sdk/client-s3': 3.1071.0
       '@smithy/core': 3.24.6
@@ -5186,7 +5192,7 @@ snapshots:
   '@payloadcms/storage-s3@3.85.1(@types/react@19.2.14)(monaco-editor@0.55.1)(next@16.2.7(@babel/core@7.29.7)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.77.4))(payload@3.85.1(graphql@16.14.2)(typescript@6.0.3))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@6.0.3)':
     dependencies:
       '@aws-sdk/client-s3': 3.1071.0
-      '@aws-sdk/lib-storage': 3.1067.0(@aws-sdk/client-s3@3.1071.0)
+      '@aws-sdk/lib-storage': 3.1071.0(@aws-sdk/client-s3@3.1071.0)
       '@aws-sdk/s3-request-presigner': 3.1067.0
       '@payloadcms/plugin-cloud-storage': 3.85.1(@types/react@19.2.14)(monaco-editor@0.55.1)(next@16.2.7(@babel/core@7.29.7)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.77.4))(payload@3.85.1(graphql@16.14.2)(typescript@6.0.3))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@6.0.3)
       payload: 3.85.1(graphql@16.14.2)(typescript@6.0.3)

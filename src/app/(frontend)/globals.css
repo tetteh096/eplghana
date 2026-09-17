@@ -1626,12 +1626,10 @@
 .epl-team-card__image img { width: 100%; height: 100%; object-fit: cover; }
 .epl-team-card-photo {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
   width: 100%;
   aspect-ratio: 3 / 4;
-  padding: 14px;
+  padding: 0;
   border: 0;
   background: #eef0f4;
   cursor: pointer;
@@ -1639,12 +1637,10 @@
 }
 .epl-team-card-photo img {
   display: block;
-  width: auto;
-  max-width: 100%;
-  height: auto;
-  max-height: 100%;
-  object-fit: contain;
-  object-position: center center;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
 }
 .epl-team-card-view {
   position: absolute;
@@ -6123,13 +6119,18 @@
 .figma-donate-hero__actions .figma-donate-btn,
 .figma-donate-questions-band__actions .figma-donate-btn,
 .figma-donate-impact-custom .figma-donate-btn {
-  width: auto;
+  width: auto !important;
   padding: 0.9rem 1.75rem;
   border-radius: var(--epl-radius-btn);
   font-size: 0.875rem;
   font-weight: 700;
   letter-spacing: 0.01em;
   text-transform: none;
+}
+.figma-donate-hero__actions .figma-donate-btn {
+  flex: 0 0 auto;
+  padding: 0.55rem 1.2rem;
+  font-size: 0.75rem;
 }
 .figma-donate-ways__divider {
   margin: 0.15rem 0;
