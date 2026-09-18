@@ -44,6 +44,14 @@ function sanitizeUploadName(name: string): string {
   return `${base || 'upload'}${ext}`
 }
 
+/** Turn "our-team-2026.jpg" into "Our team 2026" as a fallback alt text. */
+function altFromFilename(filename: string): string {
+  const dot = filename.lastIndexOf('.')
+  const base = dot > 0 ? filename.slice(0, dot) : filename
+  const words = base.replace(/[-_]+/g, ' ').trim()
+  return words ? words.charAt(0).toUpperCase() + words.slice(1) : 'Untitled image'
+}
+
 export const Media: CollectionConfig = {
   slug: 'media',
   admin: {
@@ -117,6 +125,16 @@ export const Media: CollectionConfig = {
     },
   ],
   hooks: {
+    beforeValidate: [
+      ({ data, req }) => {
+        if (!data) return data
+        if (!data.alt || !String(data.alt).trim()) {
+          const name = data.filename || req?.file?.name
+          if (name) data.alt = altFromFilename(name)
+        }
+        return data
+      },
+    ],
     beforeOperation: [
       ({ req, operation }) => {
         // Client uploads (R2_CLIENT_UPLOADS) send the file straight from the
