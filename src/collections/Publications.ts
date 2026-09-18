@@ -87,7 +87,8 @@ export const Publications: CollectionConfig = {
       relationTo: 'media',
       label: 'PDF file',
       admin: {
-        description: 'Optional downloadable PDF.',
+        description:
+          'Upload the downloadable PDF. Annual reports are hidden from the Impact page until this file exists and the status is Published.',
       },
     },
     {

@@ -10,56 +10,58 @@ export type FooterColumn = { title: string; links: FooterLink[] }
 export type FooterData = {
   aboutText: string | null
   columns: FooterColumn[]
+  stayConnectedTitle: string
+  stayConnectedIntro: string
+  stayConnectedText: string
+  subscribeLabel: string
+  location: string
   copyright: string
 }
 
 type RawFooter = {
   aboutText?: string | null
   columns?: { title?: string | null; links?: { label?: string | null; url?: string | null }[] | null }[] | null
+  stayConnectedTitle?: string | null
+  stayConnectedIntro?: string | null
+  stayConnectedText?: string | null
+  subscribeLabel?: string | null
+  location?: string | null
   copyright?: string | null
 }
 
 const DEFAULT_COPYRIGHT =
   '© {year} Emerging Public Leaders of Ghana. All rights reserved'
 
-const PROGRAMME_LINKS: FooterLink[] = [
-  { label: 'Public Service Fellowship', href: '/projects/public-service-fellowship' },
-  { label: 'Women On The Rise', href: '/projects/women-on-the-rise' },
-  { label: 'P.E.A.C.E', href: '/projects/peace' },
-  { label: 'Elevated MINDS', href: '/projects/elevated-minds' },
-]
-
 const fallbackColumns: FooterColumn[] = [
   {
-    title: 'Quick Links',
+    title: 'Explore',
     links: [
-      { label: 'About Us', href: '/about' },
-      { label: 'Our Team', href: '/about/team' },
+      { label: 'About', href: '/about' },
       { label: 'Projects', href: '/projects' },
+      { label: 'Impact', href: '/impact' },
       { label: 'Community', href: '/community' },
-      { label: 'EPLAN', href: '/community/eplan' },
-      { label: 'Contact Us', href: '/contact' },
     ],
   },
   {
-    title: 'Our Programs',
-    links: PROGRAMME_LINKS,
+    title: 'Engage',
+    links: [
+      { label: 'News & Insights', href: '/news' },
+      { label: 'Get Involved', href: '/get-involved' },
+      { label: 'Partner With Us', href: '/community/partners' },
+      { label: 'Donate', href: '/donate' },
+      { label: 'Contact Us', href: '/contact' },
+    ],
   },
 ]
-
-function withAllProgrammes(columns: FooterColumn[]): FooterColumn[] {
-  return columns.map((col) => {
-    const isPrograms = /program/i.test(col.title)
-    if (!isPrograms) return col
-    const hrefs = new Set(col.links.map((l) => l.href))
-    const missing = PROGRAMME_LINKS.filter((l) => !hrefs.has(l.href))
-    return missing.length ? { ...col, links: [...col.links, ...missing] } : col
-  })
-}
 
 const fallback: FooterData = {
   aboutText: null,
   columns: fallbackColumns,
+  stayConnectedTitle: 'Stay Connected',
+  stayConnectedIntro: 'Stay connected with EPL Ghana.',
+  stayConnectedText: 'Updates on programmes, Fellows and events.',
+  subscribeLabel: 'Subscribe',
+  location: 'Accra, Ghana',
   copyright: DEFAULT_COPYRIGHT,
 }
 
@@ -78,8 +80,23 @@ export const getFooter = cache(async (): Promise<FooterData> => {
   try {
     const footer = toPlain(await payload.findGlobal({ slug: 'footer', depth: 1 })) as RawFooter | null
     const rawColumns = footer?.columns ?? []
+    const hasLegacyFellowLabel = rawColumns.some((column) =>
+      (column.links ?? []).some((link) => link.label?.trim() === 'Become a Fellow'),
+    )
+    const normalizedColumns = rawColumns.map((column) => ({
+      ...column,
+      links: (column.links ?? []).map((link) =>
+        link.label?.trim() === 'Become a Fellow' ? { ...link, label: 'Contact Us' } : link,
+      ),
+    }))
 
-    const columns: FooterColumn[] = rawColumns
+    if (hasLegacyFellowLabel) {
+      void payload
+        .updateGlobal({ slug: 'footer', data: { columns: normalizedColumns } as never })
+        .catch(() => undefined)
+    }
+
+    const columns: FooterColumn[] = normalizedColumns
       .map((col) => ({
         title: col.title ?? '',
         links: (col.links ?? [])
@@ -90,7 +107,12 @@ export const getFooter = cache(async (): Promise<FooterData> => {
 
     return {
       aboutText: footer?.aboutText?.trim() || null,
-      columns: withAllProgrammes(columns.length ? columns : fallbackColumns),
+      columns: columns.length ? columns : fallbackColumns,
+      stayConnectedTitle: footer?.stayConnectedTitle?.trim() || fallback.stayConnectedTitle,
+      stayConnectedIntro: footer?.stayConnectedIntro?.trim() || fallback.stayConnectedIntro,
+      stayConnectedText: footer?.stayConnectedText?.trim() || fallback.stayConnectedText,
+      subscribeLabel: footer?.subscribeLabel?.trim() || fallback.subscribeLabel,
+      location: footer?.location?.trim() || fallback.location,
       copyright: footer?.copyright?.trim() || DEFAULT_COPYRIGHT,
     }
   } catch {

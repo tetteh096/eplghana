@@ -11,7 +11,7 @@ export const Testimonials: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'role', 'featured', 'order', 'status'],
     description:
-      'Fellow quotes shown on the Home page (featured) and About page (all published). Upload a portrait photo for best results.',
+      'Published testimonials appear on the Impact page and the All Testimonials page. Featured entries also appear on the homepage.',
   },
   access: {
     create: canEditContent,

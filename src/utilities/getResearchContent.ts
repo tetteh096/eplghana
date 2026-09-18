@@ -10,6 +10,7 @@ import {
 } from '@/config/researchPageContent'
 import { getMediaUrl, resolveMediaUrl } from '@/utilities/getMediaUrl'
 import { tryGetPayload } from '@/utilities/payloadSafe'
+import { getEditorialHero } from '@/utilities/getEditorialPageContent'
 
 function slugify(value: string): string {
   return value
@@ -97,8 +98,9 @@ async function loadCmsItems(): Promise<ResearchItem[]> {
 }
 
 export async function getResearchHubContent() {
+  const hub = await getEditorialHero('/research', 'researchPage', researchPageContent.hub)
   return {
-    hub: researchPageContent.hub,
+    hub,
     categories: RESEARCH_CATEGORIES.map((category) => ({
       ...category,
       href: `/research/${category.slug}`,

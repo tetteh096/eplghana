@@ -183,6 +183,37 @@ export const Pages: CollectionConfig = {
         },
         {
           type: 'group',
+          name: 'form',
+          label: 'Contact form',
+          fields: [
+            { name: 'title', type: 'text', defaultValue: 'Send Us a Message' },
+            {
+              name: 'intro',
+              type: 'textarea',
+              defaultValue: 'Fill out the form below and our team will get back to you promptly.',
+            },
+            { name: 'submitLabel', type: 'text', defaultValue: 'Submit Inquiry' },
+            {
+              name: 'successTitle',
+              type: 'text',
+              defaultValue: 'Thank You for Contacting Us',
+            },
+            {
+              name: 'successText',
+              type: 'textarea',
+              defaultValue:
+                'Your message has been successfully received. A member of the EPL Ghana team will respond to your email within 24 to 48 hours.',
+            },
+            {
+              name: 'privacyLabel',
+              type: 'text',
+              defaultValue: 'View Our Privacy Note',
+            },
+            { name: 'privacyHref', type: 'text', defaultValue: '/privacy' },
+          ],
+        },
+        {
+          type: 'group',
           name: 'formsSection',
           label: 'Forms section heading',
           fields: [
@@ -220,6 +251,81 @@ export const Pages: CollectionConfig = {
             },
           ],
         },
+      ],
+    },
+    {
+      type: 'group',
+      name: 'newsPage',
+      label: 'News page content',
+      admin: { condition: (data) => data?.slug === '/news' },
+      fields: [
+        { name: 'heroEyebrow', type: 'text', defaultValue: 'Updates & Engagement' },
+        { name: 'heroTitle', type: 'text', defaultValue: 'News & Insights' },
+        {
+          name: 'heroLead',
+          type: 'textarea',
+          defaultValue: 'Stay updated with our public sector events, fellow recruitment opportunities, and thought leadership pieces.',
+        },
+        { name: 'heroImage', type: 'upload', relationTo: 'media', label: 'Hero background' },
+      ],
+    },
+    {
+      type: 'group',
+      name: 'researchPage',
+      label: 'Research page content',
+      admin: { condition: (data) => data?.slug === '/research' },
+      fields: [
+        { name: 'heroEyebrow', type: 'text', defaultValue: 'Knowledge Products' },
+        { name: 'heroTitle', type: 'text', defaultValue: 'Research and Publications' },
+        {
+          name: 'heroLead',
+          type: 'textarea',
+          defaultValue: 'Explore articles, factsheets, studies, and policy briefs produced by EPL Ghana and our partners.',
+        },
+        { name: 'heroImage', type: 'upload', relationTo: 'media', label: 'Hero background' },
+      ],
+    },
+    {
+      type: 'group',
+      name: 'testimonialsPage',
+      label: 'Testimonials page content',
+      admin: { condition: (data) => data?.slug === '/testimonials' },
+      fields: [
+        { name: 'heroEyebrow', type: 'text', defaultValue: 'Community Voices' },
+        { name: 'heroTitle', type: 'text', defaultValue: 'All Testimonials' },
+        {
+          name: 'heroLead',
+          type: 'textarea',
+          defaultValue: 'Experiences and reflections from Fellows and members of the EPL Ghana community.',
+        },
+        { name: 'heroImage', type: 'upload', relationTo: 'media', label: 'Optional hero background' },
+      ],
+    },
+    {
+      type: 'group',
+      name: 'privacyPage',
+      label: 'Privacy page content',
+      admin: { condition: (data) => data?.slug === '/privacy' },
+      fields: [
+        { name: 'heroEyebrow', type: 'text', defaultValue: 'Privacy' },
+        { name: 'heroTitle', type: 'text', defaultValue: 'Privacy Note' },
+        {
+          name: 'heroLead',
+          type: 'textarea',
+          defaultValue: 'Your privacy matters to us. This note explains how EPL Ghana collects, uses and protects information shared through our website.',
+        },
+        { name: 'heroImage', type: 'upload', relationTo: 'media', label: 'Optional hero background' },
+        {
+          name: 'sections',
+          type: 'array',
+          labels: { singular: 'Privacy section', plural: 'Privacy sections' },
+          fields: [
+            { name: 'title', type: 'text', required: true },
+            { name: 'body', type: 'textarea', required: true },
+          ],
+        },
+        { name: 'backLabel', type: 'text', defaultValue: 'Back to Contact' },
+        { name: 'backUrl', type: 'text', defaultValue: '/contact' },
       ],
     },
     // ── Home page ─────────────────────────────────────────────────────────
@@ -443,6 +549,157 @@ export const Pages: CollectionConfig = {
         },
       ],
     },
+    // ── Our Journey (org history timeline) ───────────────────────────────
+    {
+      type: 'group',
+      name: 'ourJourney',
+      label: 'Our Journey page',
+      admin: {
+        condition: (data) => data?.slug === '/about/our-journey',
+        description:
+          'Timeline of EPL Ghana’s history, a closing director quote, and a call-to-action.',
+      },
+      fields: [
+        {
+          type: 'collapsible',
+          label: 'Hero',
+          admin: { initCollapsed: false },
+          fields: [
+            { name: 'eyebrow', type: 'text', defaultValue: 'Our Evolution' },
+            { name: 'title', type: 'text', defaultValue: 'The Journey of EPL Ghana' },
+            {
+              name: 'subtitle',
+              type: 'textarea',
+              defaultValue:
+                'Rooted in Ghana since 2018. Building a thriving movement for institutional excellence and transforming public service—one leader at a time.',
+            },
+          ],
+        },
+        {
+          type: 'collapsible',
+          label: 'Timeline milestones',
+          fields: [
+            {
+              name: 'entries',
+              type: 'array',
+              labels: { singular: 'Milestone', plural: 'Timeline milestones' },
+              defaultValue: [
+                {
+                  year: '2018',
+                  title: 'Rooted in Ghana',
+                  body: 'EPL Ghana launched with an inaugural cohort of 20 trailblazers under 30 across 28 Ministries. Operating as a rigorous 2-year fellowship combining national service with professional placement, they set an enduring standard of public service excellence.',
+                  statLine: '20 Trailblazers · 28 Ministries · Infinite Impact',
+                  asideNote: '',
+                  highlight: '',
+                },
+                {
+                  year: '2023',
+                  title: 'Program Evolution',
+                  body: 'The Fellowship refined into an intensive 1-year programme for post-National Service professionals. This evolution attracted purpose-driven talent ready to deliver immediate, tangible impact in governance and policy.',
+                  statLine: '',
+                  asideNote: '',
+                  highlight: '',
+                },
+                {
+                  year: 'Beyond 2027',
+                  title: 'The Future We Build Together',
+                  body: 'Our journey continues toward a future where Ghana’s public service stands as a beacon of continental excellence. Driven by integrity and secured by dedicated leaders who choose to serve today.',
+                  statLine: '',
+                  asideNote: '',
+                  highlight: 'Target: 275+ Fellows by 2030',
+                },
+              ],
+              fields: [
+                { name: 'year', type: 'text', required: true },
+                { name: 'title', type: 'text', required: true },
+                { name: 'body', type: 'textarea', required: true },
+                {
+                  name: 'statLine',
+                  type: 'text',
+                  admin: {
+                    description:
+                      'Optional small stat pill next to this milestone, e.g. "20 Trailblazers · 28 Ministries · Infinite Impact".',
+                  },
+                },
+                {
+                  name: 'asideNote',
+                  type: 'text',
+                  admin: { description: 'Optional short italic side note.' },
+                },
+                {
+                  name: 'highlight',
+                  type: 'text',
+                  admin: {
+                    description: 'Optional bold callout box, e.g. a target/goal statement.',
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: 'collapsible',
+          label: 'Director quote',
+          admin: {
+            description: 'Leave name/photo blank to use the Country Director from the Team collection.',
+          },
+          fields: [
+            { name: 'quoteEyebrow', type: 'text', defaultValue: 'Director’s Perspective' },
+            {
+              name: 'quoteHeadline',
+              type: 'text',
+              defaultValue: 'Excellence is not a goal; it is our baseline.',
+            },
+            {
+              name: 'quoteParagraphs',
+              type: 'array',
+              labels: { singular: 'Paragraph', plural: 'Quote paragraphs' },
+              defaultValue: [
+                {
+                  text: 'When we look back at our evolution in Ghana, what stands out most is not just the numbers, but the character of the young people who chose to serve. Public institutions transform only when principled, capable minds step up from within.',
+                },
+                {
+                  text: 'As we scale toward our 2030 vision of 275+ Fellows, our commitment remains absolute: cultivating leaders of unwavering integrity who ensure Ghana’s public service serves every citizen with distinction.',
+                },
+              ],
+              fields: [{ name: 'text', type: 'textarea', required: true }],
+            },
+            {
+              name: 'photo',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Quote portrait photo',
+              admin: {
+                description: 'Leave empty to use the Country Director’s photo from Team.',
+              },
+            },
+            {
+              name: 'name',
+              type: 'text',
+              admin: { description: 'Leave blank to use the Country Director from Team.' },
+            },
+            { name: 'role', type: 'text', defaultValue: 'Country Director, EPL Ghana' },
+          ],
+        },
+        {
+          type: 'collapsible',
+          label: 'Closing CTA',
+          fields: [
+            { name: 'ctaTitle', type: 'text', defaultValue: 'Be Part of the Next Chapter' },
+            {
+              name: 'ctaBody',
+              type: 'textarea',
+              defaultValue:
+                'Discover how you can join our upcoming cohort or partner with us to strengthen public service.',
+            },
+            { name: 'ctaPrimaryLabel', type: 'text', defaultValue: 'Apply for Fellowship' },
+            { name: 'ctaPrimaryUrl', type: 'text', defaultValue: '/contact' },
+            { name: 'ctaSecondaryLabel', type: 'text', defaultValue: 'Back to Home' },
+            { name: 'ctaSecondaryUrl', type: 'text', defaultValue: '/' },
+          ],
+        },
+      ],
+    },
     // ── Projects page (intro + CTA, grid from Projects collection) ───────
     {
       type: 'group',
@@ -471,6 +728,15 @@ export const Pages: CollectionConfig = {
                 'At Emerging Public Leaders of Ghana (EPL Ghana), our projects are designed to strengthen public institutions and equip young professionals with the skills and values to lead transformative change.',
             },
             {
+              name: 'heroImage',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Hero background image',
+              admin: {
+                description: 'Full-bleed hero background. Click an image to select, then Save this page.',
+              },
+            },
+            {
               name: 'additionalParagraphs',
               type: 'array',
               labels: { singular: 'Paragraph', plural: 'Additional paragraphs' },
@@ -494,6 +760,12 @@ export const Pages: CollectionConfig = {
               name: 'ctaTitle',
               type: 'text',
               defaultValue: 'Be Part of Our Work',
+            },
+            {
+              name: 'ctaDescription',
+              type: 'textarea',
+              defaultValue:
+                'Whether you are an aspiring young leader, a public institution looking to host talent, or a strategic partner, there is a place for you in the EPL Ghana community.',
             },
             { name: 'ctaLabel', type: 'text', defaultValue: 'Become a Fellow' },
             { name: 'ctaUrl', type: 'text', defaultValue: '/contact#partnership' },

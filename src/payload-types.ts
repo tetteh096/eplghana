@@ -647,7 +647,7 @@ export interface Publication {
    */
   coverImage?: (string | null) | Media;
   /**
-   * Optional downloadable PDF.
+   * Upload the downloadable PDF. Annual reports are hidden from the Impact page until this file exists and the status is Published.
    */
   file?: (string | null) | Media;
   /**
@@ -659,7 +659,7 @@ export interface Publication {
   createdAt: string;
 }
 /**
- * Fellow quotes shown on the Home page (featured) and About page (all published). Upload a portrait photo for best results.
+ * Published testimonials appear on the Impact page and the All Testimonials page. Featured entries also appear on the homepage.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "testimonials".
@@ -821,7 +821,7 @@ export interface Fellow {
   createdAt: string;
 }
 /**
- * Community intervention cards on /impact. Add a story here and publish it to show it on the site.
+ * Add, edit, and publish the Community Stories shown on /impact. Each published story gets its own readable detail page.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "impact-interventions".
@@ -829,31 +829,31 @@ export interface Fellow {
 export interface ImpactIntervention {
   id: string;
   /**
-   * Headline for the intervention card.
+   * For example: Quality Education & Disability Inclusion.
    */
   title: string;
   /**
-   * URL slug for the story detail page. Derived from assembly/title if empty.
+   * Page URL. It is generated from the location or title when left empty.
    */
-  slug?: string | null;
+  slug: string;
   /**
-   * e.g. Greater Accra Region
+   * For example: North Tongu District, Volta Region.
    */
   region: string;
   /**
-   * Municipal assembly or locality, e.g. Kpone Katamanso
+   * For example: Inclusive Education Implementation Project.
    */
   assembly: string;
   /**
-   * Short summary shown on the card.
+   * A short introduction shown on the Impact page card.
    */
   description: string;
   /**
-   * Full story for the detail page. Falls back to description if empty.
+   * The full story shown after a visitor opens this community story.
    */
-  body?: string | null;
+  body: string;
   /**
-   * Optional photo for the community card on /impact.
+   * Featured image shown on both the Impact card and story page.
    */
   image?: (string | null) | Media;
   /**
@@ -1059,6 +1059,15 @@ export interface Page {
       note?: string | null;
     };
     mapEmbedUrl?: string | null;
+    form?: {
+      title?: string | null;
+      intro?: string | null;
+      submitLabel?: string | null;
+      successTitle?: string | null;
+      successText?: string | null;
+      privacyLabel?: string | null;
+      privacyHref?: string | null;
+    };
     formsSection?: {
       eyebrow?: string | null;
       title?: string | null;
@@ -1078,6 +1087,39 @@ export interface Page {
         submitLabel?: string | null;
       };
     };
+  };
+  newsPage?: {
+    heroEyebrow?: string | null;
+    heroTitle?: string | null;
+    heroLead?: string | null;
+    heroImage?: (string | null) | Media;
+  };
+  researchPage?: {
+    heroEyebrow?: string | null;
+    heroTitle?: string | null;
+    heroLead?: string | null;
+    heroImage?: (string | null) | Media;
+  };
+  testimonialsPage?: {
+    heroEyebrow?: string | null;
+    heroTitle?: string | null;
+    heroLead?: string | null;
+    heroImage?: (string | null) | Media;
+  };
+  privacyPage?: {
+    heroEyebrow?: string | null;
+    heroTitle?: string | null;
+    heroLead?: string | null;
+    heroImage?: (string | null) | Media;
+    sections?:
+      | {
+          title: string;
+          body: string;
+          id?: string | null;
+        }[]
+      | null;
+    backLabel?: string | null;
+    backUrl?: string | null;
   };
   /**
    * Edits the live homepage. Projects and Events cards come from those collections; set headings and copy here.
@@ -1293,12 +1335,67 @@ export interface Page {
     teamCtaUrl?: string | null;
   };
   /**
+   * Timeline of EPL Ghana’s history, a closing director quote, and a call-to-action.
+   */
+  ourJourney?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    subtitle?: string | null;
+    entries?:
+      | {
+          year: string;
+          title: string;
+          body: string;
+          /**
+           * Optional small stat pill next to this milestone, e.g. "20 Trailblazers · 28 Ministries · Infinite Impact".
+           */
+          statLine?: string | null;
+          /**
+           * Optional short italic side note.
+           */
+          asideNote?: string | null;
+          /**
+           * Optional bold callout box, e.g. a target/goal statement.
+           */
+          highlight?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    quoteEyebrow?: string | null;
+    quoteHeadline?: string | null;
+    quoteParagraphs?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Leave empty to use the Country Director’s photo from Team.
+     */
+    photo?: (string | null) | Media;
+    /**
+     * Leave blank to use the Country Director from Team.
+     */
+    name?: string | null;
+    role?: string | null;
+    ctaTitle?: string | null;
+    ctaBody?: string | null;
+    ctaPrimaryLabel?: string | null;
+    ctaPrimaryUrl?: string | null;
+    ctaSecondaryLabel?: string | null;
+    ctaSecondaryUrl?: string | null;
+  };
+  /**
    * Intro and partner CTA. The programme photo grid is built from Admin → Projects (wide/tall card images, order).
    */
   projects?: {
     eyebrow?: string | null;
     title?: string | null;
     description?: string | null;
+    /**
+     * Full-bleed hero background. Click an image to select, then Save this page.
+     */
+    heroImage?: (string | null) | Media;
     additionalParagraphs?:
       | {
           text: string;
@@ -1306,6 +1403,7 @@ export interface Page {
         }[]
       | null;
     ctaTitle?: string | null;
+    ctaDescription?: string | null;
     ctaLabel?: string | null;
     ctaUrl?: string | null;
   };
@@ -2356,6 +2454,17 @@ export interface PagesSelect<T extends boolean = true> {
               note?: T;
             };
         mapEmbedUrl?: T;
+        form?:
+          | T
+          | {
+              title?: T;
+              intro?: T;
+              submitLabel?: T;
+              successTitle?: T;
+              successText?: T;
+              privacyLabel?: T;
+              privacyHref?: T;
+            };
         formsSection?:
           | T
           | {
@@ -2383,6 +2492,47 @@ export interface PagesSelect<T extends boolean = true> {
                     submitLabel?: T;
                   };
             };
+      };
+  newsPage?:
+    | T
+    | {
+        heroEyebrow?: T;
+        heroTitle?: T;
+        heroLead?: T;
+        heroImage?: T;
+      };
+  researchPage?:
+    | T
+    | {
+        heroEyebrow?: T;
+        heroTitle?: T;
+        heroLead?: T;
+        heroImage?: T;
+      };
+  testimonialsPage?:
+    | T
+    | {
+        heroEyebrow?: T;
+        heroTitle?: T;
+        heroLead?: T;
+        heroImage?: T;
+      };
+  privacyPage?:
+    | T
+    | {
+        heroEyebrow?: T;
+        heroTitle?: T;
+        heroLead?: T;
+        heroImage?: T;
+        sections?:
+          | T
+          | {
+              title?: T;
+              body?: T;
+              id?: T;
+            };
+        backLabel?: T;
+        backUrl?: T;
       };
   home?:
     | T
@@ -2555,12 +2705,48 @@ export interface PagesSelect<T extends boolean = true> {
         teamCtaLabel?: T;
         teamCtaUrl?: T;
       };
+  ourJourney?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        subtitle?: T;
+        entries?:
+          | T
+          | {
+              year?: T;
+              title?: T;
+              body?: T;
+              statLine?: T;
+              asideNote?: T;
+              highlight?: T;
+              id?: T;
+            };
+        quoteEyebrow?: T;
+        quoteHeadline?: T;
+        quoteParagraphs?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        photo?: T;
+        name?: T;
+        role?: T;
+        ctaTitle?: T;
+        ctaBody?: T;
+        ctaPrimaryLabel?: T;
+        ctaPrimaryUrl?: T;
+        ctaSecondaryLabel?: T;
+        ctaSecondaryUrl?: T;
+      };
   projects?:
     | T
     | {
         eyebrow?: T;
         title?: T;
         description?: T;
+        heroImage?: T;
         additionalParagraphs?:
           | T
           | {
@@ -2568,6 +2754,7 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
             };
         ctaTitle?: T;
+        ctaDescription?: T;
         ctaLabel?: T;
         ctaUrl?: T;
       };
@@ -3109,6 +3296,11 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  stayConnectedTitle?: string | null;
+  stayConnectedIntro?: string | null;
+  stayConnectedText?: string | null;
+  subscribeLabel?: string | null;
+  location?: string | null;
   /**
    * Use {year} and it will be replaced with the current year automatically.
    */
@@ -3284,6 +3476,11 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  stayConnectedTitle?: T;
+  stayConnectedIntro?: T;
+  stayConnectedText?: T;
+  subscribeLabel?: T;
+  location?: T;
   copyright?: T;
   updatedAt?: T;
   createdAt?: T;

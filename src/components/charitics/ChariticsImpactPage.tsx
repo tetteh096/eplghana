@@ -163,6 +163,11 @@ export function ChariticsImpactPage({ content }: ChariticsImpactPageProps) {
             </MotionItem>
           ))}
         </MotionReveal>
+        <div className="figma-impact-stories__cta">
+          <Link className="figma-impact-outline-btn" href="/testimonials">
+            View All Testimonials <span aria-hidden>â†’</span>
+          </Link>
+        </div>
       </MotionReveal>
 
       <MotionReveal as="section" className="figma-impact-communities epl-new-shell" id="community-stories">
@@ -258,6 +263,7 @@ export function ChariticsImpactPage({ content }: ChariticsImpactPageProps) {
         </MotionReveal>
       </MotionReveal>
 
+      {publications.reports.length || publications.research.length ? (
       <MotionReveal as="section" className="figma-impact-publications epl-new-shell" id="research">
         <div className="figma-impact-publications__head">
           <div className="figma-impact-kicker figma-impact-kicker--center">
@@ -269,6 +275,7 @@ export function ChariticsImpactPage({ content }: ChariticsImpactPageProps) {
           <p>{publications.intro}</p>
         </div>
 
+        {publications.reports.length ? (
         <div className="figma-impact-publications__block" id="annual-reports">
           <div className="figma-impact-publications__subhead">
             <span className="figma-impact-publications__subline figma-impact-publications__subline--blue" />
@@ -285,8 +292,9 @@ export function ChariticsImpactPage({ content }: ChariticsImpactPageProps) {
                   </div>
                   <Link
                     className="figma-impact-report-card__cta"
-                    href={report.href || publications.reportsCtaUrl}
-                    {...(report.href ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    href={report.href!}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <span>{publications.reportsCtaLabel}</span>
                     <span aria-hidden>→</span>
@@ -296,7 +304,9 @@ export function ChariticsImpactPage({ content }: ChariticsImpactPageProps) {
             ))}
           </MotionReveal>
         </div>
+        ) : null}
 
+        {publications.research.length ? (
         <div className="figma-impact-publications__block">
           <div className="figma-impact-publications__subhead">
             <span className="figma-impact-publications__subline figma-impact-publications__subline--gold" />
@@ -314,7 +324,7 @@ export function ChariticsImpactPage({ content }: ChariticsImpactPageProps) {
                   </div>
                   <Link
                     className="figma-impact-research-card__cta"
-                    href={study.href || publications.researchCtaUrl}
+                    href={study.href!}
                     {...(study.href?.endsWith('.pdf')
                       ? { target: '_blank', rel: 'noopener noreferrer' }
                       : {})}
@@ -327,7 +337,9 @@ export function ChariticsImpactPage({ content }: ChariticsImpactPageProps) {
             ))}
           </MotionReveal>
         </div>
+        ) : null}
       </MotionReveal>
+      ) : null}
     </div>
   )
 }

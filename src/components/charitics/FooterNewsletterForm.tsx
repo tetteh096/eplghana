@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from 'react'
 
-export function FooterNewsletterForm() {
+export function FooterNewsletterForm({ submitLabel = 'Subscribe' }: { submitLabel?: string }) {
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
 
@@ -31,7 +31,7 @@ export function FooterNewsletterForm() {
         type="email"
         value={email}
       />
-      <button type="submit">Subscribe</button>
+      <button type="submit">{submitLabel}</button>
     </form>
   )
 }

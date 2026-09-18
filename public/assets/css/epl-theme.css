@@ -9,6 +9,132 @@
   --ul-gradient: linear-gradient(90deg, #0a3d6b 0%, #1e6bb8 100%);
 }
 
+/* Impact testimonial CTA and all-testimonials page */
+body .figma-impact-stories__cta {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(2rem, 4vw, 3.5rem);
+}
+body .epl-testimonials-hero {
+  padding: clamp(5rem, 9vw, 8rem) 0;
+  background: #0f1630;
+  color: #fff;
+  text-align: center;
+}
+body .epl-testimonials-hero h1 {
+  margin: 1.25rem 0 1rem;
+  color: #fff;
+  font-family: Montserrat, sans-serif;
+  font-size: clamp(2.75rem, 5vw, 5rem);
+  font-weight: 700;
+  letter-spacing: -.04em;
+}
+body .epl-testimonials-hero p { max-width: 720px; margin: 0 auto; color: #c5cad8; font-size: clamp(1rem, 1.5vw, 1.25rem); line-height: 1.65; }
+body .epl-testimonials-hero,
+body .epl-privacy-hero { background-position: center; background-size: cover; }
+body .epl-testimonials-list { padding-block: clamp(4rem, 8vw, 7rem); }
+body .epl-testimonials-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+body .epl-testimonials-card { overflow: hidden; border: 1px solid #e2e5eb; border-radius: 18px; background: #fff; box-shadow: 0 12px 34px rgba(15,22,48,.07); }
+body .epl-testimonials-card > img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+body .epl-testimonials-card__copy { position: relative; padding: 2rem; }
+body .epl-testimonials-card__quote { color: #f4bd12; font-family: Georgia, serif; font-size: 3.5rem; line-height: .7; }
+body .epl-testimonials-card blockquote { margin: 1rem 0 1.75rem; color: #4b5563; font-size: 1rem; line-height: 1.75; }
+body .epl-testimonials-card h2 { margin: 0 0 .35rem; color: #0f1630; font-size: 1.2rem; font-weight: 800; }
+body .epl-testimonials-card p { margin: 0; color: #697386; font-size: .9rem; }
+@media (max-width: 991px) { body .epl-testimonials-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { body .epl-testimonials-grid { grid-template-columns: 1fr; } }
+
+/* Community story detail — long-form article flow */
+body .figma-community-story-detail__body,
+body .figma-community-story-detail__actions {
+  grid-column: 1 / -1;
+}
+body .figma-community-story-detail__body {
+  width: min(100%, 920px);
+  margin: 1.25rem auto 0;
+  padding-top: clamp(1.75rem, 3vw, 3rem);
+  border-top: 1px solid #e5e7eb;
+}
+body .figma-community-story-detail__body p {
+  margin: 0 0 1.4rem;
+  color: #4b5563;
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: 1.85;
+}
+body .figma-community-story-detail__actions {
+  width: min(100%, 920px);
+  margin: 0 auto;
+}
+
+/* Privacy Note — Figma-aligned legal page */
+body .epl-privacy-hero {
+  display: flex;
+  align-items: center;
+  min-height: 584px;
+  padding: 72px 0;
+  background: #0f1630;
+  color: #fff;
+}
+body .epl-privacy-hero .epl-new-shell { width: min(1548px, calc(100% - 48px)); }
+body .epl-privacy-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 0 0 42px;
+  color: #ffc400;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: .19em;
+  text-transform: uppercase;
+}
+body .epl-privacy-eyebrow span { width: 45px; height: 3px; background: #ffc400; }
+body .epl-privacy-hero h1 {
+  margin: 0 0 38px;
+  color: #fff;
+  font-family: Montserrat, sans-serif;
+  font-size: clamp(54px, 5vw, 88px);
+  font-weight: 700;
+  line-height: .95;
+  letter-spacing: -.045em;
+}
+body .epl-privacy-lead {
+  max-width: 830px;
+  margin: 0;
+  color: #c5cad8;
+  font-family: Montserrat, sans-serif;
+  font-size: clamp(19px, 1.5vw, 25px);
+  line-height: 1.5;
+}
+body .epl-privacy-content { padding: clamp(70px, 8vw, 120px) 0; background: #f8f9fb; }
+body .epl-privacy-list { display: grid; gap: 1px; border: 1px solid #e2e5eb; background: #e2e5eb; }
+body .epl-privacy-item {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 32px;
+  padding: clamp(30px, 4vw, 58px);
+  background: #fff;
+}
+body .epl-privacy-item > span { color: #4859ad; font-size: 16px; font-weight: 900; letter-spacing: .1em; }
+body .epl-privacy-item h2 { margin: 0 0 14px; color: #0f1630; font-size: clamp(22px, 2vw, 32px); font-weight: 900; }
+body .epl-privacy-item p { max-width: 950px; margin: 0; color: #5e687c; font-size: 17px; line-height: 1.75; }
+body .epl-privacy-back {
+  display: inline-flex;
+  gap: 9px;
+  margin-top: 42px;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #ffc400;
+  color: #0f1630;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+@media (max-width: 767px) {
+  body .epl-privacy-hero { min-height: 450px; }
+  body .epl-privacy-item { grid-template-columns: 1fr; gap: 14px; }
+}
+
 /* EPL brand logo (PNG) */
 .epl-brand-logo {
   width: auto;
@@ -854,6 +980,202 @@ body {
 @media screen and (max-width: 767px) {
   .epl-about-page-intro .epl-about-page-title {
     max-width: none;
+  }
+}
+
+/* Our Journey — reference-matched editorial layout */
+.epl-journey-hero {
+  min-height: 528px;
+  display: grid;
+  place-items: center;
+  padding: 88px 0 96px;
+  background: #4859ad;
+}
+
+.epl-journey-hero .ul-container {
+  width: min(820px, calc(100% - 40px));
+}
+
+.epl-journey-hero-eyebrow {
+  gap: 15px;
+  font-family: Montserrat, sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: #ffc400;
+}
+
+.epl-journey-hero-eyebrow span {
+  width: 45px;
+  height: 3px;
+}
+
+.epl-journey-hero-title {
+  max-width: 760px;
+  margin: 24px auto 28px;
+  font-family: Montserrat, sans-serif;
+  font-size: clamp(48px, 5vw, 76px);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+
+.epl-journey-hero-subtitle {
+  max-width: 700px;
+  font-family: Montserrat, sans-serif;
+  font-size: clamp(18px, 1.45vw, 24px);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.epl-journey-timeline-section {
+  padding: 0 0 clamp(72px, 8vw, 130px);
+  background: #fff;
+}
+
+.epl-journey-timeline-section .ul-container {
+  max-width: 1180px;
+}
+
+.epl-journey-timeline::before {
+  width: 4px;
+  background: #e6e9f4;
+}
+
+.epl-journey-item {
+  min-height: 330px;
+  column-gap: clamp(80px, 8vw, 150px);
+  padding: 0;
+}
+
+.epl-journey-marker {
+  top: 126px;
+  width: 14px;
+  height: 14px;
+  border: 4px solid #fff;
+  border-radius: 50%;
+  background: #ffc400;
+  box-shadow: 0 1px 7px rgba(15, 35, 75, 0.22);
+}
+
+.epl-journey-item--reverse .epl-journey-marker {
+  background: #4859ad;
+}
+
+.epl-journey-item .epl-journey-card,
+.epl-journey-item .epl-journey-aside {
+  padding-top: 8px;
+}
+
+.epl-journey-year {
+  margin: 0 0 8px;
+  color: #f5b900;
+  font-family: Montserrat, sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.epl-journey-card-title {
+  margin-bottom: 18px;
+  font-family: Montserrat, sans-serif;
+  font-size: clamp(26px, 2vw, 34px);
+  font-weight: 800;
+  line-height: 1.18;
+  color: #071b3f;
+}
+
+.epl-journey-card-body {
+  max-width: 475px;
+  margin-left: auto;
+  font-family: Montserrat, sans-serif;
+  font-size: 18px;
+  line-height: 1.55;
+  color: #40506a;
+}
+
+.epl-journey-item--reverse .epl-journey-card-body {
+  margin-left: 0;
+}
+
+.epl-journey-aside {
+  justify-content: center;
+}
+
+.epl-journey-pill,
+.epl-journey-aside-note,
+.epl-journey-highlight {
+  display: block;
+  width: 100%;
+  padding: 28px 30px;
+  border: 1px solid #edf0f5;
+  border-radius: 18px;
+  box-shadow: 0 2px 5px rgba(15, 35, 75, 0.06);
+  background: #fbfcfe;
+  font-family: Montserrat, sans-serif;
+  text-align: center;
+}
+
+.epl-journey-pill {
+  color: #354dad;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.epl-journey-aside-note {
+  color: #6d778d;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.epl-journey-highlight {
+  border-color: transparent;
+  background: #4859ad;
+  color: #fff;
+}
+
+@media screen and (max-width: 767px) {
+  .epl-journey-hero {
+    min-height: 410px;
+    padding: 68px 0 72px;
+  }
+
+  .epl-journey-hero-title {
+    font-size: clamp(38px, 12vw, 54px);
+  }
+
+  .epl-journey-timeline-section {
+    padding-top: 60px;
+  }
+
+  .epl-journey-timeline::before {
+    left: 16px;
+  }
+
+  .epl-journey-item {
+    min-height: 0;
+    padding: 0 0 64px 48px;
+  }
+
+  .epl-journey-marker {
+    top: 10px;
+    left: 16px;
+  }
+
+  .epl-journey-item .epl-journey-card,
+  .epl-journey-item--reverse .epl-journey-card {
+    padding-top: 0;
+  }
+
+  .epl-journey-card-body {
+    margin-left: 0;
+    font-size: 16px;
+  }
+
+  .epl-journey-item .epl-journey-aside,
+  .epl-journey-item--reverse .epl-journey-aside {
+    padding-top: 22px;
   }
 }
 
@@ -9784,5 +10106,534 @@ body[data-hero-mode='solid'] .epl-hero-unified[data-active-slide='home2'] {
 @media (max-width: 575px) {
   .epl-event-more__grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   Our Journey — org history timeline
+   ========================================================================== */
+.epl-journey-hero {
+  padding: clamp(64px, 8vw, 96px) 0;
+  text-align: center;
+  background: linear-gradient(135deg, var(--ul-primary) 0%, var(--ul-secondary) 100%);
+}
+
+.epl-journey-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-quicksand);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ul-c2, #f5bd17);
+}
+
+.epl-journey-hero-eyebrow span {
+  display: inline-block;
+  width: 22px;
+  height: 2px;
+  background: currentColor;
+}
+
+.epl-journey-hero-title {
+  margin: clamp(14px, 1.6vw, 20px) 0;
+  font-family: var(--font-quicksand);
+  font-size: clamp(30px, 4vw, 48px);
+  font-weight: 700;
+  color: var(--white);
+}
+
+.epl-journey-hero-subtitle {
+  max-width: 640px;
+  margin: 0 auto;
+  font-size: clamp(15px, 1.1vw, 17px);
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.epl-journey-timeline-section {
+  overflow: hidden;
+}
+
+.epl-journey-timeline {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.epl-journey-timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: var(--ul-c3);
+  transform: translateX(-50%);
+}
+
+.epl-journey-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: clamp(32px, 4vw, 64px);
+  padding-bottom: clamp(40px, 4vw, 64px);
+}
+
+.epl-journey-item:last-child {
+  padding-bottom: 0;
+}
+
+.epl-journey-marker {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.epl-journey-marker span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 88px;
+  padding: 6px 14px;
+  border-radius: var(--epl-radius-pill, 999px);
+  background: var(--ul-primary);
+  color: var(--white);
+  font-family: var(--font-quicksand);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.epl-journey-item .epl-journey-card {
+  grid-column: 1;
+  padding-top: clamp(48px, 4vw, 64px);
+  text-align: right;
+}
+
+.epl-journey-item .epl-journey-aside {
+  grid-column: 2;
+  padding-top: clamp(48px, 4vw, 64px);
+}
+
+.epl-journey-item--reverse .epl-journey-card {
+  grid-column: 2;
+  text-align: left;
+}
+
+.epl-journey-item--reverse .epl-journey-aside {
+  grid-column: 1;
+}
+
+.epl-journey-card-title {
+  font-family: var(--font-quicksand);
+  font-size: clamp(19px, 1.4vw, 23px);
+  font-weight: 700;
+  color: var(--ul-primary);
+  margin-bottom: 8px;
+}
+
+.epl-journey-card-body {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #475569;
+  margin-bottom: 12px;
+}
+
+.epl-journey-pill {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: var(--epl-radius-pill, 999px);
+  background: var(--ul-c4);
+  color: var(--ul-primary);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.epl-journey-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.epl-journey-aside-note {
+  font-style: italic;
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+}
+
+.epl-journey-highlight {
+  margin: 0;
+  padding: clamp(16px, 1.4vw, 22px);
+  border-radius: 14px;
+  background: var(--ul-primary);
+  color: var(--white);
+  font-family: var(--font-quicksand);
+  font-weight: 700;
+  font-size: clamp(15px, 1.1vw, 17px);
+}
+
+.epl-journey-quote-card {
+  display: grid;
+  grid-template-columns: clamp(140px, 16vw, 200px) minmax(0, 1fr);
+  gap: clamp(24px, 2.4vw, 40px);
+  align-items: center;
+  padding: clamp(28px, 2.6vw, 44px);
+  border-radius: clamp(16px, 1.3vw, 22px);
+  background: var(--white);
+  border: 1px solid rgba(10, 61, 107, 0.08);
+  box-shadow: 0 22px 50px rgba(10, 61, 107, 0.1);
+}
+
+.epl-journey-quote-photo {
+  aspect-ratio: 4 / 5;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #0a3d6b 0%, #1e6bb8 100%);
+  color: var(--white);
+  font-size: 13px;
+  text-align: center;
+  padding: 8px;
+}
+
+.epl-journey-quote-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.epl-journey-quote-headline {
+  font-family: var(--font-quicksand);
+  font-size: clamp(22px, 1.8vw, 30px);
+  font-weight: 700;
+  color: var(--ul-primary);
+  margin: 10px 0 16px;
+}
+
+.epl-journey-quote-paragraph {
+  font-style: italic;
+  color: #475569;
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+.epl-journey-quote-attribution {
+  margin-top: 8px;
+  font-weight: 600;
+  color: var(--ul-secondary);
+}
+
+.epl-journey-cta-section {
+  background: var(--ul-c4);
+}
+
+.epl-journey-cta-inner {
+  text-align: center;
+  max-width: 640px;
+}
+
+.epl-journey-cta-title {
+  font-family: var(--font-quicksand);
+  font-size: clamp(24px, 2vw, 32px);
+  font-weight: 700;
+  color: var(--ul-primary);
+  margin-bottom: 12px;
+}
+
+.epl-journey-cta-body {
+  color: #475569;
+  margin-bottom: clamp(20px, 1.8vw, 28px);
+}
+
+.epl-journey-cta-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(16px, 1.6vw, 24px);
+  flex-wrap: wrap;
+}
+
+.epl-journey-cta-back {
+  font-weight: 600;
+  color: var(--ul-primary);
+  text-decoration: underline;
+}
+
+/* Keep the reference treatment authoritative over the legacy journey rules above. */
+body .epl-journey-hero { min-height: 528px; display: grid; place-items: center; padding: 88px 0 96px; background: #4859ad; }
+body .epl-journey-hero .ul-container { width: min(820px, calc(100% - 40px)); }
+body .epl-journey-hero-eyebrow { gap: 15px; font-family: Montserrat, sans-serif; font-size: 14px; font-weight: 800; letter-spacing: .2em; color: #ffc400; }
+body .epl-journey-hero-eyebrow span { width: 45px; height: 3px; }
+body .epl-journey-hero-title { max-width: 760px; margin: 24px auto 28px; font-family: Montserrat, sans-serif; font-size: clamp(48px, 5vw, 76px); font-weight: 700; line-height: .98; letter-spacing: -.045em; }
+body .epl-journey-hero-subtitle { max-width: 700px; font-family: Montserrat, sans-serif; font-size: clamp(18px, 1.45vw, 24px); line-height: 1.5; color: rgba(255,255,255,.92); }
+body .epl-journey-timeline-section { padding: 0 0 clamp(72px, 8vw, 130px); background: #fff; }
+body .epl-journey-timeline-section .ul-container { max-width: 1180px; }
+body .epl-journey-timeline::before { width: 4px; background: #e6e9f4; }
+body .epl-journey-item { min-height: 330px; column-gap: clamp(80px, 8vw, 150px); padding: 0; }
+body .epl-journey-marker { top: 126px; width: 14px; height: 14px; border: 4px solid #fff; border-radius: 50%; background: #ffc400; box-shadow: 0 1px 7px rgba(15,35,75,.22); }
+body .epl-journey-item--reverse .epl-journey-marker { background: #4859ad; }
+body .epl-journey-item .epl-journey-card,
+body .epl-journey-item .epl-journey-aside { padding-top: 8px; }
+body .epl-journey-year { margin: 0 0 8px; color: #f5b900; font-family: Montserrat, sans-serif; font-size: 16px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+body .epl-journey-card-title { margin-bottom: 18px; font-family: Montserrat, sans-serif; font-size: clamp(26px, 2vw, 34px); font-weight: 800; line-height: 1.18; color: #071b3f; }
+body .epl-journey-card-body { max-width: 475px; margin-left: auto; font-family: Montserrat, sans-serif; font-size: 18px; line-height: 1.55; color: #40506a; }
+body .epl-journey-item--reverse .epl-journey-card-body { margin-left: 0; }
+body .epl-journey-aside { justify-content: center; }
+body .epl-journey-pill,
+body .epl-journey-aside-note,
+body .epl-journey-highlight { display: block; width: 100%; padding: 28px 30px; border: 1px solid #edf0f5; border-radius: 18px; box-shadow: 0 2px 5px rgba(15,35,75,.06); background: #fbfcfe; font-family: Montserrat, sans-serif; text-align: center; }
+body .epl-journey-pill { color: #354dad; font-size: 15px; font-weight: 800; }
+body .epl-journey-aside-note { color: #6d778d; font-size: 15px; line-height: 1.45; }
+body .epl-journey-highlight { border-color: transparent; background: #4859ad; color: #fff; }
+
+body .epl-journey-aside-note {
+  font-size: clamp(17px, 1.15vw, 20px);
+  line-height: 1.5;
+}
+
+body .epl-journey-quote-section {
+  padding: clamp(72px, 7vw, 110px) 0;
+  background: #f7f8fa;
+}
+
+body .epl-journey-quote-section .ul-container {
+  max-width: 1220px;
+}
+
+body .epl-journey-quote-card {
+  position: relative;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: clamp(50px, 7vw, 96px);
+  min-height: 665px;
+  padding: clamp(70px, 6vw, 100px) clamp(70px, 7vw, 115px);
+  overflow: hidden;
+  border: 1px solid #dce0e8;
+  border-radius: 0;
+  box-shadow: 0 3px 8px rgba(7, 27, 63, 0.12);
+}
+
+body .epl-journey-quote-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 160px;
+  height: 160px;
+  border-radius: 0 0 0 100%;
+  background: #fff8e7;
+}
+
+body .epl-journey-quote-person {
+  align-self: center;
+  text-align: center;
+}
+
+body .epl-journey-quote-photo {
+  width: 240px;
+  height: 280px;
+  margin: 0 auto 24px;
+  padding: 0;
+  aspect-ratio: auto;
+  border: 2px solid #c7cee2;
+  border-radius: 14px;
+  background: #e4e7ed;
+  box-shadow: 0 3px 7px rgba(7, 27, 63, 0.16);
+}
+
+body .epl-journey-quote-name {
+  margin: 0 0 6px;
+  color: #071b3f;
+  font-family: Montserrat, sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+body .epl-journey-quote-role {
+  margin: 0;
+  color: #4054b2;
+  font-family: Montserrat, sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+body .epl-journey-quote-body {
+  position: relative;
+  z-index: 1;
+  align-self: center;
+}
+
+body .epl-journey-quote-body .ul-section-sub-title {
+  color: #4054b2;
+  font-family: Montserrat, sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .18em;
+}
+
+body .epl-journey-quote-headline {
+  max-width: 680px;
+  margin: 24px 0 32px;
+  color: #071b3f;
+  font-family: Montserrat, sans-serif;
+  font-size: clamp(34px, 2.7vw, 46px);
+  font-weight: 800;
+  line-height: 1.14;
+  letter-spacing: -.035em;
+}
+
+body .epl-journey-quote-paragraph {
+  margin: 0 0 24px;
+  padding-left: 26px;
+  border-left: 2px solid #f4bd16;
+  color: #40506a;
+  font-family: Montserrat, sans-serif;
+  font-size: clamp(17px, 1.25vw, 21px);
+  line-height: 1.55;
+}
+
+body .epl-journey-quote-attribution {
+  margin: 30px 0 0;
+  color: #8b94aa;
+  font-family: Georgia, serif;
+  font-size: 17px;
+  font-style: italic;
+}
+
+body .epl-journey-cta-section {
+  padding: clamp(72px, 7vw, 105px) 0;
+  border-top: 5px solid #ffc400;
+  background: #101830;
+}
+
+body .epl-journey-cta-inner {
+  max-width: 900px;
+}
+
+body .epl-journey-cta-title {
+  margin-bottom: 20px;
+  color: #fff;
+  font-family: Montserrat, sans-serif;
+  font-size: clamp(30px, 2.5vw, 42px);
+  font-weight: 800;
+}
+
+body .epl-journey-cta-body {
+  margin-bottom: 38px;
+  color: #dbe0ef;
+  font-family: Montserrat, sans-serif;
+  font-size: 17px;
+}
+
+body .epl-journey-cta-actions {
+  gap: 20px;
+}
+
+body .epl-journey-cta-actions .ul-btn,
+body .epl-journey-cta-back {
+  min-width: 220px;
+  padding: 20px 30px;
+  border-radius: 0;
+  font-family: Montserrat, sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+body .epl-journey-cta-actions .ul-btn {
+  border: 1px solid #ffc400;
+  background: #ffc400;
+  color: #071127;
+}
+
+body .epl-journey-cta-back {
+  border: 1px solid #737b91;
+  border-radius: 999px;
+  color: #fff;
+}
+
+@media screen and (max-width: 991px) {
+  body .epl-journey-quote-card {
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 40px;
+    min-height: 0;
+    padding: 60px 40px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  body .epl-journey-quote-card {
+    grid-template-columns: 1fr;
+    padding: 54px 24px;
+  }
+
+  body .epl-journey-quote-headline {
+    font-size: clamp(29px, 8vw, 38px);
+  }
+
+  body .epl-journey-quote-photo {
+    width: 210px;
+    height: 250px;
+  }
+
+  body .epl-journey-cta-actions .ul-btn,
+  body .epl-journey-cta-back {
+    width: min(100%, 300px);
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .epl-journey-timeline::before {
+    left: 20px;
+  }
+
+  .epl-journey-item {
+    grid-template-columns: 1fr;
+    padding-left: 52px;
+  }
+
+  .epl-journey-marker {
+    left: 20px;
+    top: 0;
+  }
+
+  .epl-journey-marker span {
+    min-width: 0;
+  }
+
+  .epl-journey-item .epl-journey-card,
+  .epl-journey-item--reverse .epl-journey-card,
+  .epl-journey-item .epl-journey-aside,
+  .epl-journey-item--reverse .epl-journey-aside {
+    grid-column: 1;
+    text-align: left;
+    padding-top: 0;
+  }
+
+  .epl-journey-quote-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .epl-journey-quote-photo {
+    max-width: 200px;
+    margin: 0 auto;
   }
 }

@@ -169,6 +169,7 @@ export function ChariticsAlumniPage({ content }: ChariticsAlumniPageProps) {
                 >
                   <div className="figma-eplan-executive__photo">
                     <TeamMemberPhoto alt={member.name} src={member.photo} />
+                    <span className="figma-eplan-executive__view">View profile</span>
                   </div>
                   <span className="figma-eplan-executive__role">{member.role}</span>
                   <span className="figma-eplan-executive__name">{member.name}</span>

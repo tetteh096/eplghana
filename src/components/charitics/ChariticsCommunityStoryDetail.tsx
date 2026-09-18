@@ -73,11 +73,16 @@ export function ChariticsCommunityStoryDetail({ content }: { content: StoryDetai
             <h1>{story.assembly}</h1>
             <span className="figma-impact-community-card__focus">{story.title}</span>
             <p className="figma-community-story-detail__summary">{story.desc}</p>
-            <div className="figma-community-story-detail__body">
-              {story.body.split(/\n+/).map((paragraph) => (
-                <p key={paragraph.slice(0, 32)}>{paragraph}</p>
+          </div>
+          <div className="figma-community-story-detail__body">
+            {story.body
+              .split(/\n\s*\n/)
+              .filter(Boolean)
+              .map((paragraph, index) => (
+                <p key={`${index}-${paragraph.slice(0, 32)}`}>{paragraph}</p>
               ))}
-            </div>
+          </div>
+          <div className="figma-community-story-detail__actions">
             <Link className="figma-impact-outline-btn" href="/impact/stories">
               All community stories <span aria-hidden>→</span>
             </Link>

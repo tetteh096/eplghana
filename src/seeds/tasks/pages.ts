@@ -48,6 +48,9 @@ const pages: { title: string; slug: string; contact?: typeof contactContent }[] 
   { title: 'Donate', slug: '/donate' },
   { title: 'Annual Reports', slug: '/knowledge-products/annual-reports' },
   { title: 'News & Events', slug: '/news' },
+  { title: 'Research and Publications', slug: '/research' },
+  { title: 'Testimonials', slug: '/testimonials' },
+  { title: 'Privacy Note', slug: '/privacy' },
   { title: 'Photo Gallery', slug: '/gallery' },
   { title: 'Contact Us', slug: '/contact', contact: contactContent },
 ]

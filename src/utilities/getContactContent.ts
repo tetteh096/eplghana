@@ -39,7 +39,10 @@ export async function getContactContent(): Promise<ContactPageContent> {
       successTitle: txt(c?.form?.successTitle, d.form.successTitle),
       successText: txt(c?.form?.successText, d.form.successText),
       privacyLabel: txt(c?.form?.privacyLabel, d.form.privacyLabel),
-      privacyHref: txt(c?.form?.privacyHref, d.form.privacyHref),
+      privacyHref:
+        txt(c?.form?.privacyHref, d.form.privacyHref) === '#'
+          ? '/privacy'
+          : txt(c?.form?.privacyHref, d.form.privacyHref),
     },
     map: {
       title: txt(c?.map?.title ?? c?.visit?.title, d.map.title),

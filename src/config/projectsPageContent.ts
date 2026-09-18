@@ -11,6 +11,8 @@ export const projectsPageIntro = {
 
 export const projectsPageCta = {
   title: 'Be Part of Our Work',
+  description:
+    'Whether you are an aspiring young leader, a public institution looking to host talent, or a strategic partner, there is a place for you in the EPL Ghana community.',
   ctaLabel: 'Become a Fellow',
   ctaHref: '/contact#partnership',
 }

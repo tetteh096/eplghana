@@ -317,6 +317,7 @@ export function ChariticsAboutPage({
                 >
                   <div className="figma-about-team__photo">
                     <TeamMemberPhoto alt={member.name} src={member.photo} />
+                    <span className="figma-about-team__view">View profile</span>
                   </div>
                   <div className="figma-about-team__name">{member.name}</div>
                   <div className="figma-about-team__role">{member.role}</div>

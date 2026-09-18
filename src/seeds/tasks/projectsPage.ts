@@ -15,6 +15,7 @@ export async function seedProjectsPage(payload: Payload): Promise<void> {
     description: d.description,
     additionalParagraphs: d.additionalParagraphs.map((text) => ({ text })),
     ctaTitle: projectsPageCta.title,
+    ctaDescription: projectsPageCta.description,
     ctaLabel: projectsPageCta.ctaLabel,
     ctaUrl: projectsPageCta.ctaHref,
   }

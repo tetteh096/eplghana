@@ -40,6 +40,8 @@ const projects = {
 
   ctaTitle: projectsPageCta.title,
 
+  ctaDescription: projectsPageCta.description,
+
   ctaLabel: projectsPageCta.ctaLabel,
 
   ctaUrl: projectsPageCta.ctaHref,

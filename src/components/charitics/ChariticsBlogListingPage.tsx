@@ -9,6 +9,7 @@ import type { BlogListingMeta } from '@/utilities/getBlogPosts'
 import { formatDate } from '@/utilities/formatDate'
 
 type ChariticsBlogListingPageProps = {
+  hero?: { eyebrow: string; title: string; lead: string; image?: string }
   meta?: BlogListingMeta
   posts?: BlogPostSummary[]
   recentPosts?: BlogPostSummary[]
@@ -110,7 +111,15 @@ const fallbackArticles = [
   },
 ]
 
-export function ChariticsBlogListingPage({ posts = [] }: ChariticsBlogListingPageProps) {
+export function ChariticsBlogListingPage({
+  hero = {
+    eyebrow: 'Updates & Engagement',
+    title: 'News & Insights',
+    lead: 'Stay updated with our public sector events, fellow recruitment opportunities, and thought leadership pieces.',
+    image: eplHomeImages.aboutMain,
+  },
+  posts = [],
+}: ChariticsBlogListingPageProps) {
   const [selectedEventTab, setSelectedEventTab] = useState<(typeof EVENT_TABS)[number]>('ALL EVENTS')
 
   const displayArticles = useMemo(() => {
@@ -135,18 +144,16 @@ export function ChariticsBlogListingPage({ posts = [] }: ChariticsBlogListingPag
   return (
     <div className="figma-news-page">
       <section className="figma-news-hero">
-        <div className="figma-news-hero__bg" style={{ backgroundImage: `url(${eplHomeImages.aboutMain})` }} />
+        <div className="figma-news-hero__bg" style={{ backgroundImage: `url(${hero.image || eplHomeImages.aboutMain})` }} />
         <div className="figma-news-hero__overlay" />
         <div className="figma-news-hero__content">
           <div className="figma-news-hero__copy">
             <div className="figma-impact-kicker">
               <span className="figma-impact-kicker__line" />
-              <span>UPDATES &amp; ENGAGEMENT</span>
+              <span>{hero.eyebrow.toUpperCase()}</span>
             </div>
-            <h1>News &amp; Insights</h1>
-            <p>
-              Stay updated with our public sector events, fellow recruitment opportunities, and thought leadership pieces.
-            </p>
+            <h1>{hero.title}</h1>
+            <p>{hero.lead}</p>
           </div>
         </div>
       </section>

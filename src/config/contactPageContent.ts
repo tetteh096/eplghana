@@ -25,7 +25,7 @@ export const contactPageContent = {
     successText:
       'Your message has been successfully received. A member of the EPL Ghana team will respond to your email within 24 to 48 hours.',
     privacyLabel: 'View Our Privacy Note',
-    privacyHref: '#',
+    privacyHref: '/privacy',
   },
   map: {
     title: 'Find Us in East Legon',

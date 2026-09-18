@@ -2,7 +2,6 @@ import type { GlobalConfig } from 'payload'
 
 import { canEditContent } from '@/access/canEditContent'
 import { publicTotpReadBypass } from '@/config/security'
-import { footerLinks } from '../config/navigation'
 
 /**
  * Site footer, editable in the admin under the "Footer" door.
@@ -16,16 +15,22 @@ import { footerLinks } from '../config/navigation'
 
 const defaultColumns = [
   {
-    title: 'Quick Links',
-    links: footerLinks.useful.map((l) => ({ label: l.label, url: l.href })),
+    title: 'Explore',
+    links: [
+      { label: 'About', url: '/about' },
+      { label: 'Projects', url: '/projects' },
+      { label: 'Impact', url: '/impact' },
+      { label: 'Community', url: '/community' },
+    ],
   },
   {
-    title: 'Our Programs',
+    title: 'Engage',
     links: [
-      { label: 'Public Service Fellowship', url: '/projects/public-service-fellowship' },
-      { label: 'Women On The Rise', url: '/projects/women-on-the-rise' },
-      { label: 'P.E.A.C.E', url: '/projects/peace' },
-      { label: 'Elevated MINDS', url: '/projects/elevated-minds' },
+      { label: 'News & Insights', url: '/news' },
+      { label: 'Get Involved', url: '/get-involved' },
+      { label: 'Partner With Us', url: '/community/partners' },
+      { label: 'Donate', url: '/donate' },
+      { label: 'Contact Us', url: '/contact' },
     ],
   },
 ]
@@ -82,6 +87,36 @@ export const Footer: GlobalConfig = {
           ],
         },
       ],
+    },
+    {
+      name: 'stayConnectedTitle',
+      type: 'text',
+      label: 'Newsletter heading',
+      defaultValue: 'Stay Connected',
+    },
+    {
+      name: 'stayConnectedIntro',
+      type: 'text',
+      label: 'Newsletter introduction',
+      defaultValue: 'Stay connected with EPL Ghana.',
+    },
+    {
+      name: 'stayConnectedText',
+      type: 'text',
+      label: 'Newsletter description',
+      defaultValue: 'Updates on programmes, Fellows and events.',
+    },
+    {
+      name: 'subscribeLabel',
+      type: 'text',
+      label: 'Subscribe button label',
+      defaultValue: 'Subscribe',
+    },
+    {
+      name: 'location',
+      type: 'text',
+      label: 'Footer location',
+      defaultValue: 'Accra, Ghana',
     },
     {
       name: 'copyright',

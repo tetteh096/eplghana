@@ -154,8 +154,7 @@ export default buildConfig({
         const hasItems = labels.length > 0
         const isLegacy =
           labels.includes('About Us') ||
-          labels.includes('Knowledge Products') ||
-          header?.cta?.label === 'Contact Us'
+          labels.includes('Knowledge Products')
         if (!hasItems || isLegacy) {
           await payload.updateGlobal({
             slug: 'header',
@@ -189,6 +188,29 @@ export default buildConfig({
         }
       } catch (error) {
         payload.logger.warn(`[EPL] Header seed skipped: ${error}`)
+      }
+
+      // Ensure newer editorial pages exist so their CMS fields are available
+      // in every environment, not only databases that rerun development seeds.
+      try {
+        const editorialPages = [
+          { title: 'Research and Publications', slug: '/research' },
+          { title: 'Testimonials', slug: '/testimonials' },
+          { title: 'Privacy Note', slug: '/privacy' },
+        ]
+        for (const page of editorialPages) {
+          const existing = await payload.find({
+            collection: 'pages',
+            depth: 0,
+            limit: 1,
+            where: { slug: { equals: page.slug } },
+          })
+          if (!existing.docs.length) {
+            await payload.create({ collection: 'pages', data: page })
+          }
+        }
+      } catch (error) {
+        payload.logger.warn(`[EPL] Editorial page seed skipped: ${error}`)
       }
 
       // Existing users created before roles were added become admins once.

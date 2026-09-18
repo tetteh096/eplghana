@@ -1,6 +1,8 @@
+import { eplHomeImages } from '@/config/eplMedia'
 import { projectsPageCta, projectsPageIntro } from '@/config/projectsPageContent'
 import type { PublishedProject } from '@/utilities/getPublishedProjects'
 import { getPublishedProjects } from '@/utilities/getPublishedProjects'
+import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { getPage } from '@/utilities/getPage'
 
 export type ProjectsPageContent = {
@@ -9,9 +11,11 @@ export type ProjectsPageContent = {
     title: string
     description: string
     additionalParagraphs: string[]
+    heroImage: string
   }
   cta: {
     title: string
+    description: string
     ctaLabel: string
     ctaHref: string
   }
@@ -19,6 +23,7 @@ export type ProjectsPageContent = {
 }
 
 const txt = (v: unknown, d: string) => (typeof v === 'string' && v.trim() ? v : d)
+const img = (v: unknown, d: string) => getMediaUrl(v as any) || d
 
 function mapParagraphs(raw: unknown, fallback: string[]): string[] {
   if (!Array.isArray(raw) || raw.length === 0) return fallback
@@ -41,9 +46,11 @@ export async function getProjectsPageContent(): Promise<ProjectsPageContent> {
       title: txt(cms.title, d.title),
       description: txt(cms.description, d.description),
       additionalParagraphs: mapParagraphs(cms.additionalParagraphs, d.additionalParagraphs),
+      heroImage: img(cms.heroImage, eplHomeImages.aboutMain),
     },
     cta: {
       title: txt(cms.ctaTitle, projectsPageCta.title),
+      description: txt(cms.ctaDescription, projectsPageCta.description),
       ctaLabel: txt(cms.ctaLabel, projectsPageCta.ctaLabel),
       ctaHref: txt(cms.ctaUrl, projectsPageCta.ctaHref),
     },

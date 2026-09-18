@@ -2,7 +2,7 @@ import { cache } from 'react'
 
 import { DONATE_PATH, resolveDonateHref, resolveDonateLink, isDonateLabel } from '@/utilities/donateLink'
 
-import { mainNavigation, isNavDropdown, type NavItem } from '@/config/navigation'
+import { mainNavigation, type NavItem } from '@/config/navigation'
 import { tryGetPayload } from '@/utilities/payloadSafe'
 import { toPlain } from '@/utilities/toPlain'
 
@@ -113,61 +113,8 @@ function isLegacyHeaderNav(nav: NavItem[], cta?: RawCta | null): boolean {
   return false
 }
 
-/** Programme mega-menu copy is fixed in code so labels/descriptions stay consistent. */
-function normalizeProgrammesNav(nav: NavItem[]): NavItem[] {
-  const programmes = mainNavigation.find(
-    (item): item is Extract<NavItem, { items: unknown[] }> =>
-      isNavDropdown(item) && item.label === 'Programmes',
-  )
-  if (!programmes) return nav
-
-  return nav.map((item) =>
-    isNavDropdown(item) && item.label === 'Programmes' ? programmes : item,
-  )
-}
-
-/** Ensure Get Involved always routes to the dedicated landing page. */
-function normalizeGetInvolvedNav(nav: NavItem[]): NavItem[] {
-  return nav.map((item) => {
-    if (!isNavDropdown(item)) {
-      if (item.label === 'Get Involved') return { ...item, href: '/get-involved' }
-      return item
-    }
-
-    return {
-      ...item,
-      items: item.items.map((child) =>
-        child.label === 'Get Involved' ? { ...child, href: '/get-involved' } : child,
-      ),
-    }
-  })
-}
-
-/** Keep the fellowship contact action consistent even when an older CMS menu is loaded. */
-function normalizeFellowshipContactNav(nav: NavItem[]): NavItem[] {
-  return nav.map((item) => {
-    if (!isNavDropdown(item)) {
-      return item.href === '/contact' && item.label === 'Contact Us'
-        ? { ...item, label: 'Become a Fellow' }
-        : item
-    }
-
-    return {
-      ...item,
-      items: item.items.map((child) =>
-        child.href === '/contact' && child.label === 'Contact Us'
-          ? { ...child, label: 'Become a Fellow', description: 'Apply to join the next cohort' }
-          : child,
-      ),
-    }
-  })
-}
-
 function normalizeTopLinks(links: { label: string; href: string }[]): { label: string; href: string }[] {
-  return links.map((link) => {
-    if (link.label === 'Community') return { ...link, href: '/community/current-fellows' }
-    return resolveDonateLink(link)
-  })
+  return links.map(resolveDonateLink)
 }
 
 function headerNeedsDonateUrlFix(header: RawHeader | null | undefined): boolean {
@@ -232,7 +179,7 @@ export const getHeader = cache(async (): Promise<HeaderData> => {
   try {
     const headerDoc = await payload.findGlobal({ slug: 'header', depth: 0 })
     const header = toPlain(headerDoc) as RawHeader | null
-    let nav = mapNavItems(header?.navItems ?? [])
+    const nav = mapNavItems(header?.navItems ?? [])
 
     if (!nav.length || isLegacyHeaderNav(nav, header?.cta)) {
       // Upgrade stale DB menu once so Admin matches the live redesign.
@@ -241,9 +188,6 @@ export const getHeader = cache(async (): Promise<HeaderData> => {
         .catch(() => undefined)
       return {
         ...fallback,
-        nav: normalizeFellowshipContactNav(
-          normalizeGetInvolvedNav(normalizeProgrammesNav(fallback.nav)),
-        ),
       }
     }
 
@@ -266,7 +210,7 @@ export const getHeader = cache(async (): Promise<HeaderData> => {
     }
 
     return {
-      nav: normalizeFellowshipContactNav(normalizeGetInvolvedNav(normalizeProgrammesNav(nav))),
+      nav,
       cta: mapCta(header?.cta, fallbackCta),
       partnerCta: mapCta(header?.partnerCta, fallbackPartnerCta),
       topLinks: normalizeTopLinks(topLinks.length ? topLinks : TOP_LINKS),

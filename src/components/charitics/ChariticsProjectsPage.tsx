@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useMemo } from 'react'
 
 import { MotionItem, MotionReveal } from '@/components/charitics/MotionReveal'
-import { EPL_MEDIA, eplHomeImages, resolveProjectImage } from '@/config/eplMedia'
+import { EPL_MEDIA, resolveProjectImage } from '@/config/eplMedia'
 import type { ProjectsPageContent } from '@/utilities/getProjectsPageContent'
 
 type ChariticsProjectsPageProps = {
@@ -106,6 +106,7 @@ function metricFor(slug: string, cmsMetric: string | null | undefined, fallback?
 
 export function ChariticsProjectsPage({ content }: ChariticsProjectsPageProps) {
   const reduceMotion = useReducedMotion()
+  const { intro, cta } = content
 
   const projects = useMemo(() => {
     const cmsBySlug = new Map(
@@ -133,12 +134,6 @@ export function ChariticsProjectsPage({ content }: ChariticsProjectsPageProps) {
     })
   }, [content.projects])
 
-  const eyebrow = 'Our Program'
-  const title = 'Projects That Move Public Service Forward'
-  const ctaTitle = 'Be Part of Our Work'
-  const ctaLabel = 'Become a Fellow'
-  const ctaHref = '/contact'
-
   return (
     <div className="figma-projects-page">
       <section className="figma-about-hero figma-projects-hero">
@@ -146,7 +141,7 @@ export function ChariticsProjectsPage({ content }: ChariticsProjectsPageProps) {
           animate={reduceMotion ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1.04 }}
           className="figma-about-hero__bg"
           initial={reduceMotion ? false : { opacity: 0, scale: 1.08 }}
-          style={{ backgroundImage: `url(${eplHomeImages.aboutMain})` }}
+          style={{ backgroundImage: `url(${intro.heroImage})` }}
           transition={{ duration: 1.2, ease: easeOut }}
         />
         <div className="figma-about-hero__overlay" />
@@ -167,7 +162,7 @@ export function ChariticsProjectsPage({ content }: ChariticsProjectsPageProps) {
             }}
           >
             <span className="figma-kicker__line" />
-            <span>{eyebrow.toUpperCase()}</span>
+            <span>{intro.eyebrow.toUpperCase()}</span>
           </motion.div>
           <motion.h1
             variants={{
@@ -175,8 +170,18 @@ export function ChariticsProjectsPage({ content }: ChariticsProjectsPageProps) {
               show: { opacity: 1, y: 0, transition: { duration: 0.85, ease: easeOut } },
             }}
           >
-            {title}
+            {intro.title}
           </motion.h1>
+          {intro.description ? (
+            <motion.p
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.85, ease: easeOut } },
+              }}
+            >
+              {intro.description}
+            </motion.p>
+          ) : null}
         </motion.div>
       </section>
 
@@ -224,14 +229,11 @@ export function ChariticsProjectsPage({ content }: ChariticsProjectsPageProps) {
               <span className="figma-kicker__line" />
               <span>GET CONNECTED</span>
             </div>
-            <h2 className="figma-projects-cta__title">{ctaTitle}</h2>
-            <p className="figma-projects-cta__text">
-              Whether you are an aspiring young leader, a public institution looking to host talent,
-              or a strategic partner, there is a place for you in the EPL Ghana community.
-            </p>
+            <h2 className="figma-projects-cta__title">{cta.title}</h2>
+            <p className="figma-projects-cta__text">{cta.description}</p>
             <div className="figma-projects-cta__actions">
-              <Link className="epl-new-btn epl-new-btn--gold" href={ctaHref}>
-                {ctaLabel} <span>↗</span>
+              <Link className="epl-new-btn epl-new-btn--gold" href={cta.ctaHref}>
+                {cta.ctaLabel} <span>↗</span>
               </Link>
               <Link className="epl-new-btn figma-projects-cta__partner" href="/community/partners">
                 Partner With Us <span>↗</span>

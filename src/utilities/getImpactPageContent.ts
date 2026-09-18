@@ -2,7 +2,7 @@ import {
   impactPageContent,
   type ImpactTestimonialCategory,
 } from '@/config/impactPageContent'
-import type { Fellow, Media } from '@/payload-types'
+import type { Media, Testimonial } from '@/payload-types'
 import { getMediaUrl, resolveMediaUrl } from '@/utilities/getMediaUrl'
 import { getPage } from '@/utilities/getPage'
 import { tryGetPayload } from '@/utilities/payloadSafe'
@@ -85,27 +85,23 @@ const CATEGORIES = new Set<ImpactTestimonialCategory>([
 
 const txt = (v: unknown, d: string) => (typeof v === 'string' && v.trim() ? v : d)
 
-import { resolveCohortLabel } from '@/utilities/resolveCohort'
-
 function portraitFallback(name: string): string {
   return `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(name)}&backgroundColor=4150A3&textColor=ffffff&fontSize=38`
 }
 
-async function loadSuccessStoriesFromFellows(
+async function loadSuccessStoriesFromTestimonials(
   payload: NonNullable<Awaited<ReturnType<typeof tryGetPayload>>>,
   defaults: ImpactPageContent['successStories']['items'],
 ) {
   const result = await payload.find({
-    collection: 'fellows',
+    collection: 'testimonials',
     depth: 1,
-    limit: 3,
+    limit: 6,
     sort: 'order',
-    where: {
-      and: [{ status: { equals: 'published' } }, { featuredOnImpact: { equals: true } }],
-    },
+    where: { status: { equals: 'published' } },
   })
 
-  const docs = (toPlain(result.docs) as Fellow[] | null) ?? []
+  const docs = (toPlain(result.docs) as Testimonial[] | null) ?? []
   if (!docs.length) return null
 
   return Promise.all(
@@ -115,14 +111,12 @@ async function loadSuccessStoriesFromFellows(
         (await resolveMediaUrl(doc.photo, payload)) ||
         getMediaUrl(doc.photo) ||
         portraitFallback(doc.name)
-      const desc =
-        doc.impactStory?.trim() || doc.bio?.trim() || fb?.desc || ''
       return {
         name: doc.name,
-        role: doc.institution,
-        cohort: resolveCohortLabel(doc.cohort),
+        role: doc.role,
+        cohort: doc.cohort?.trim() || 'EPL Ghana',
         image,
-        desc,
+        desc: doc.quote?.trim() || fb?.desc || '',
       }
     }),
   )
@@ -149,7 +143,8 @@ function withStoryLinks(
   }>,
 ): ImpactPageContent['communityStories']['items'] {
   return items.map((item, index) => {
-    const slug = item.slug?.trim() || slugify(item.assembly || item.title) || `story-${index + 1}`
+    const slug =
+      slugify(item.slug?.trim() || item.assembly || item.title) || `story-${index + 1}`
     return {
       num: item.num,
       slug,
@@ -201,9 +196,9 @@ async function loadCommunityStoriesFromCollection(
       const title = txt(item.title, fb.title)
       const desc = txt(item.description, fb.desc)
       const slug =
-        (typeof item.slug === 'string' && item.slug.trim()) ||
-        fb?.slug ||
-        slugify(assembly || title)
+        slugify(
+          (typeof item.slug === 'string' && item.slug.trim()) || assembly || title,
+        ) || `story-${index + 1}`
       return {
         num: String(index + 1).padStart(2, '0'),
         slug,
@@ -243,7 +238,7 @@ async function loadPublicationsFromCollection(
       sort: 'order',
       where: {
         and: [
-          { status: { not_equals: 'draft' } },
+          { status: { equals: 'published' } },
           {
             category: {
               in: ['research', 'studies', 'articles', 'factsheets', 'technical-policy-briefs'],
@@ -269,7 +264,7 @@ async function loadPublicationsFromCollection(
         href,
       }
     }),
-  )
+  ).then((items) => items.filter((item) => Boolean(item.href)))
 
   const research = await Promise.all(
     researchDocs.map(async (doc: any) => {
@@ -305,7 +300,7 @@ async function loadPublicationsFromCollection(
     }),
   )
 
-  return { reports, research }
+  return { reports, research: research.filter((item) => Boolean(item.href)) }
 }
 
 /**
@@ -345,8 +340,11 @@ export async function getImpactPageContent(): Promise<ImpactPageContent> {
 
   if (payload) {
     try {
-      const fromFellows = await loadSuccessStoriesFromFellows(payload, d.successStories.items)
-      if (fromFellows?.length) successItems = fromFellows
+      const fromTestimonials = await loadSuccessStoriesFromTestimonials(
+        payload,
+        d.successStories.items,
+      )
+      if (fromTestimonials?.length) successItems = fromTestimonials
 
       const fromInterventions = await loadCommunityStoriesFromCollection(
         payload,
@@ -407,9 +405,6 @@ export async function getImpactPageContent(): Promise<ImpactPageContent> {
       image: portraitFallback(item.author),
     }))
   }
-
-  if (!reports.length) reports = d.publications.reports
-  if (!research.length) research = d.publications.research
 
   return {
     hero: {
@@ -472,7 +467,8 @@ export async function getCommunityStories() {
 
 export async function getCommunityStoryBySlug(slug: string) {
   const { items, section } = await getCommunityStories()
-  const story = items.find((item) => item.slug === slug) ?? null
+  const normalizedSlug = slugify(decodeURIComponent(slug))
+  const story = items.find((item) => item.slug === normalizedSlug) ?? null
   if (!story) return null
   return {
     section,

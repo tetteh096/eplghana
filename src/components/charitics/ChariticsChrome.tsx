@@ -27,21 +27,6 @@ type ChariticsChromeProps = {
   settings: SiteSetting
 }
 
-const EXPLORE_LINKS = [
-  { href: '/about', label: 'About' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/impact', label: 'Impact' },
-  { href: '/community', label: 'Community' },
-]
-
-const ENGAGE_LINKS = [
-  { href: '/news', label: 'News & Insights' },
-  { href: '/get-involved', label: 'Get Involved' },
-  { href: '/community/partners', label: 'Partner With Us' },
-  { href: '/donate', label: 'Donate' },
-  { href: '/contact', label: 'Become a Fellow' },
-]
-
 function socialLinks(settings: SiteSetting) {
   const s = settings as SiteSetting & { linkedin?: string | null; tiktok?: string | null }
   return [
@@ -122,33 +107,24 @@ export function ChariticsChrome({
               </div>
             </div>
 
-            <div className="epl-figma-footer__column">
-              <h3>Explore</h3>
-              <ul>
-                {EXPLORE_LINKS.map((link) => (
-                  <li key={link.href}>
-                    <Link href={link.href}>{link.label}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {footer?.columns.map((column) => (
+              <div className="epl-figma-footer__column" key={column.title}>
+                <h3>{column.title}</h3>
+                <ul>
+                  {column.links.map((link) => (
+                    <li key={`${column.title}-${link.href}`}>
+                      <Link href={link.href}>{link.label}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
 
             <div className="epl-figma-footer__column">
-              <h3>Engage</h3>
-              <ul>
-                {ENGAGE_LINKS.map((link) => (
-                  <li key={link.href}>
-                    <Link href={link.href}>{link.label}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="epl-figma-footer__column">
-              <h3>Stay Connected</h3>
-              <p>Stay connected with EPL Ghana.</p>
-              <p>Updates on programmes, Fellows and events.</p>
-              <FooterNewsletterForm />
+              <h3>{footer?.stayConnectedTitle ?? 'Stay Connected'}</h3>
+              <p>{footer?.stayConnectedIntro ?? 'Stay connected with EPL Ghana.'}</p>
+              <p>{footer?.stayConnectedText ?? 'Updates on programmes, Fellows and events.'}</p>
+              <FooterNewsletterForm submitLabel={footer?.subscribeLabel} />
               <a className="epl-figma-footer__email" href={`mailto:${email}`}>
                 {email}
               </a>
@@ -157,7 +133,7 @@ export function ChariticsChrome({
 
           <div className="epl-figma-footer__bottom">
             <p>{copyright}</p>
-            <p>Accra, Ghana</p>
+            <p>{footer?.location ?? 'Accra, Ghana'}</p>
           </div>
         </div>
       </footer>

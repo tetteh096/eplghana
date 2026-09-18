@@ -21,6 +21,7 @@ export const mainNavigation: NavItem[] = [
     label: 'About',
     items: [
       { href: '/about#story', label: 'Who We Are', description: 'Our origin, purpose and journey' },
+      { href: '/about/our-journey', label: 'Our Journey', description: 'From Liberia to Ghana: Our timeline' },
       { href: '/about#mission-vision', label: 'Mission & Vision', description: 'What drives us forward' },
       { href: '/about#values', label: 'Our Values', description: 'The principles we live by' },
       { href: '/about#people', label: 'Leadership & Team', description: 'The people behind EPL Ghana' },
@@ -83,7 +84,7 @@ export const mainNavigation: NavItem[] = [
       { href: '/get-involved', label: 'Get Involved', description: 'Ways to be part of our work' },
       { href: '/community/partners', label: 'Partner With Us', description: 'Strategic partnerships' },
       { href: '/donate', label: 'Donate', description: 'Support our mission' },
-      { href: '/contact', label: 'Become a Fellow', description: 'Apply to join the next cohort' },
+      { href: '/contact', label: 'Contact Us', description: 'Get in touch with EPL Ghana' },
     ],
   },
 ]

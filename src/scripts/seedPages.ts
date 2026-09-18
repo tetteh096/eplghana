@@ -44,6 +44,7 @@ const pages: { title: string; slug: string; contact?: typeof contactContent }[] 
   { title: 'About EPL Ghana', slug: '/about' },
   { title: 'What We Do', slug: '/about/what-we-do' },
   { title: 'Message from the Country Director', slug: '/about/director-message' },
+  { title: 'Our Journey', slug: '/about/our-journey' },
   { title: 'Our Team', slug: '/about/team' },
   { title: 'Projects', slug: '/projects' },
   { title: 'Community', slug: '/community' },
